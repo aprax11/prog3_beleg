@@ -1,6 +1,8 @@
 package automat.gl;
 
 import automat.Beobachter;
+import automat.ReceiveKuchenListEvent;
+import automat.ReceiveKuchenListEventHandler;
 import automat.Subjekt;
 
 import java.math.BigDecimal;
@@ -15,10 +17,15 @@ public class GeschäftslogikImpl implements Subjekt {
     private Map<Automatenobjekt, Integer> fachnummerverwaltung = new HashMap();
     private Map<Hersteller, Integer> herstellerverwaltung = new HashMap();
     private Set<Allergen> allergenList = new HashSet<>();
+    private ReceiveKuchenListEventHandler receiveKuchenListEventHandler;
 
     public GeschäftslogikImpl(int i) {
         this.listGröße = i;
         this.list= new Automatenobjekt[i];
+    }
+
+    public void setReceiveKuchenListEventHandler(ReceiveKuchenListEventHandler receiveKuchenListEventHandler) {
+        this.receiveKuchenListEventHandler = receiveKuchenListEventHandler;
     }
 
     private Hersteller checkHersteller(Hersteller hersteller) {
@@ -88,6 +95,8 @@ public class GeschäftslogikImpl implements Subjekt {
             for (int i = 0; i < this.fachnummer; i++) {
                 copyArray[i] = this.list[i];
             }
+            ReceiveKuchenListEvent receiveKuchenListEvent = new ReceiveKuchenListEvent(this, copyArray);
+            this.receiveKuchenListEventHandler.handle(receiveKuchenListEvent);
             return copyArray;
         }
         int count = 0;
@@ -102,6 +111,8 @@ public class GeschäftslogikImpl implements Subjekt {
                 copyArray[i] = this.list[i];
             }
         }
+        ReceiveKuchenListEvent receiveKuchenListEvent = new ReceiveKuchenListEvent(this, copyArray);
+        this.receiveKuchenListEventHandler.handle(receiveKuchenListEvent);
         return copyArray;
 
     }

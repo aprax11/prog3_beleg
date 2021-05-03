@@ -22,7 +22,7 @@ public class EventTest {
         AddHerstellerEventHandler handler = new AddHerstellerEventHandler();
         AddHerstellerEventListener listener = new AddHerstellerEventListnerImpl(gl);
         Hersteller hersteller = new HerstellerImpl("Paul");
-        AddHerstellerEvent event = new AddHerstellerEvent(this, hersteller);
+        AddHerstellerEvent event = new AddHerstellerEvent(this, hersteller, true);
 
         handler.add(listener);
         handler.handle(event);
@@ -43,11 +43,12 @@ public class EventTest {
         AddKuchenEventListener listener = new AddKuchenEventListenerImpl(this.gl);
         Duration duration = Duration.ofDays(32);
         BigDecimal preis = new BigDecimal("4.20");
-        Collection<String> allergens = new HashSet<>();
-        allergens.add("Erdnuss");
-        allergens.add("Gluten");
+        Collection<Allergen> allergens = new HashSet<>();
+        allergens.add(Allergen.Sesamsamen);
+        allergens.add(Allergen.Erdnuss);
+        Hersteller hersteller = new HerstellerImpl("paul");
 
-        AddKuchenEvent event = new AddKuchenEvent(this, "Kremkuchen", "krem", "paul", allergens, 320, duration, "obst", preis);
+        AddKuchenEvent event = new AddKuchenEvent(this, "Kremkuchen", "krem", hersteller, allergens, 320, duration, "obst", preis);
         handler.add(listener);
         handler.handle(event);
 
@@ -62,11 +63,12 @@ public class EventTest {
         AddKuchenEventListener listener = new AddKuchenEventListenerImpl(this.gl);
         Duration duration = Duration.ofDays(32);
         BigDecimal preis = new BigDecimal("4.20");
-        Collection<String> allergens = new HashSet<>();
-        allergens.add("Erdnuss");
-        allergens.add("Gluten");
+        Collection<Allergen> allergens = new HashSet<>();
+        allergens.add(Allergen.Sesamsamen);
+        allergens.add(Allergen.Erdnuss);
+        Hersteller hersteller = new HerstellerImpl("paul");
 
-        AddKuchenEvent event = new AddKuchenEvent(this, "Kremkuchen", "krem", "paul", allergens, 320, duration, "obst", preis);
+        AddKuchenEvent event = new AddKuchenEvent(this, "Kremkuchen", "krem", hersteller, allergens, 320, duration, "obst", preis);
         handler.add(listener);
         handler.handle(event);
         //establish delete things

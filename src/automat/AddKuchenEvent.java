@@ -11,15 +11,15 @@ import java.util.EventObject;
 public class AddKuchenEvent extends EventObject {
     private final String name;
     private final String kremsorte;
-    private final String hersteller;
-    private final Collection<String> allergens;
+    private final Hersteller hersteller;
+    private final Collection<Allergen> allergens;
     private final int nährwert;
     private final Duration haltbarkeit;
     private final String obstsorte;
     private final BigDecimal preis;
 
 
-   public AddKuchenEvent(Object source, String name, String kremsorte, String herstellerName, Collection<String> allergens, int nährwert, Duration haltbarkeit, String obstsorte, BigDecimal preis) {
+   public AddKuchenEvent(Object source, String name, String kremsorte, Hersteller herstellerName, Collection<Allergen> allergens, int nährwert, Duration haltbarkeit, String obstsorte, BigDecimal preis) {
         super(source);
        this.name = name;
        this.kremsorte = kremsorte;
@@ -40,11 +40,11 @@ public class AddKuchenEvent extends EventObject {
         return kremsorte;
     }
 
-    public String getHersteller() {
+    public Hersteller getHersteller() {
         return hersteller;
     }
 
-    public Collection<String> getAllergens() {
+    public Collection<Allergen> getAllergens() {
         return allergens;
     }
 
