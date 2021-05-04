@@ -101,9 +101,11 @@ public class GeschäftslogikImpl implements Subjekt {
             }
         }
         Automatenobjekt[] copyArray = new Automatenobjekt[count];
+        int kuchenCount = 0;
         for (int i = 0; i < this.fachnummer; i++) {
             if(this.list[i].getClass() == cl) {
-                copyArray[i] = this.list[i];
+                copyArray[kuchenCount] = this.list[i];
+                kuchenCount++;
             }
         }
         ReceiveKuchenListEvent receiveKuchenListEvent = new ReceiveKuchenListEvent(this, copyArray);
@@ -143,7 +145,6 @@ public class GeschäftslogikImpl implements Subjekt {
                 this.list[this.fachnummer] = null;
                 kuchen.callForFachnummer(kuchen);
             }
-            this.updateAllergens();
             this.benachrichtige();
         }
     }
@@ -157,6 +158,7 @@ public class GeschäftslogikImpl implements Subjekt {
         copy.putAll(this.herstellerverwaltung);
         return copy;
     }
+    //TODO: das löschen verbessern
     public void löscheHersteller(Hersteller hersteller) {
         for (int i = 0; i < this.fachnummer; i++) {
             Automatenobjekt ao = this.list[i];
@@ -166,17 +168,14 @@ public class GeschäftslogikImpl implements Subjekt {
         }
         this.herstellerverwaltung.remove(hersteller);
     }
-    private void updateAllergens() {
-        this.allergenList.clear();
-        for (int i = 0; i < this.fachnummer-1; i++) {
-            Automatenobjekt ao = this.list[i];
-            if(!(this.allergenList.contains(ao.getAllergene())));
-            this.allergenList.addAll(ao.getAllergene());
-        }
-    }
 
     public Set<Allergen> getAllergenList(boolean b) {
         HashSet<Allergen> copy;
+        this.allergenList.clear();
+        for (int i = 0; i < this.fachnummer; i++) {
+            Automatenobjekt ao = this.list[i];
+            this.allergenList.addAll(ao.getAllergene());
+        }
         if (b) {
             copy = new HashSet<>();
             copy.addAll(this.allergenList);

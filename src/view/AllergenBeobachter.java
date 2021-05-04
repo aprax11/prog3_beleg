@@ -32,19 +32,23 @@ public class AllergenBeobachter implements Beobachter {
         Set<Allergen> oldStateCopy = new HashSet<>();
         oldStateCopy.addAll(this.oldState);
         newState = this.gl.getAllergenList(true);
+        Set<Allergen> toRemove = new HashSet<>();
 
-        for(Iterator<Allergen> iterator = newState.iterator(); iterator.hasNext();) {
-            Allergen a = iterator.next();
+        for(Allergen a : newState) {
             if(oldStateCopy.contains(a)) {
-                oldStateCopy.remove(a);
-                iterator.remove();
+                toRemove.add(a);
             }
         }
+        for(Allergen a : toRemove) {
+            newState.remove(a);
+            oldStateCopy.remove(a);
+        }
+        toRemove.clear();
         if(oldStateCopy.size() > newState.size()) {
             this.allergenWasRemoved(oldStateCopy);
-            for(Iterator<Allergen> iterator = this.oldState.iterator(); iterator.hasNext();) {
-                Allergen a = iterator.next();
-                iterator.remove();
+            toRemove.addAll(oldStateCopy);
+            for(Allergen a : toRemove) {
+                this.oldState.remove(a);
             }
         }else if(newState.size() > oldStateCopy.size()) {
             this.allergenWasAdded(newState);
