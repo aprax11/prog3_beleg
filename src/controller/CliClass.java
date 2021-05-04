@@ -5,6 +5,7 @@ import automat.*;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Scanner;
 
@@ -58,7 +59,7 @@ public class CliClass {
         Collection<Allergen> allergens = null;
 
         if(this.lastCommand.equals(":c")) {
-            if (parse.length < 6) {
+            if (parse.length == 1) {
                 Hersteller hersteller = new HerstellerImpl(parse[0]);
                 AddHerstellerEvent addHerstellerEvent = new AddHerstellerEvent(this, hersteller, true);
                 this.herstellerEventHandler.handle(addHerstellerEvent);
@@ -111,22 +112,12 @@ public class CliClass {
                 String[] parseAllergene = parse[5].split(",");
                 allergens = new HashSet<>();
                 if(parseAllergene.length > 0) {
-                    for (String a : parseAllergene) {
-                        switch(a) {
-                            case "Gluten":
-                                allergens.add(Allergen.Gluten);
-                                break;
-                            case "Erdnuss":
-                                allergens.add(Allergen.Erdnuss);
-                                break;
-                            case "Haselnuss":
-                                allergens.add(Allergen.Haselnuss);
-                                break;
-                            case "Sesamsamen":
-                                allergens.add(Allergen.Sesamsamen);
-                                break;
-                            default:
-                                break;
+                    EnumSet<Allergen> allAllergens = EnumSet.allOf(Allergen.class);
+                    for (int i = 0; i < parseAllergene.length; i++) {
+                        for(Allergen a : allAllergens) {
+                            if(a.name().equalsIgnoreCase(parseAllergene[i])) {
+                                allergens.add(a);
+                            }
                         }
                     }
                 }
@@ -188,7 +179,6 @@ public class CliClass {
                        continue;
                }
                this.handeln(s1);
-
             } while (true);
         }
     }

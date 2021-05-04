@@ -74,11 +74,7 @@ public class GeschäftslogikImpl implements Subjekt {
             int anzahl = this.herstellerverwaltung.get(h);
             anzahl++;
             this.herstellerverwaltung.put(h, anzahl);
-            for(Allergen a : allergens) {
-                if(!this.allergenList.contains(a)) {
-                    this.allergenList.add(a);
-                }
-            }
+            this.allergenList.addAll(allergens);
             this.fachnummer++;
             this.benachrichtige();
             return true;
@@ -121,8 +117,8 @@ public class GeschäftslogikImpl implements Subjekt {
         kuchen.callForInspektionsdatum();
     }
     public Date returnDate() {
-        Date inspektionsdate = new Date();
-        return inspektionsdate;
+        Date inspektionsDate = new Date();
+        return inspektionsDate;
     }
 
 
@@ -154,7 +150,7 @@ public class GeschäftslogikImpl implements Subjekt {
         int ret = this.fachnummerverwaltung.get(kuchen);
         return ret;
     }
-    public Map getHerstellerList() {
+    public Map<Hersteller, Integer> getHerstellerList() {
         Map<Hersteller, Integer> copy = new HashMap();
         copy.putAll(this.herstellerverwaltung);
         return copy;
@@ -185,7 +181,6 @@ public class GeschäftslogikImpl implements Subjekt {
             return copy;
         }else {
             EnumSet<Allergen> allAllergens = EnumSet.allOf(Allergen.class);
-
             allAllergens.removeIf(a -> this.allergenList.contains(a));
             return allAllergens;
         }
