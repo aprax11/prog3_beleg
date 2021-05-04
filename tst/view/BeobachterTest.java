@@ -5,9 +5,14 @@ import beobachterMusterInterfaces.Beobachter;
 import automat.Hersteller;
 import automat.HerstellerImpl;
 import automat.GeschäftslogikImpl;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
+import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.Collection;
@@ -17,19 +22,21 @@ import static org.mockito.Mockito.*;
 public class BeobachterTest {
 
     @Test
-    public void allergenAddBeobachterTest() {
+    public void allergenAddBeobachterTest() throws IOException {
         GeschäftslogikImpl gl = new GeschäftslogikImpl(3);
         Hersteller hersteller = new HerstellerImpl("paul");
-        ViewClass view = mock(ViewClass.class);
-        Beobachter beobachter = new AllergenBeobachter(gl, view);
+        Beobachter beobachter = new AllergenBeobachter(gl);
         Duration duration = Duration.ofDays(32);
         BigDecimal preis = new BigDecimal("4.20");
         Collection<Allergen> allergens = new HashSet<>();
         allergens.add(Allergen.Gluten);
 
         gl.addHersteller(hersteller);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(byteArrayOutputStream));
         gl.addKuchen("Kremkuchen", "krem", hersteller, allergens, 123, duration, "obst", preis);
-        verify(view).printBeobachterBenachrichtigung("allergen(e) hinzugefügt [Gluten]");
+        assertEquals("allergen(e) hinzugefügt [Gluten]"+System.lineSeparator(), byteArrayOutputStream.toString());
+        byteArrayOutputStream.close();
     }
     //TODO: verify besser formulieren
 /*
@@ -56,11 +63,10 @@ public class BeobachterTest {
 
 
     @Test
-    public void allergenRemoveBeobachterTest() {
+    public void allergenRemoveBeobachterTest() throws IOException {
         GeschäftslogikImpl gl = new GeschäftslogikImpl(3);
         Hersteller hersteller = new HerstellerImpl("paul");
-        ViewClass view = mock(ViewClass.class);
-        Beobachter beobachter = new AllergenBeobachter(gl, view);
+        Beobachter beobachter = new AllergenBeobachter(gl);
         Duration duration = Duration.ofDays(32);
         BigDecimal preis = new BigDecimal("4.20");
         Collection<Allergen> allergens = new HashSet<>();
@@ -68,11 +74,15 @@ public class BeobachterTest {
 
         gl.addHersteller(hersteller);
         gl.addKuchen("Kremkuchen", "krem", hersteller, allergens, 123, duration, "obst", preis);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(byteArrayOutputStream));
         gl.löscheKuchen(0);
 
-        InOrder inOrder = inOrder(view);
-        inOrder.verify(view).printBeobachterBenachrichtigung("allergen(e) hinzugefügt [Gluten]");
-        inOrder.verify(view).printBeobachterBenachrichtigung("allergen(e) entfernt [Gluten]");
+        assertEquals("allergen(e) entfernt [Gluten]"+System.lineSeparator(), byteArrayOutputStream.toString());
+
+        byteArrayOutputStream.close();
     }
+
+
 
 }

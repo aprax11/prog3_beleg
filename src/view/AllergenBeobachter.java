@@ -12,21 +12,18 @@ import java.util.Set;
 public class AllergenBeobachter implements Beobachter {
     private Set<Allergen> oldState;
     private GeschäftslogikImpl gl;
-    private ViewClass view;
 
-    public AllergenBeobachter(GeschäftslogikImpl gl, ViewClass view) {
-        this.view = view;
+    public AllergenBeobachter(GeschäftslogikImpl gl) {
         this.gl = gl;
         this.gl.meldeAn(this);
         this.oldState = gl.getAllergenList(true);
     }
     private void allergenWasAdded(Set<Allergen> added) {
-        String benachrichtigung = "allergen(e) hinzugefügt "+added.toString();
-        this.view.printBeobachterBenachrichtigung(benachrichtigung);
+        System.out.println("allergen(e) hinzugefügt "+added.toString());
+
     }
     private void allergenWasRemoved(Set<Allergen> removed) {
-        String benachrichtigung = "allergen(e) entfernt "+removed.toString();
-        this.view.printBeobachterBenachrichtigung(benachrichtigung);
+        System.out.println("allergen(e) entfernt "+removed.toString());
     }
 
     @Override

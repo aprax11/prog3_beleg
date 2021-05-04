@@ -12,7 +12,7 @@ public class App {
     public static void main(String[] args) {
         GeschäftslogikImpl gl = new GeschäftslogikImpl(3);
         ViewClass view = new ViewClass();
-        Beobachter allergenBeobachter = new AllergenBeobachter(gl, view);
+        Beobachter allergenBeobachter = new AllergenBeobachter(gl);
         gl.meldeAn(allergenBeobachter);
 
         AddHerstellerEventHandler addHerstellerEventHandler = new AddHerstellerEventHandler();
