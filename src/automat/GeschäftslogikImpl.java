@@ -11,7 +11,6 @@ import java.util.*;
 
 public class GeschäftslogikImpl implements Subjekt {
     private List<Beobachter> beobachterList = new LinkedList<>();
-    private int listGröße;
     private Automatenobjekt[] list ;
     private int fachnummer = 0;
     private Map<Automatenobjekt, Integer> fachnummerverwaltung = new HashMap();
@@ -20,7 +19,6 @@ public class GeschäftslogikImpl implements Subjekt {
     private ReceiveKuchenListEventHandler receiveKuchenListEventHandler;
 
     public GeschäftslogikImpl(int i) {
-        this.listGröße = i;
         this.list= new Automatenobjekt[i];
     }
 
@@ -174,7 +172,7 @@ public class GeschäftslogikImpl implements Subjekt {
         this.allergenList.clear();
         for (int i = 0; i < this.fachnummer-1; i++) {
             Automatenobjekt ao = this.list[i];
-            if(!this.allergenList.contains(ao.getAllergene()));
+            if(!(this.allergenList.contains(ao.getAllergene())));
             this.allergenList.addAll(ao.getAllergene());
         }
     }
@@ -186,11 +184,7 @@ public class GeschäftslogikImpl implements Subjekt {
             copy.addAll(this.allergenList);
             return copy;
         }else {
-            Set<Allergen> allAllergens = new HashSet<>();
-            allAllergens.add(Allergen.Erdnuss);
-            allAllergens.add(Allergen.Gluten);
-            allAllergens.add(Allergen.Haselnuss);
-            allAllergens.add(Allergen.Sesamsamen);
+            EnumSet<Allergen> allAllergens = EnumSet.allOf(Allergen.class);
 
             allAllergens.removeIf(a -> this.allergenList.contains(a));
             return allAllergens;

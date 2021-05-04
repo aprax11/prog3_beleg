@@ -48,9 +48,7 @@ public class AllergenBeobachter implements Beobachter {
             }
         }else if(newState.size() > oldStateCopy.size()) {
             this.allergenWasAdded(newState);
-            for(Allergen a : newState) {
-                this.oldState.add(a);
-            }
+            this.oldState.addAll(newState);
         }
     }
 }
