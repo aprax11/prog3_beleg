@@ -1,16 +1,14 @@
 import automat.*;
-import automat.gl.*;
+import controller.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
 
-import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -19,6 +17,15 @@ public class EventTest {
     @BeforeEach
     public void set() {
         this.gl = new GeschäftslogikImpl(1);
+
+        ReceiveKuchenListEventHandler receiveKuchenListEventHandler = new ReceiveKuchenListEventHandler();
+        this.gl.setReceiveKuchenListEventHandler(receiveKuchenListEventHandler);
+    }
+
+
+
+    @Test
+    public void addHerstellerEventTest() {
         AddHerstellerEventHandler handler = new AddHerstellerEventHandler();
         AddHerstellerEventListener listener = new AddHerstellerEventListnerImpl(gl);
         Hersteller hersteller = new HerstellerImpl("Paul");
@@ -26,12 +33,6 @@ public class EventTest {
 
         handler.add(listener);
         handler.handle(event);
-    }
-
-
-
-    @Test
-    public void addHerstellerEventTest() {
         Map<Hersteller, Integer> res = gl.getHerstellerList();
         for(Map.Entry<Hersteller, Integer> e : res.entrySet()) {
             assertTrue(e.getKey().getName().equalsIgnoreCase("paul"));
@@ -39,18 +40,25 @@ public class EventTest {
     }
     @Test
     public void addKuchenEventTest() {
-        AddKuchenEventHandler handler = new AddKuchenEventHandler();
-        AddKuchenEventListener listener = new AddKuchenEventListenerImpl(this.gl);
+        AddHerstellerEventHandler handler = new AddHerstellerEventHandler();
+        AddHerstellerEventListener listener = new AddHerstellerEventListnerImpl(gl);
+        Hersteller hersteller = new HerstellerImpl("Paul");
+        AddHerstellerEvent event = new AddHerstellerEvent(this, hersteller, true);
+
+        handler.add(listener);
+        handler.handle(event);
+
+        AddKuchenEventHandler kuchenHandler = new AddKuchenEventHandler();
+        AddKuchenEventListener kuchenListener = new AddKuchenEventListenerImpl(this.gl);
         Duration duration = Duration.ofDays(32);
         BigDecimal preis = new BigDecimal("4.20");
         Collection<Allergen> allergens = new HashSet<>();
         allergens.add(Allergen.Sesamsamen);
         allergens.add(Allergen.Erdnuss);
-        Hersteller hersteller = new HerstellerImpl("paul");
 
-        AddKuchenEvent event = new AddKuchenEvent(this, "Kremkuchen", "krem", hersteller, allergens, 320, duration, "obst", preis);
-        handler.add(listener);
-        handler.handle(event);
+        AddKuchenEvent kuchenEvent = new AddKuchenEvent(this, "Kremkuchen", "krem", hersteller, allergens, 320, duration, "obst", preis);
+        kuchenHandler.add(kuchenListener);
+        kuchenHandler.handle(kuchenEvent);
 
         Automatenobjekt[] res = this.gl.listKuchen(null);
         Collection<Allergen> ares = this.gl.getAllergenList(true);
@@ -59,20 +67,30 @@ public class EventTest {
     }
     @Test
     public void deleteKuchenEventTest() {
-        AddKuchenEventHandler handler = new AddKuchenEventHandler();
-        AddKuchenEventListener listener = new AddKuchenEventListenerImpl(this.gl);
+        // Add Hersteller things
+        AddHerstellerEventHandler handler = new AddHerstellerEventHandler();
+        AddHerstellerEventListener listener = new AddHerstellerEventListnerImpl(gl);
+        Hersteller hersteller = new HerstellerImpl("Paul");
+        AddHerstellerEvent event = new AddHerstellerEvent(this, hersteller, true);
+
+        handler.add(listener);
+        handler.handle(event);
+
+        //Add Kuchen things
+        AddKuchenEventHandler kuchenHandler = new AddKuchenEventHandler();
+        AddKuchenEventListener kuchenListener = new AddKuchenEventListenerImpl(this.gl);
         Duration duration = Duration.ofDays(32);
         BigDecimal preis = new BigDecimal("4.20");
         Collection<Allergen> allergens = new HashSet<>();
         allergens.add(Allergen.Sesamsamen);
         allergens.add(Allergen.Erdnuss);
-        Hersteller hersteller = new HerstellerImpl("paul");
 
-        AddKuchenEvent event = new AddKuchenEvent(this, "Kremkuchen", "krem", hersteller, allergens, 320, duration, "obst", preis);
-        handler.add(listener);
-        handler.handle(event);
+
+        AddKuchenEvent kuchenEvent = new AddKuchenEvent(this, "Kremkuchen", "krem", hersteller, allergens, 320, duration, "obst", preis);
+        kuchenHandler.add(kuchenListener);
+        kuchenHandler.handle(kuchenEvent);
+
         //establish delete things
-
         DeleteKuchenEventHandler deleteHandler = new DeleteKuchenEventHandler();
         DeleteKuchenEventListener deleteListener = new DeleteKuchenEventListenerImpl(this.gl);
         DeleteKuchenEvent deleteEvent = new DeleteKuchenEvent(this, 0);
