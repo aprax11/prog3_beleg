@@ -1,5 +1,7 @@
 package controller;
 
+import events.AddHerstellerEvent;
+
 import java.util.EventListener;
 
 public interface AddHerstellerEventListener extends EventListener {

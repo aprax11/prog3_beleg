@@ -2,6 +2,7 @@ package automat;
 
 import beobachterMusterInterfaces.Beobachter;
 import controller.*;
+import handler.*;
 import view.AllergenBeobachter;
 import view.ViewClass;
 

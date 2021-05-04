@@ -31,6 +31,7 @@ public class BeobachterTest {
         gl.addKuchen("Kremkuchen", "krem", hersteller, allergens, 123, duration, "obst", preis);
         verify(view).printBeobachterBenachrichtigung("allergen(e) hinzugefügt [Gluten]");
     }
+    //TODO: verify besser formulieren
 /*
     @Test
     public void moreAllergenAddBeobachterTest() {
@@ -51,7 +52,6 @@ public class BeobachterTest {
         gl.addKuchen("Kremkuchen", "krem", hersteller, allergens2, 123, duration, "obst",preis);
         verify(view).printBeobachterBenachrichtigung("allergen hinzugefügt [Gluten, Erdnuss]");
     }
-
  */
 
 

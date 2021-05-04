@@ -1,7 +1,13 @@
 package controller;
 
 import automat.*;
-import controller.*;
+import events.AddHerstellerEvent;
+import events.AddKuchenEvent;
+import events.DeleteKuchenEvent;
+import handler.AddHerstellerEventHandler;
+import handler.AddKuchenEventHandler;
+import handler.DeleteKuchenEventHandler;
+import handler.ReceiveKuchenListEventHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -2,6 +2,7 @@ package controller;
 
 import automat.GeschäftslogikImpl;
 import automat.Hersteller;
+import events.AddHerstellerEvent;
 
 public class AddHerstellerEventListnerImpl implements AddHerstellerEventListener{
     private GeschäftslogikImpl gl;

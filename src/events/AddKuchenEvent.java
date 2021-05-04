@@ -1,4 +1,4 @@
-package controller;
+package events;
 
 import automat.Allergen;
 import automat.Hersteller;

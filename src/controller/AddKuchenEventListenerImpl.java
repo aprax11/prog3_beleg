@@ -1,6 +1,7 @@
 package controller;
 
 import automat.GeschäftslogikImpl;
+import events.AddKuchenEvent;
 
 public class AddKuchenEventListenerImpl implements AddKuchenEventListener{
     private GeschäftslogikImpl gl;

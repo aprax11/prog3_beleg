@@ -2,8 +2,8 @@ package automat;
 
 import beobachterMusterInterfaces.Beobachter;
 import beobachterMusterInterfaces.Subjekt;
-import controller.ReceiveKuchenListEvent;
-import controller.ReceiveKuchenListEventHandler;
+import events.ReceiveKuchenListEvent;
+import handler.ReceiveKuchenListEventHandler;
 
 import java.math.BigDecimal;
 import java.time.Duration;
