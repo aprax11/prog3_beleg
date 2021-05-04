@@ -97,9 +97,10 @@ public class CliClass {
                     korrektheit = false;
                 }
                 String[] konv = parse[2].split(",");
-                String add = konv[0]+"."+konv[1];
-                preis = new BigDecimal(add);
-
+                if(konv.length == 2) {
+                    String add = konv[0] + "." + konv[1];
+                    preis = new BigDecimal(add);
+                }
                 if(this.checkInt(parse[3])) {
                     nährwert = Integer.parseInt(parse[3]);
                 }else {
@@ -178,7 +179,9 @@ public class CliClass {
                        this.lastCommand = ":r";
                        continue;
                }
-               this.handeln(s1);
+               if(this.lastCommand != null) {
+                   this.handeln(s1);
+               }
             } while (true);
         }
     }

@@ -1,3 +1,5 @@
+package controller;
+
 import automat.*;
 import controller.*;
 import org.junit.jupiter.api.BeforeEach;

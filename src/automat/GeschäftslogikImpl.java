@@ -125,25 +125,27 @@ public class GeschäftslogikImpl implements Subjekt {
 
     public void löscheKuchen(int position) {
         this.fachnummer--;
-        Automatenobjekt kuchen = this.list[fachnummer];
-        Automatenobjekt remKuchen = this.list[position];
-        Hersteller h = this.checkHersteller(remKuchen.getHersteller());
-        int anzahl = this.herstellerverwaltung.get(h);
-        anzahl--;
-        this.herstellerverwaltung.put(remKuchen.getHersteller(), anzahl);
-        if (position == this.fachnummer) {
-            this.list[position] = null;
-            this.fachnummerverwaltung.remove(remKuchen);
+        if (position <= this.fachnummer) {
+            Automatenobjekt kuchen = this.list[fachnummer];
+            Automatenobjekt remKuchen = this.list[position];
+            Hersteller h = this.checkHersteller(remKuchen.getHersteller());
+            int anzahl = this.herstellerverwaltung.get(h);
+            anzahl--;
+            this.herstellerverwaltung.put(remKuchen.getHersteller(), anzahl);
+            if (position == this.fachnummer) {
+                this.list[position] = null;
+                this.fachnummerverwaltung.remove(remKuchen);
 
-        } else {
-            this.list[position] = this.list[this.fachnummer];
-            this.fachnummerverwaltung.put(kuchen, position);
-            this.fachnummerverwaltung.remove(remKuchen);
-            this.list[this.fachnummer] = null;
-            kuchen.callForFachnummer(kuchen);
+            } else {
+                this.list[position] = this.list[this.fachnummer];
+                this.fachnummerverwaltung.put(kuchen, position);
+                this.fachnummerverwaltung.remove(remKuchen);
+                this.list[this.fachnummer] = null;
+                kuchen.callForFachnummer(kuchen);
+            }
+            this.updateAllergens();
+            this.benachrichtige();
         }
-        this.updateAllergens();
-        this.benachrichtige();
     }
 
     public int getFachnummerForObject(Object kuchen) {

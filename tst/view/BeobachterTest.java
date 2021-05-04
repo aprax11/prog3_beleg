@@ -6,6 +6,7 @@ import automat.Hersteller;
 import automat.HerstellerImpl;
 import automat.GeschäftslogikImpl;
 import org.junit.jupiter.api.Test;
+import org.mockito.InOrder;
 
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -28,7 +29,7 @@ public class BeobachterTest {
 
         gl.addHersteller(hersteller);
         gl.addKuchen("Kremkuchen", "krem", hersteller, allergens, 123, duration, "obst", preis);
-        verify(view).printBeobachterBenachrichtigung("allergen hinzugefügt [Gluten]");
+        verify(view).printBeobachterBenachrichtigung("allergen(e) hinzugefügt [Gluten]");
     }
 /*
     @Test
@@ -68,7 +69,10 @@ public class BeobachterTest {
         gl.addHersteller(hersteller);
         gl.addKuchen("Kremkuchen", "krem", hersteller, allergens, 123, duration, "obst", preis);
         gl.löscheKuchen(0);
-        verify(view).printBeobachterBenachrichtigung("allergen entfernt [Gluten]");
+
+        InOrder inOrder = inOrder(view);
+        inOrder.verify(view).printBeobachterBenachrichtigung("allergen(e) hinzugefügt [Gluten]");
+        inOrder.verify(view).printBeobachterBenachrichtigung("allergen(e) entfernt [Gluten]");
     }
 
 }
