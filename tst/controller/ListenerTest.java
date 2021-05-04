@@ -14,7 +14,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class EventTest {
+public class ListenerTest {
     private GeschäftslogikImpl gl;
     @BeforeEach
     public void set() {
@@ -27,7 +27,7 @@ public class EventTest {
 
 
     @Test
-    public void addHerstellerEventTest() {
+    public void addHerstellerListenerTest() {
         AddHerstellerEventHandler handler = new AddHerstellerEventHandler();
         AddHerstellerEventListener listener = new AddHerstellerEventListnerImpl(gl);
         Hersteller hersteller = new HerstellerImpl("Paul");
@@ -41,7 +41,7 @@ public class EventTest {
         }
     }
     @Test
-    public void addKuchenEventTest() {
+    public void addKuchenListenerTest() {
         AddHerstellerEventHandler handler = new AddHerstellerEventHandler();
         AddHerstellerEventListener listener = new AddHerstellerEventListnerImpl(gl);
         Hersteller hersteller = new HerstellerImpl("Paul");
@@ -68,7 +68,7 @@ public class EventTest {
         assertEquals(KremkuchenImpl.class, res[0].getClass());
     }
     @Test
-    public void deleteKuchenEventTest() {
+    public void deleteKuchenListenerTest() {
         // Add Hersteller things
         AddHerstellerEventHandler handler = new AddHerstellerEventHandler();
         AddHerstellerEventListener listener = new AddHerstellerEventListnerImpl(gl);
