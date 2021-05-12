@@ -16,7 +16,6 @@ public class KuchenLöschenRunner implements Runnable {
     public void run() {
         while (true) {
             this.list = this.gl.listKuchen(null);
-            System.out.println(this.list.length);
             int pos = (int) (Math.random() * this.list.length);
             try {
                 this.gl.löscheKuchen(pos);
