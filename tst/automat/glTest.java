@@ -46,7 +46,7 @@ public class glTest {
         assertTrue(resHersteller.containsKey(hersteller));
     }
     @Test
-    public void mockitoAddObsttorteNoHerstellerTest() {
+    public void mockitoAddObsttorteNoHerstellerTest() throws InterruptedException {
         this.gl.addHersteller(HERSTELLER);
         Hersteller mock = mock(HerstellerImpl.class);
         assertFalse(this.gl.addKuchen("Obsttorte", KREMSORTE, mock, allergens, NÄHRWERT, DURATION, "apfel", PREIS));
@@ -55,21 +55,21 @@ public class glTest {
     }
 
     @Test
-    public void addObsttorteTest() {
+    public void addObsttorteTest() throws InterruptedException {
         this.gl.addHersteller(HERSTELLER);
         assertTrue(this.gl.addKuchen("Obsttorte", KREMSORTE, HERSTELLER, allergens, NÄHRWERT, DURATION, "apfel", PREIS));
         Automatenobjekt[] res = this.gl.listKuchen(null);
         assertNotNull(res[0]);
     }
     @Test
-    public void checkDateTest() {
+    public void checkDateTest() throws InterruptedException {
         this.gl.addHersteller(HERSTELLER);
         assertTrue(this.gl.addKuchen("Obsttorte", KREMSORTE, HERSTELLER, allergens, NÄHRWERT, DURATION, "apfel", PREIS));
         Automatenobjekt[] res = this.gl.listKuchen(null);
         assertNotNull(res[0].getInspektionsdatum());
     }
     @Test
-    public void checkFachnummerTest() {
+    public void checkFachnummerTest() throws InterruptedException {
         this.gl.addHersteller(HERSTELLER);
         assertTrue(this.gl.addKuchen("Obsttorte", KREMSORTE, HERSTELLER, allergens, NÄHRWERT, DURATION, "apfel", PREIS));
         Automatenobjekt[] res = this.gl.listKuchen(null);
@@ -77,7 +77,7 @@ public class glTest {
     }
 
     @Test
-    public void listKuchenTest() {
+    public void listKuchenTest() throws InterruptedException {
         if(this.gl.addHersteller(HERSTELLER)) {
             this.gl.addKuchen("Kremkuchen",KREMSORTE, HERSTELLER, allergens, NÄHRWERT, DURATION,"", PREIS);
             this.gl.addKuchen("Obstkuchen","",HERSTELLER, allergens, NÄHRWERT, DURATION, "apfel", PREIS);
@@ -90,7 +90,7 @@ public class glTest {
         assertEquals(ObsttorteImpl.class, res[2].getClass());
     }
     @Test
-    public void addKuchentypencheckFachnummerTest() {
+    public void addKuchentypencheckFachnummerTest() throws InterruptedException {
         if(this.gl.addHersteller(HERSTELLER)) {
             this.gl.addKuchen("Kremkuchen",KREMSORTE, HERSTELLER, allergens, NÄHRWERT, DURATION,"", PREIS);
             this.gl.addKuchen("Obstkuchen","",HERSTELLER, allergens, NÄHRWERT, DURATION, "apfel", PREIS);
@@ -103,7 +103,7 @@ public class glTest {
 
     }
     @Test
-    public void listKremkuchenTest() {
+    public void listKremkuchenTest() throws InterruptedException {
         if(this.gl.addHersteller(HERSTELLER)) {
             this.gl.addKuchen("Kremkuchen",KREMSORTE, HERSTELLER, allergens, NÄHRWERT, DURATION,"", PREIS);
             this.gl.addKuchen("Kremkuchen",KREMSORTE, HERSTELLER, allergens, NÄHRWERT, DURATION,"", PREIS);
@@ -115,7 +115,7 @@ public class glTest {
         assertEquals(KremkuchenImpl.class, res[1].getClass());
     }
     @Test
-    public void listEinKremkuchenTest() {
+    public void listEinKremkuchenTest() throws InterruptedException {
         if(this.gl.addHersteller(HERSTELLER)) {
             this.gl.addKuchen("Kremkuchen",KREMSORTE, HERSTELLER, allergens, NÄHRWERT, DURATION,"", PREIS);
         }
@@ -124,7 +124,7 @@ public class glTest {
         assertEquals(KremkuchenImpl.class, res[0].getClass());
     }
     @Test
-    public void listHerstellerTest() {
+    public void listHerstellerTest() throws InterruptedException {
         if(this.gl.addHersteller(HERSTELLER)) {
             this.gl.addKuchen("Kremkuchen",KREMSORTE, HERSTELLER, allergens, NÄHRWERT, DURATION,"", PREIS);
             this.gl.addKuchen("Kremkuchen",KREMSORTE, HERSTELLER, allergens, NÄHRWERT, DURATION,"", PREIS);
@@ -135,7 +135,7 @@ public class glTest {
         assertEquals(3, res.get(HERSTELLER));
     }
     @Test
-    public void listAllergensTest() {
+    public void listAllergensTest() throws InterruptedException {
         if(this.gl.addHersteller(HERSTELLER)) {
             this.gl.addKuchen("Kremkuchen",KREMSORTE, HERSTELLER, allergens, NÄHRWERT, DURATION,"", PREIS);
             this.gl.addKuchen("Kremkuchen",KREMSORTE, HERSTELLER, allergens, NÄHRWERT, DURATION,"", PREIS);
@@ -152,7 +152,7 @@ public class glTest {
     }
 
     @Test
-    public void updateAllergensTest() {
+    public void updateAllergensTest() throws InterruptedException {
         if(this.gl.addHersteller(HERSTELLER)) {
             Collection<Allergen> update = new ArrayList<>();
             update.add(Allergen.Haselnuss);
@@ -186,7 +186,7 @@ public class glTest {
 
      */
     @Test
-    public void löscheErstenTest() {
+    public void löscheErstenTest() throws InterruptedException {
         if(this.gl.addHersteller(HERSTELLER)) {
             this.gl.addKuchen("Kremkuchen",KREMSORTE, HERSTELLER, allergens, NÄHRWERT, DURATION,"", PREIS);
         }
@@ -195,7 +195,7 @@ public class glTest {
         assertEquals(0, res.length);
     }
     @Test
-    public void löscheKremkuchenTest() {
+    public void löscheKremkuchenTest() throws InterruptedException {
         if(this.gl.addHersteller(HERSTELLER)) {
             this.gl.addKuchen("Kremkuchen",KREMSORTE, HERSTELLER, allergens, NÄHRWERT, DURATION,"", PREIS);
             this.gl.addKuchen("Kremkuchen",KREMSORTE, HERSTELLER, allergens, NÄHRWERT, DURATION,"", PREIS);
@@ -209,7 +209,7 @@ public class glTest {
         assertEquals(ObsttorteImpl.class, res[1].getClass());
     }
     @Test
-    public void löscheLetztenTest() {
+    public void löscheLetztenTest() throws InterruptedException {
         if(this.gl.addHersteller(HERSTELLER)) {
             this.gl.addKuchen("Kremkuchen",KREMSORTE, HERSTELLER, allergens, NÄHRWERT, DURATION,"", PREIS);
             this.gl.addKuchen("Kremkuchen",KREMSORTE, HERSTELLER, allergens, NÄHRWERT, DURATION,"", PREIS);
@@ -221,7 +221,7 @@ public class glTest {
         assertEquals(KremkuchenImpl.class, res[1].getClass());
     }
     @Test
-    public void deleteHerstellerrTest() {
+    public void deleteHerstellerrTest() throws InterruptedException {
         this.gl.addHersteller(HERSTELLER);
         this.gl.addKuchen("Obsttorte", KREMSORTE, HERSTELLER, allergens, NÄHRWERT, DURATION, "apfel", PREIS);
         this.gl.löscheHersteller(HERSTELLER);

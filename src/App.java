@@ -1,9 +1,10 @@
-package automat;
-
+import automat.GeschäftslogikImpl;
 import beobachterMusterInterfaces.Beobachter;
 import controller.*;
 import handler.*;
 import view.AllergenBeobachter;
+import view.ReceiveKuchenListEventListener;
+import view.ReceiveKuchenListEventListnenerImpl;
 import view.ViewClass;
 
 public class App {

@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 public class BeobachterTest {
 
     @Test
-    public void allergenAddBeobachterTest() throws IOException {
+    public void allergenAddBeobachterTest() throws IOException, InterruptedException {
         GeschäftslogikImpl gl = new GeschäftslogikImpl(3);
         Hersteller hersteller = new HerstellerImpl("paul");
         Beobachter beobachter = new AllergenBeobachter(gl);
@@ -63,7 +63,7 @@ public class BeobachterTest {
 
 
     @Test
-    public void allergenRemoveBeobachterTest() throws IOException {
+    public void allergenRemoveBeobachterTest() throws IOException, InterruptedException {
         GeschäftslogikImpl gl = new GeschäftslogikImpl(3);
         Hersteller hersteller = new HerstellerImpl("paul");
         Beobachter beobachter = new AllergenBeobachter(gl);

@@ -1,7 +1,6 @@
-package controller;
+package view;
 
 import events.ReceiveKuchenListEvent;
-import view.ViewClass;
 
 public class ReceiveKuchenListEventListnenerImpl implements ReceiveKuchenListEventListener{
     private ViewClass view;

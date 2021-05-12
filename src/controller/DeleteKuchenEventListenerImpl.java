@@ -13,6 +13,10 @@ public class DeleteKuchenEventListenerImpl implements DeleteKuchenEventListener{
 
     @Override
     public void onDeleteKuchenEvent(DeleteKuchenEvent event) {
-        this.gl.löscheKuchen(event.getPosition());
+        try {
+            this.gl.löscheKuchen(event.getPosition());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,6 +1,6 @@
 package handler;
 
-import controller.ReceiveKuchenListEventListener;
+import view.ReceiveKuchenListEventListener;
 import events.ReceiveKuchenListEvent;
 
 import java.util.ArrayList;
