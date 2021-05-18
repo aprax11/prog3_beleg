@@ -11,9 +11,7 @@ public class Sim2 {
     public static void main(String[] args) {
         GeschäftslogikImpl gl = new GeschäftslogikImpl(4);
         Beobachter dateBeobachter = new InspektionsdatumBeobachter(gl);
-        gl.meldeAn(dateBeobachter);
         Beobachter einfügeBeobachter = new KuchenHinzufügenBeobachter(gl);
-        gl.meldeAn(einfügeBeobachter);
         SimLogic sim = new SimLogic(gl);
 
         Sim2EinfügeRunner einfügen = new Sim2EinfügeRunner(sim);

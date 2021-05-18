@@ -1,11 +1,8 @@
 package sim;
 import automat.*;
-import handler.ReceiveKuchenListEventHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.Mockito;
 
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -15,30 +12,33 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class SimLogicTest {
-    private static final GeschäftslogikImpl MOCKGL = mock(GeschäftslogikImpl.class);
-    private static final SimLogic SIM = new SimLogic(MOCKGL);
+    private GeschäftslogikImpl mockGL;
+    private  SimLogic sIM;
     private static final ObsttorteImpl OBSTTORTE = mock(ObsttorteImpl.class);
     private static final KremkuchenImpl KREMKUCHEN = mock(KremkuchenImpl.class);
     private static final ObstkuchenImpl OBSTKUCHEN = mock(ObstkuchenImpl.class);
 
-
-    @Captor
-    ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
+    @BeforeEach
+    public void start() {
+        this.mockGL = mock(GeschäftslogikImpl.class);
+        this.sIM = new SimLogic(mockGL);
+    }
 
     @Test
     public void addRandomKuchenTest() throws InterruptedException {
-        SIM.addRandomKuchen();
-        verify(MOCKGL).addKuchen(anyString(), anyString(), any(HerstellerImpl.class), anyCollection(), anyInt(), any(Duration.class), anyString(), any(BigDecimal.class));
+        this.sIM.addRandomKuchen();
+        verify(this.mockGL).addKuchen(anyString(), anyString(), any(HerstellerImpl.class), anyCollection(), anyInt(), any(Duration.class), anyString(), any(BigDecimal.class));
     }
 
     @Test
     public void removeRandomKuchenTest() throws InterruptedException {
+        ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
         Automatenobjekt[] list = {KREMKUCHEN, OBSTKUCHEN, OBSTTORTE};
 
-        when(MOCKGL.listKuchen(null)).thenReturn(list);
-        SIM.removeRandomKuchen();
+        when(this.mockGL.listKuchen(null)).thenReturn(list);
+        this.sIM.removeRandomKuchen();
 
-        verify(MOCKGL).löscheKuchen(captor.capture());
+        verify(this.mockGL).löscheKuchen(captor.capture());
         int val = captor.getValue();
         switch(val) {
             case 0:
@@ -49,5 +49,62 @@ public class SimLogicTest {
             default:
                 fail();
         }
+    }
+    @Test
+    public void updateRandomKuchenTest() {
+        ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
+        Automatenobjekt[] list = {KREMKUCHEN, OBSTKUCHEN, OBSTTORTE};
+        when(this.mockGL.listKuchen(null)).thenReturn(list);
+        this.sIM.updateRandomKuchen();
+
+        verify(this.mockGL).setInspektionsdatum(captor.capture());
+        int val = captor.getValue();
+        switch(val) {
+            case 0:
+            case 1:
+            case 2:
+                assertTrue(true);
+                break;
+            default:
+                fail();
+        }
+    }
+    @Test
+    public void löscheÄltestenTest() throws InterruptedException {
+
+        Automatenobjekt[] list = {KREMKUCHEN, OBSTKUCHEN, OBSTTORTE};
+        when(this.mockGL.listKuchen(null)).thenReturn(list);
+        Date d = new Date(2, 1, 1, 1, 1);
+
+        when(KREMKUCHEN.getInspektionsdatum()).thenReturn(new Date());
+        when(OBSTKUCHEN.getInspektionsdatum()).thenReturn(new Date());
+        when(OBSTTORTE.getInspektionsdatum()).thenReturn(d);
+        when(mockGL.getListGröße()).thenReturn(3);
+        when(mockGL.getFachnummer()).thenReturn(3);
+        when(KREMKUCHEN.getFachnummer()).thenReturn(0);
+        when(OBSTKUCHEN.getFachnummer()).thenReturn(1);
+        when(OBSTTORTE.getFachnummer()).thenReturn(2);
+        this.sIM.löscheÄltesten();
+
+        verify(this.mockGL).löscheKuchen(2);
+    }
+    @Test
+    public void deleteSim3Test() throws InterruptedException {
+
+        Automatenobjekt[] list = {KREMKUCHEN, OBSTKUCHEN, OBSTTORTE};
+        when(this.mockGL.listKuchen(null)).thenReturn(list);
+        Date d = new Date(2, 1, 1, 1, 1);
+
+        when(KREMKUCHEN.getInspektionsdatum()).thenReturn(new Date());
+        when(OBSTKUCHEN.getInspektionsdatum()).thenReturn(d);
+        when(OBSTTORTE.getInspektionsdatum()).thenReturn(d);
+        when(mockGL.getListGröße()).thenReturn(3);
+        when(mockGL.getFachnummer()).thenReturn(3);
+        when(KREMKUCHEN.getFachnummer()).thenReturn(0);
+        when(OBSTKUCHEN.getFachnummer()).thenReturn(1);
+        when(OBSTTORTE.getFachnummer()).thenReturn(2);
+        this.sIM.deleteSim3();
+
+        verify(mockGL, atMost(2)).löscheKuchen(anyInt());
     }
 }

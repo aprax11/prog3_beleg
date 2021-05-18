@@ -5,7 +5,7 @@ import sim.KuchenLöschenRunner;
 import sim.SimLogic;
 import view.KuchenHinzufügenBeobachter;
 
-public class Simulation1 {
+public class Sim1 {
     public static void main(String[] args) {
         GeschäftslogikImpl gl = new GeschäftslogikImpl(4);
         Beobachter beobachter = new KuchenHinzufügenBeobachter(gl);

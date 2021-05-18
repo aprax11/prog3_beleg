@@ -14,7 +14,6 @@ public class App {
         GeschäftslogikImpl gl = new GeschäftslogikImpl(3);
         ViewClass view = new ViewClass();
         Beobachter allergenBeobachter = new AllergenBeobachter(gl);
-        gl.meldeAn(allergenBeobachter);
 
         AddHerstellerEventHandler addHerstellerEventHandler = new AddHerstellerEventHandler();
         AddHerstellerEventListener addHerstellerEventListener = new AddHerstellerEventListnerImpl(gl);

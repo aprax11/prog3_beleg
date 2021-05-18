@@ -4,10 +4,8 @@ import automat.*;
 
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class SimLogic {
     private GeschäftslogikImpl gl;
@@ -55,6 +53,7 @@ public class SimLogic {
 
     public synchronized void löscheÄltesten() throws InterruptedException {
         while(!this.isFull()) wait();
+        if (!this.isFull()) throw new IllegalStateException();
         Automatenobjekt obj = this.getOldest(this.gl.listKuchen(null));
         this.gl.löscheKuchen(obj.getFachnummer());
         System.out.println("Kuchen gelöscht");
@@ -62,11 +61,29 @@ public class SimLogic {
     }
     public synchronized void einfügenSim2() throws InterruptedException {
         while(this.isFull()) wait();
+        if (this.isFull()) throw new IllegalStateException();
         this.addRandomKuchen();
         notifyAll();
     }
+    public synchronized void deleteSim3() throws InterruptedException {
+        while (!this.isFull()) wait();
+        if (!this.isFull()) throw new IllegalStateException();
+        List<Automatenobjekt> list = this.getOldestList(this.gl.listKuchen(null));
+        int randomNum = 0;
+        if(list.size() == 1) {
+            randomNum = (int) (Math.random()*2);
+        }else if(list.size() > 1) {
+            randomNum = (int) (Math.random()*list.size());
+        }
+        for (int i = 0; i < randomNum; i++) {
+            this.gl.löscheKuchen(i);
+            System.out.println("kuchen gelöscht");
+        }
 
-    private Automatenobjekt getOldest(Automatenobjekt[] list) {
+        notifyAll();
+    }
+
+    private synchronized Automatenobjekt getOldest(Automatenobjekt[] list) {
         Automatenobjekt oldest = list[0];
         for(Automatenobjekt a : list) {
             if(a.getInspektionsdatum().before(oldest.getInspektionsdatum())) {
@@ -74,6 +91,21 @@ public class SimLogic {
             }
         }
         return oldest;
+    }
+    private synchronized List<Automatenobjekt> getOldestList(Automatenobjekt[] got) {
+        Date date = got[0].getInspektionsdatum();
+        List<Automatenobjekt> list = new ArrayList<>();
+        for(Automatenobjekt a : got) {
+            if(a.getInspektionsdatum().compareTo(date) < 0) {
+                date = a.getInspektionsdatum();
+            }
+        }
+        for(Automatenobjekt a : got) {
+            if(a.getInspektionsdatum().compareTo(date) == 0) {
+                list.add(a);
+            }
+        }
+       return list;
     }
     private boolean isFull() {
         if(this.gl.getFachnummer() == this.gl.getListGröße()) {
