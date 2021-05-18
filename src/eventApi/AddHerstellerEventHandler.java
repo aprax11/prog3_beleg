@@ -1,7 +1,4 @@
-package handler;
-
-import controller.AddHerstellerEventListener;
-import events.AddHerstellerEvent;
+package eventApi;
 
 import java.util.ArrayList;
 import java.util.List;

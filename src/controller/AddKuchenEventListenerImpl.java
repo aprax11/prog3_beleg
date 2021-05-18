@@ -1,9 +1,10 @@
 package controller;
 
 import automat.GeschäftslogikImpl;
-import events.AddKuchenEvent;
+import eventApi.AddKuchenEvent;
+import eventApi.AddKuchenEventListener;
 
-public class AddKuchenEventListenerImpl implements AddKuchenEventListener{
+public class AddKuchenEventListenerImpl implements AddKuchenEventListener {
     private GeschäftslogikImpl gl;
 
     public AddKuchenEventListenerImpl(GeschäftslogikImpl gl) {

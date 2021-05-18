@@ -1,14 +1,14 @@
 package controller;
 
 import automat.*;
-import events.AddHerstellerEvent;
-import events.AddKuchenEvent;
-import events.DeleteKuchenEvent;
-import events.GetKuchenListEvent;
-import handler.AddHerstellerEventHandler;
-import handler.AddKuchenEventHandler;
-import handler.DeleteKuchenEventHandler;
-import handler.GetKuchenListEventHandler;
+import eventApi.AddHerstellerEvent;
+import eventApi.AddKuchenEvent;
+import eventApi.DeleteKuchenEvent;
+import eventApi.GetKuchenListEvent;
+import eventApi.AddHerstellerEventHandler;
+import eventApi.AddKuchenEventHandler;
+import eventApi.DeleteKuchenEventHandler;
+import eventApi.GetKuchenListEventHandler;
 
 import java.math.BigDecimal;
 import java.time.Duration;

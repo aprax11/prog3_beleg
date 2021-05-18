@@ -1,6 +1,4 @@
-package controller;
-
-import events.AddHerstellerEvent;
+package eventApi;
 
 import java.util.EventListener;
 

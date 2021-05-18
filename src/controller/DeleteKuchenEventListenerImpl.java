@@ -1,9 +1,10 @@
 package controller;
 
 import automat.GeschäftslogikImpl;
-import events.DeleteKuchenEvent;
+import eventApi.DeleteKuchenEvent;
+import eventApi.DeleteKuchenEventListener;
 
-public class DeleteKuchenEventListenerImpl implements DeleteKuchenEventListener{
+public class DeleteKuchenEventListenerImpl implements DeleteKuchenEventListener {
 
     private GeschäftslogikImpl gl;
 

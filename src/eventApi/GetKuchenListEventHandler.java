@@ -1,7 +1,4 @@
-package handler;
-
-import controller.GetKuchenListEventListener;
-import events.GetKuchenListEvent;
+package eventApi;
 
 import java.util.ArrayList;
 import java.util.List;

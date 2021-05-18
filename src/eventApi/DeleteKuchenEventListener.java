@@ -1,6 +1,4 @@
-package controller;
-
-import events.DeleteKuchenEvent;
+package eventApi;
 
 import java.util.EventListener;
 

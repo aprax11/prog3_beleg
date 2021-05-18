@@ -1,6 +1,6 @@
-package view;
+package eventApi;
 
-import events.ReceiveKuchenListEvent;
+import eventApi.ReceiveKuchenListEvent;
 
 import java.util.EventListener;
 

@@ -1,8 +1,9 @@
 package view;
 
-import events.ReceiveKuchenListEvent;
+import eventApi.ReceiveKuchenListEvent;
+import eventApi.ReceiveKuchenListEventListener;
 
-public class ReceiveKuchenListEventListnenerImpl implements ReceiveKuchenListEventListener{
+public class ReceiveKuchenListEventListnenerImpl implements ReceiveKuchenListEventListener {
     private ViewClass view;
 
     public ReceiveKuchenListEventListnenerImpl(ViewClass view) {
