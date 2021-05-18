@@ -10,16 +10,18 @@ public class KuchenHinzufügenBeobachter implements Beobachter {
     public KuchenHinzufügenBeobachter(GeschäftslogikImpl gl) {
         this.gl = gl;
         this.gl.meldeAn(this);
-        this.oldState = this.gl.getFachnummer();
+        this.oldState = this.gl.listKuchen(null).length;
     }
 
     @Override
     public void aktualisiere() {
-        int newState = this.gl.getFachnummer();
+        int newState = this.gl.listKuchen(null).length;
         if(this.oldState > newState) {
             System.out.println("Kuchen wurde entfernt");
+            this.oldState = newState;
         }else  if(this.oldState < newState) {
             System.out.println("Kuchen wurde hinzugefügt");
+            this.oldState = newState;
         }
     }
 }

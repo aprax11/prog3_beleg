@@ -118,9 +118,12 @@ public class GeschäftslogikImpl implements Subjekt {
         return copyArray;
     }
 
-    public void setInspektionsdatum(int position) {
-        Automatenobjekt kuchen = this.list[position];
-        kuchen.callForInspektionsdatum();
+    public synchronized void setInspektionsdatum(int position) {
+        if(this.list[position] != null && position <= this.listGröße) {
+            Automatenobjekt kuchen = this.list[position];
+            kuchen.callForInspektionsdatum();
+            this.benachrichtige();
+        }
     }
     public Date returnDate() {
         Date inspektionsDate = new Date();
@@ -149,9 +152,8 @@ public class GeschäftslogikImpl implements Subjekt {
                 this.list[this.fachnummer] = null;
                 kuchen.callForFachnummer(kuchen);
             }
-            this.benachrichtige();
         }
-
+        this.benachrichtige();
     }
 
     public int getFachnummerForObject(Object kuchen) {

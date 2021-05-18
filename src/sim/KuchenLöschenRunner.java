@@ -1,3 +1,5 @@
+package sim;
+
 import automat.Automatenobjekt;
 import automat.GeschäftslogikImpl;
 import automat.Verkaufsobjekt;
@@ -5,20 +7,17 @@ import automat.Verkaufsobjekt;
 import java.util.List;
 
 public class KuchenLöschenRunner implements Runnable {
-    private Automatenobjekt[] list;
-    private GeschäftslogikImpl gl;
+    private SimLogic sim;
 
-    public KuchenLöschenRunner(GeschäftslogikImpl gl) {
-        this.gl = gl;
+    public KuchenLöschenRunner(SimLogic sim) {
+        this.sim = sim;
     }
 
     @Override
     public void run() {
         while (true) {
-            this.list = this.gl.listKuchen(null);
-            int pos = (int) (Math.random() * this.list.length);
             try {
-                this.gl.löscheKuchen(pos);
+                this.sim.removeRandomKuchen();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
