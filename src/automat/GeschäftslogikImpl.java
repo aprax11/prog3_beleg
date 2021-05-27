@@ -30,7 +30,7 @@ public class GeschäftslogikImpl implements Subjekt {
         this.receiveKuchenListEventHandler = receiveKuchenListEventHandler;
     }
 
-    private Hersteller checkHersteller(Hersteller hersteller) {
+    private synchronized Hersteller checkHersteller(Hersteller hersteller) {
         for (Map.Entry<Hersteller, Integer> e : this.herstellerverwaltung.entrySet()){
             if(e.getKey().getName().equalsIgnoreCase(hersteller.getName())) {
                 return e.getKey();
@@ -120,7 +120,7 @@ public class GeschäftslogikImpl implements Subjekt {
             this.benachrichtige();
         }
     }
-    public Date returnDate() {
+    public synchronized Date returnDate() {
         Date inspektionsDate = new Date();
         return inspektionsDate;
     }
@@ -205,11 +205,11 @@ public class GeschäftslogikImpl implements Subjekt {
             b.aktualisiere();
         }
     }
-    public int getFachnummer() {
+    public synchronized int getFachnummer() {
         int ret = this.fachnummer;
         return ret;
     }
-    public int getListGröße() {
+    public synchronized int getListGröße() {
         int ret = this.listGröße;
         return ret;
     }

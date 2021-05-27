@@ -10,11 +10,11 @@ import java.util.concurrent.ThreadLocalRandom;
 public class SimLogic {
     private GeschäftslogikImpl gl;
     private Automatenobjekt[] list;
-    private Hersteller[] herstellers = {new HerstellerImpl("paul"), new HerstellerImpl("peter"), new HerstellerImpl("willi")};
-    private String[] kuchennamen = {"Obsttorte", "Kremkuchen", "Obstkuchen"};
-    private String[]kresorten = {"butter", "sahne", "schoko"};
-    private String[]obstsorten = {"erdbeere", "apfel", "birne"};
-    private EnumSet<Allergen> allergens = EnumSet.allOf(Allergen.class);
+    private final Hersteller[] herstellers = {new HerstellerImpl("paul"), new HerstellerImpl("peter"), new HerstellerImpl("willi")};
+    private final String[] kuchennamen = {"Obsttorte", "Kremkuchen", "Obstkuchen"};
+    private final String[]kresorten = {"butter", "sahne", "schoko"};
+    private final String[]obstsorten = {"erdbeere", "apfel", "birne"};
+    private final EnumSet<Allergen> allergens = EnumSet.allOf(Allergen.class);
 
     public SimLogic(GeschäftslogikImpl gl) {
         this.gl = gl;
@@ -36,7 +36,7 @@ public class SimLogic {
         int pos = (int)(Math.random()*coll.size());
 
         this.gl.addKuchen(name, krem, h, Collections.singleton(coll.get(pos)), nährwert, duration, obst, preis);
-        System.out.println("Kuchen wurde eingefügt");
+        System.out.println("Kuchen wurde eingefügt"); //+ thread name
     }
     public void removeRandomKuchen() throws InterruptedException {
         this.list = this.gl.listKuchen(null);
@@ -83,7 +83,7 @@ public class SimLogic {
         notifyAll();
     }
 
-    private synchronized Automatenobjekt getOldest(Automatenobjekt[] list) {
+    public synchronized Automatenobjekt getOldest(Automatenobjekt[] list) {
         Automatenobjekt oldest = list[0];
         for(Automatenobjekt a : list) {
             if(a.getInspektionsdatum().before(oldest.getInspektionsdatum())) {

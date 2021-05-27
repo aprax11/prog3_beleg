@@ -1,4 +1,2 @@
-bis einschließlich 20.
+bis einschließlich 8.
 
-Konsole funktioniert nach dem Belegschema, ich habe aber bis jetzt nur die Funktionalitäten, die 
-für die Übung relevant waren umgesetzt.

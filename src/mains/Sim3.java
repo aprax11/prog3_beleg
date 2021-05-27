@@ -1,3 +1,5 @@
+package mains;
+
 import automat.GeschäftslogikImpl;
 import beobachterMusterInterfaces.Beobachter;
 import sim.Sim3DeleteRunner;
@@ -18,6 +20,7 @@ public class Sim3 {
 
         Sim3DeleteRunner delete1 = new Sim3DeleteRunner(sim);
         Sim3DeleteRunner delete2 = new Sim3DeleteRunner(sim);
+
 
         new Thread(einfüger1).start();
         new Thread(einfüger2).start();

@@ -68,5 +68,10 @@ public class Automatenobjekt implements Verkaufsobjekt, Kuchen {
     public int getFachnummer() {
         return this.fachnummer;
     }
+
+    @Override
+    public String toString() {
+        return "FN: "+this.fachnummer+", "+"Inspektion: "+this.inspektionsDatum;
+    }
 }
 

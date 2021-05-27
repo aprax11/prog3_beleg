@@ -1,3 +1,5 @@
+package mains;
+
 import automat.GeschäftslogikImpl;
 import beobachterMusterInterfaces.Beobachter;
 import sim.EinfügeRunner;

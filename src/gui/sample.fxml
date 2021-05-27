@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.Controller">
+    <left>
+        <ListView fx:id="kuchenListView" prefHeight="400.0" prefWidth="247.0">
+
+        </ListView>
+    </left>
+   <center>
+      <TextField fx:id="positionField" onKeyReleased="#handleKeyReleased" prefHeight="25.0" prefWidth="60.0" BorderPane.alignment="CENTER" />
+   </center>
+   <top>
+      <Button fx:id="einfügeButton" mnemonicParsing="false" onAction="#onButtonClicked" text="Kuchen adden" BorderPane.alignment="CENTER" />
+   </top>
+   <right>
+      <Button fx:id="löschenButton" mnemonicParsing="false" text="Position löschen" BorderPane.alignment="CENTER"
+              onAction="#onButtonClicked"/>
+   </right>
+</BorderPane>
