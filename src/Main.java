@@ -1,5 +1,3 @@
-package gui;
-
 import automat.GeschäftslogikImpl;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +10,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/gui/sample.fxml"));
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 700, 700));
         primaryStage.show();
