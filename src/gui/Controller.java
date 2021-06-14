@@ -21,8 +21,7 @@ public class Controller {
     private static final Hersteller[] HERSTELLERS = {new HerstellerImpl("Paul"), new HerstellerImpl("Peter"), new HerstellerImpl("Hans")};
     private GeschäftslogikImpl gl;
     private List<Automatenobjekt> lsit = new ArrayList<>();
-//    @FXML
-//    private ListView kuchenListView;
+
     @FXML
     private TableView tableView;
     @FXML
@@ -61,10 +60,6 @@ public class Controller {
     private TextField obstsorte;
 
 
-
-
-
-
     @FXML
     public void initialize() {
         this.gl = new GeschäftslogikImpl(12);
@@ -80,8 +75,8 @@ public class Controller {
         herstellerColumn.setCellValueFactory(new PropertyValueFactory<>("hersteller"));
         TableColumn<ShowKuchen, Long> durationColumn = new TableColumn<>("Haltbarkeit");
         durationColumn.setCellValueFactory(new PropertyValueFactory<>("duration"));
-       TableColumn<ShowKuchen, LocalDate> inspectionColumn = new TableColumn<>("Inspektionsdatum");
-       inspectionColumn.setCellValueFactory(new PropertyValueFactory<>("inspektion"));
+        TableColumn<ShowKuchen, LocalDate> inspectionColumn = new TableColumn<>("Inspektionsdatum");
+        inspectionColumn.setCellValueFactory(new PropertyValueFactory<>("inspektion"));
         this.tableView.getColumns().add(fachnummerColumn);
         this.tableView.getColumns().add(herstellerColumn);
         this.tableView.getColumns().add(durationColumn);

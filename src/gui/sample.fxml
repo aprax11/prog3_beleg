@@ -5,7 +5,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.Controller">
     <left>
-        <TableView fx:id="tableView" prefHeight="400.0" prefWidth="247.0">
+        <TableView fx:id="tableView" prefHeight="400.0" prefWidth="340.0">
 
         </TableView>
     </left>
@@ -36,7 +36,7 @@
            <TextField fx:id="durationPicker" onKeyReleased="#handleKeyReleased" GridPane.rowIndex="7" promptText="Haltbarkeit in Tagen"/>
            <TextField fx:id="preis" onKeyReleased="#handleKeyReleased"  prefHeight="25.0" prefWidth="70.0" GridPane.columnIndex="1" GridPane.rowIndex="7" promptText="Preis"/>
            <Label GridPane.rowIndex="8" text="Kalorien:"/>
-           <Spinner fx:id="kalorien" GridPane.rowIndex="9" min="0" max="99999999999999" editable="true"/>
+           <Spinner fx:id="kalorien" GridPane.rowIndex="9" min="0" max="999999" editable="true"/>
            <TextField fx:id="kremsorte" GridPane.rowIndex="9" GridPane.columnIndex="1" promptText="Kremsorte(can be empty)"/>
            <TextField fx:id="obstsorte" GridPane.rowIndex="10" GridPane.columnIndex="0" promptText="obstsorte(can be empty)"/>
            <Button fx:id="einfügeButton" mnemonicParsing="false" onAction="#addeKuchen" text="Kuchen adden" BorderPane.alignment="CENTER" GridPane.rowIndex="11" />

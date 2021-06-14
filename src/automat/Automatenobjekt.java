@@ -30,6 +30,7 @@ public class Automatenobjekt implements Verkaufsobjekt, Kuchen {
     public void callForInspektionsdatum() {
         this.inspektionsDatum = this.gl.returnDate();
     }
+
     public void callForFachnummer(Object kuchen) {
         this.fachnummer = this.gl.getFachnummerForObject(kuchen);
     }
@@ -69,9 +70,5 @@ public class Automatenobjekt implements Verkaufsobjekt, Kuchen {
         return this.fachnummer;
     }
 
-    @Override
-    public String toString() {
-        return "FN: "+this.fachnummer+", "+"Inspektion: "+this.inspektionsDatum;
-    }
 }
 

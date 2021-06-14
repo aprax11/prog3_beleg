@@ -12,10 +12,5 @@ public class HerstellerImpl implements Hersteller{
     public String getName() {
         return this.hersteller;
     }
-
-    @Override
-    public String toString() {
-        return this.hersteller;
-    }
 }
 

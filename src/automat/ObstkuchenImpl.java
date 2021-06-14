@@ -10,7 +10,6 @@ public class ObstkuchenImpl extends Automatenobjekt implements Obstkuchen{
 
 
     public ObstkuchenImpl(Hersteller hersteller, Collection<Allergen> allergens, int nährwert, Duration haltbarkeit, String obstsorte, BigDecimal preis, Date inspektionsDatum, int fachnummer, GeschäftslogikImpl gl) {
-
         super(hersteller, allergens, nährwert, haltbarkeit, preis, inspektionsDatum, fachnummer, gl);
         this.obstsorte = obstsorte;
     }
