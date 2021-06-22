@@ -1,16 +1,9 @@
-package persistenz;
-
-import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+package automat;
 
 public class Beanitem {
-    private String kuchenart;
-    public String getKuchenart() {return kuchenart;}
-    public void setKuchenart(String kuchenart) {this.kuchenart = kuchenart;}
+    public String kuchenart;
+//    public String getKuchenart() {return kuchenart;}
+//    public void setKuchenart(String kuchenart) {this.kuchenart = kuchenart;}
 
     private String hersteller;
     public String getHersteller(){return hersteller;}
@@ -43,6 +36,8 @@ public class Beanitem {
     private String allergene;
     public String getAllergene(){return  allergene;}
     public void setAllergene(String aller) {this.allergene = aller;}
+
+    public String duration;
 
     public Beanitem reference;
 
