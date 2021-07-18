@@ -11,14 +11,21 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 class ObsttorteImplTest {
-    private static final ObsttorteImpl OBSTTORTE = new ObsttorteImpl("krem" ,mock(HerstellerImpl.class), EnumSet.allOf(Allergen.class), 450, Duration.ofDays(30), "obst", new BigDecimal(23), new Date(), 0, mock(GeschäftslogikImpl.class));
 
     @Test
     public void getKremsorte() {
-        assertEquals("krem", OBSTTORTE.getKremsorte());
+        ObsttorteImpl obsttorte = new ObsttorteImpl("krem" ,mock(HerstellerImpl.class), EnumSet.allOf(Allergen.class)
+                , 450, Duration.ofDays(30), "obst", new BigDecimal(23), new Date(), 0
+                , mock(GeschäftslogikImpl.class));
+
+        assertEquals("krem", obsttorte.getKremsorte());
     }
     @Test
     public void getObstsorte() {
-        assertEquals("obst", OBSTTORTE.getObstsorte());
+        ObsttorteImpl obsttorte = new ObsttorteImpl("krem" ,mock(HerstellerImpl.class), EnumSet.allOf(Allergen.class)
+                , 450, Duration.ofDays(30), "obst", new BigDecimal(23), new Date(), 0
+                , mock(GeschäftslogikImpl.class));
+
+        assertEquals("obst", obsttorte.getObstsorte());
     }
 }

@@ -18,7 +18,7 @@ public class AddHerstellerEventListnerImpl implements AddHerstellerEventListener
             this.gl.addHersteller(hersteller);
         }else if(!(event.getBool())) {
             try {
-                this.gl.löscheHersteller(event.getHerstellerName());
+                this.gl.löscheHersteller(event.getHerstellerName().getName());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

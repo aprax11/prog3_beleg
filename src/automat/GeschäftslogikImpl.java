@@ -128,7 +128,7 @@ public class GeschäftslogikImpl implements Subjekt {
 
 
     public synchronized void löscheKuchen(int position) throws InterruptedException {
-        if (position <= this.fachnummer && this.list[0] != null) {
+        if (position < this.fachnummer && this.list[0] != null) {
             this.fachnummer--;
             Automatenobjekt kuchen = this.list[fachnummer];
             Automatenobjekt remKuchen = this.list[position];
@@ -160,16 +160,18 @@ public class GeschäftslogikImpl implements Subjekt {
         copy.putAll(this.herstellerverwaltung);
         return copy;
     }
-    //TODO: das löschen verbessern
-    public synchronized void löscheHersteller(Hersteller hersteller) throws InterruptedException {
+
+    public synchronized void löscheHersteller(String hersteller) throws InterruptedException {
         for (int i = 0; i < this.fachnummer; i++) {
             Automatenobjekt ao = this.list[i];
-            if(ao.getHersteller().getName().equalsIgnoreCase(hersteller.getName())) {
+            if (ao.getHersteller().getName().equalsIgnoreCase(hersteller)) {
                 this.löscheKuchen(ao.getFachnummer());
             }
         }
-        this.herstellerverwaltung.remove(hersteller);
+        Hersteller hersteller1 = this.checkHersteller(new HerstellerImpl(hersteller));
+        this.herstellerverwaltung.remove(hersteller1);
     }
+
 
     public Set<Allergen> getAllergenList(boolean b) {
         HashSet<Allergen> copy;
