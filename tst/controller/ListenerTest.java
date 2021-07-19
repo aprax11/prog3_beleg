@@ -44,6 +44,25 @@ public class ListenerTest {
             assertTrue(e.getKey().getName().equalsIgnoreCase("paul"));
         }
     }
+
+    @Test
+    public void deleteHerstellerListenerTest() {
+        AddHerstellerEventHandler handler = new AddHerstellerEventHandler();
+        AddHerstellerEventListener listener = new AddHerstellerEventListnerImpl(gl);
+        Hersteller hersteller = new HerstellerImpl("Paul");
+        AddHerstellerEvent event = new AddHerstellerEvent(this, hersteller, true);
+
+        handler.add(listener);
+        handler.handle(event);
+        Map<Hersteller, Integer> res = gl.getHerstellerList();
+        for(Map.Entry<Hersteller, Integer> e : res.entrySet()) {
+            assertTrue(e.getKey().getName().equalsIgnoreCase("paul"));
+        }
+    }
+
+
+
+
     @Test
     public void addKuchenListenerTest() {
         AddHerstellerEventHandler handler = new AddHerstellerEventHandler();

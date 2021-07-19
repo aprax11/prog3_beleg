@@ -18,7 +18,7 @@ import java.util.HashSet;
 import java.util.Scanner;
 
 public class CliClass {
-    private String lastCommand;
+    private String lastCommand = ":c";
     private AddKuchenEventHandler kuchenEventHandler;
     private AddHerstellerEventHandler herstellerEventHandler;
     private DeleteKuchenEventHandler deleteKuchenEventHandler;
@@ -54,7 +54,7 @@ public class CliClass {
         }
         return true;
     }
-    private void handeln(String s1) {
+    public void handeln(String s1) {
         String[] parse = s1.split(" ");
         boolean korrektheit = true;
         String name = null;

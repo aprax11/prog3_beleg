@@ -38,6 +38,7 @@ public class BeobachterTest {
         assertEquals("allergen(e) hinzugefügt [Gluten]"+System.lineSeparator(), byteArrayOutputStream.toString());
         byteArrayOutputStream.close();
     }
+
     //TODO: verify besser formulieren
 /*
     @Test

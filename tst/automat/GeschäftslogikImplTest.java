@@ -13,7 +13,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class glTest {
+public class GeschäftslogikImplTest {
     private static final Duration DURATION = Duration.ofDays(1);
     private static final BigDecimal PREIS = new BigDecimal("12.2");
     private static final Hersteller HERSTELLER = new HerstellerImpl("Paul");
@@ -187,6 +187,28 @@ public class glTest {
         Automatenobjekt[] res = this.gl.listKuchen(null);
         assertNotNull(res[0].getInspektionsdatum());
     }
+
+    @Test
+    public void setInspektionsdatumTest() throws InterruptedException {
+        this.gl.addHersteller(HERSTELLER);
+        assertTrue(this.gl.addKuchen("Obsttorte", KREMSORTE, HERSTELLER, allergens, NÄHRWERT, DURATION, "apfel", PREIS));
+
+        this.gl.setInspektionsdatum(0);
+        Automatenobjekt[] res = this.gl.listKuchen(null);
+        assertNotNull(res[0].getInspektionsdatum());
+    }
+
+    @Test
+    public void setInspektionsdatumEmptyTest() throws InterruptedException {
+        this.gl.addHersteller(HERSTELLER);
+        assertTrue(this.gl.addKuchen("Obsttorte", KREMSORTE, HERSTELLER, allergens, NÄHRWERT, DURATION, "apfel", PREIS));
+
+        this.gl.setInspektionsdatum(2);
+        Automatenobjekt[] res = this.gl.listKuchen(null);
+        assertNotNull(res[0].getInspektionsdatum());
+    }
+
+
     @Test
     public void checkFachnummerTest() throws InterruptedException {
         this.gl.addHersteller(HERSTELLER);
@@ -413,6 +435,4 @@ public class glTest {
     public void getListGrößteTest() {
         assertEquals(3, this.gl.getListGröße());
     }
-
-
 }
