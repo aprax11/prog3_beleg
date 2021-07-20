@@ -14,8 +14,10 @@ public class Automatenobjekt implements Verkaufsobjekt, Kuchen {
     private Date inspektionsDatum;
     private int fachnummer;
     private final Duration haltbarkeit;
+    private final Date einfügeDatum;
 
-    public Automatenobjekt(Hersteller hersteller, Collection<Allergen> allergens, int nährwert, Duration haltbarkeit,  BigDecimal preis, Date inspektionsDatum, int fachnummer, GeschäftslogikImpl gl) {
+    public Automatenobjekt(Hersteller hersteller, Collection<Allergen> allergens, int nährwert, Duration haltbarkeit
+            ,  BigDecimal preis, Date inspektionsDatum, int fachnummer, Date einfügeDatum, GeschäftslogikImpl gl) {
 
         this.hersteller = hersteller;
         this.allergens = allergens;
@@ -25,6 +27,7 @@ public class Automatenobjekt implements Verkaufsobjekt, Kuchen {
         this.inspektionsDatum = inspektionsDatum;
         this.fachnummer = fachnummer;
         this.gl = gl;
+        this.einfügeDatum = einfügeDatum;
     }
 
     public void callForInspektionsdatum() {
@@ -33,6 +36,12 @@ public class Automatenobjekt implements Verkaufsobjekt, Kuchen {
 
     public void callForFachnummer(Object kuchen) {
         this.fachnummer = this.gl.getFachnummerForObject(kuchen);
+    }
+
+    public Duration getVerbleibendeHaltbarkeit() {
+        long diff = new Date().getTime() - einfügeDatum.getTime();
+        diff = (diff / (1000 * 60 * 60 * 24));
+        return this.haltbarkeit.minusDays(diff);
     }
 
     @Override

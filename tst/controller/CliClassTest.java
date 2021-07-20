@@ -58,4 +58,25 @@ class CliClassTest {
         assertFalse(event.getBool());
     }
 
+    @Test
+    public void zeigeHerstellerTest() {
+        final ArgumentCaptor<AddHerstellerEvent> eventArgumentCaptor = ArgumentCaptor.forClass(AddHerstellerEvent.class);
+        CliClass cli = new CliClass();
+        AddHerstellerEventHandler mockHandler = mock(AddHerstellerEventHandler.class);
+        cli.setHerstellerEventHandler(mockHandler);
+
+        final Field field;
+        try {
+            field = CliClass.class.getDeclaredField("lastCommand");
+            field.setAccessible(true);
+            field.set(cli, ":r");
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            fail();
+        }
+        cli.handeln("hersteller");
+        verify(mockHandler).handle(eventArgumentCaptor.capture());
+        AddHerstellerEvent event = eventArgumentCaptor.getValue();
+
+        assertTrue(event.getShow());
+    }
 }

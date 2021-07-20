@@ -37,6 +37,7 @@ public class BeobachterTest {
         gl.addKuchen("Kremkuchen", "krem", hersteller, allergens, 123, duration, "obst", preis);
         assertEquals("allergen(e) hinzugefügt [Gluten]"+System.lineSeparator(), byteArrayOutputStream.toString());
         byteArrayOutputStream.close();
+        System.setOut(System.out);
     }
 
     //TODO: verify besser formulieren
@@ -82,6 +83,7 @@ public class BeobachterTest {
         assertEquals("allergen(e) entfernt [Gluten]"+System.lineSeparator(), byteArrayOutputStream.toString());
 
         byteArrayOutputStream.close();
+        System.setOut(System.out);
     }
 
 

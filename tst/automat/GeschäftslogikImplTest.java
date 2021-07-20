@@ -134,6 +134,12 @@ public class GeschäftslogikImplTest {
         Automatenobjekt[] res = this.gl.listKuchen(null);
         assertEquals(ObsttorteImpl.class, res[0].getClass());
     }
+    @Test
+    public void addFakekuchenTest() throws InterruptedException {
+        this.gl.addHersteller(HERSTELLER);
+        assertFalse(this.gl.addKuchen("Fakekuchen", KREMSORTE, HERSTELLER, allergens, NÄHRWERT, DURATION, "apfel", PREIS));
+    }
+
 
     @Test
     public void addKremkuchenTest() throws InterruptedException {

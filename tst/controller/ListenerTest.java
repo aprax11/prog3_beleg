@@ -16,13 +16,14 @@ import java.util.HashSet;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 
 public class ListenerTest {
     private GeschäftslogikImpl gl;
     @BeforeEach
     public void set() {
-        this.gl = new GeschäftslogikImpl(1);
+        this.gl = new GeschäftslogikImpl(2);
 
         ReceiveKuchenListEventHandler receiveKuchenListEventHandler = new ReceiveKuchenListEventHandler();
         this.gl.setReceiveKuchenListEventHandler(receiveKuchenListEventHandler);
@@ -32,33 +33,59 @@ public class ListenerTest {
 
     @Test
     public void addHerstellerListenerTest() {
+        GeschäftslogikImpl mockGl = mock(GeschäftslogikImpl.class);
         AddHerstellerEventHandler handler = new AddHerstellerEventHandler();
-        AddHerstellerEventListener listener = new AddHerstellerEventListnerImpl(gl);
+        AddHerstellerEventListener listener = new AddHerstellerEventListnerImpl(mockGl);
         Hersteller hersteller = new HerstellerImpl("Paul");
-        AddHerstellerEvent event = new AddHerstellerEvent(this, hersteller, true);
+        AddHerstellerEvent event = new AddHerstellerEvent(this, hersteller, true, false);
 
         handler.add(listener);
         handler.handle(event);
-        Map<Hersteller, Integer> res = gl.getHerstellerList();
-        for(Map.Entry<Hersteller, Integer> e : res.entrySet()) {
-            assertTrue(e.getKey().getName().equalsIgnoreCase("paul"));
-        }
+        verify(mockGl).addHersteller(hersteller);
     }
 
     @Test
-    public void deleteHerstellerListenerTest() {
+    public void deleteHerstellerListenerTest() throws InterruptedException {
+        GeschäftslogikImpl mockGl = mock(GeschäftslogikImpl.class);
         AddHerstellerEventHandler handler = new AddHerstellerEventHandler();
-        AddHerstellerEventListener listener = new AddHerstellerEventListnerImpl(gl);
+        AddHerstellerEventListener listener = new AddHerstellerEventListnerImpl(mockGl);
         Hersteller hersteller = new HerstellerImpl("Paul");
-        AddHerstellerEvent event = new AddHerstellerEvent(this, hersteller, true);
+        AddHerstellerEvent event = new AddHerstellerEvent(this, hersteller, false, false);
 
         handler.add(listener);
         handler.handle(event);
-        Map<Hersteller, Integer> res = gl.getHerstellerList();
-        for(Map.Entry<Hersteller, Integer> e : res.entrySet()) {
-            assertTrue(e.getKey().getName().equalsIgnoreCase("paul"));
-        }
+        verify(mockGl).löscheHersteller(hersteller.getName());
     }
+
+    @Test
+    public void showHerstellerListenerTest() throws InterruptedException {
+        GeschäftslogikImpl mockGl = mock(GeschäftslogikImpl.class);
+        ReceiveHerstellerListEventHandler mockReceiveHandler = mock(ReceiveHerstellerListEventHandler.class);
+        AddHerstellerEventHandler handler = new AddHerstellerEventHandler();
+        AddHerstellerEventListnerImpl listener = new AddHerstellerEventListnerImpl(mockGl);
+        listener.setHandler(mockReceiveHandler);
+        AddHerstellerEvent event = new AddHerstellerEvent(this, null, false, true);
+
+        handler.add(listener);
+        handler.handle(event);
+
+        verify(mockGl).getHerstellerList();
+    }
+    @Test
+    public void showReceiveHerstellerListenerTest() throws InterruptedException {
+        GeschäftslogikImpl mockGl = mock(GeschäftslogikImpl.class);
+        ReceiveHerstellerListEventHandler mockReceiveHandler = mock(ReceiveHerstellerListEventHandler.class);
+        AddHerstellerEventHandler handler = new AddHerstellerEventHandler();
+        AddHerstellerEventListnerImpl listener = new AddHerstellerEventListnerImpl(mockGl);
+        listener.setHandler(mockReceiveHandler);
+        AddHerstellerEvent event = new AddHerstellerEvent(this, null, false, true);
+
+        handler.add(listener);
+        handler.handle(event);
+
+        verify(mockReceiveHandler).handle(any(ReceiveHerstellerListEvent.class));
+    }
+
 
 
 
@@ -68,7 +95,7 @@ public class ListenerTest {
         AddHerstellerEventHandler handler = new AddHerstellerEventHandler();
         AddHerstellerEventListener listener = new AddHerstellerEventListnerImpl(gl);
         Hersteller hersteller = new HerstellerImpl("Paul");
-        AddHerstellerEvent event = new AddHerstellerEvent(this, hersteller, true);
+        AddHerstellerEvent event = new AddHerstellerEvent(this, hersteller, true, false);
 
         handler.add(listener);
         handler.handle(event);
@@ -96,7 +123,7 @@ public class ListenerTest {
         AddHerstellerEventHandler handler = new AddHerstellerEventHandler();
         AddHerstellerEventListener listener = new AddHerstellerEventListnerImpl(gl);
         Hersteller hersteller = new HerstellerImpl("Paul");
-        AddHerstellerEvent event = new AddHerstellerEvent(this, hersteller, true);
+        AddHerstellerEvent event = new AddHerstellerEvent(this, hersteller, true, false);
 
         handler.add(listener);
         handler.handle(event);
@@ -118,7 +145,7 @@ public class ListenerTest {
         //establish delete things
         DeleteKuchenEventHandler deleteHandler = new DeleteKuchenEventHandler();
         DeleteKuchenEventListener deleteListener = new DeleteKuchenEventListenerImpl(this.gl);
-        DeleteKuchenEvent deleteEvent = new DeleteKuchenEvent(this, 0);
+        DeleteKuchenEvent deleteEvent = new DeleteKuchenEvent(this, 0, false);
         deleteHandler.add(deleteListener);
         deleteHandler.handle(deleteEvent);
 

@@ -19,7 +19,7 @@ class KremkuchenImplTest {
     @Test
     public void getKremsorte() {
         KremkuchenImpl kremkuchen = new KremkuchenImpl("krem" ,MOCKHERSTELER, EnumSet.allOf(Allergen.class)
-                , 450, Duration.ofDays(30), new BigDecimal(23), MOCKDATE, 0, MOCKGESCHAÄFTSLOGIK);
+                , 450, Duration.ofDays(30), new BigDecimal(23), MOCKDATE, 0,new Date(), MOCKGESCHAÄFTSLOGIK);
         assertEquals("krem", kremkuchen.getKremsorte());
     }
 

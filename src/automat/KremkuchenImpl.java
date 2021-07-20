@@ -9,8 +9,9 @@ public class KremkuchenImpl extends Automatenobjekt implements Kremkuchen {
     private final String kremsorte;
 
 
-    public KremkuchenImpl(String kremsorte, Hersteller hersteller, Collection<Allergen> allergens, int nährwert, Duration haltbarkeit, BigDecimal preis, Date inspektionsDatum, int fachnummer, GeschäftslogikImpl gl) {
-        super(hersteller, allergens, nährwert, haltbarkeit, preis, inspektionsDatum, fachnummer, gl);
+    public KremkuchenImpl(String kremsorte, Hersteller hersteller, Collection<Allergen> allergens, int nährwert
+            , Duration haltbarkeit, BigDecimal preis, Date inspektionsDatum, int fachnummer,Date einfügeDate, GeschäftslogikImpl gl) {
+        super(hersteller, allergens, nährwert, haltbarkeit, preis, inspektionsDatum, fachnummer,einfügeDate, gl);
         this.kremsorte = kremsorte;
     }
 

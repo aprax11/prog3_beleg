@@ -1,4 +1,4 @@
-package controller;
+package automat;
 
 import automat.GeschäftslogikImpl;
 import eventApi.GetKuchenListEvent;

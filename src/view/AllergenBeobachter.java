@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class AllergenBeobachter implements Beobachter { //TODO beobachter über handler
+public class AllergenBeobachter implements Beobachter {
     private Set<Allergen> oldState;
     private GeschäftslogikImpl gl;
 

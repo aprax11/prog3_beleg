@@ -5,8 +5,10 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.GregorianCalendar;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -17,7 +19,8 @@ class AutomatenobjektTest {
     private static final Hersteller MOCKHERSTELER = mock(HerstellerImpl.class);
     private static final GeschäftslogikImpl MOCKGESCHAÄFTSLOGIK = mock(GeschäftslogikImpl.class);
     private static final Date MOCKDATE = mock(Date.class);
-    private static final Automatenobjekt AUTOMATENOBJEKT = new Automatenobjekt(MOCKHERSTELER, EnumSet.allOf(Allergen.class), 450, Duration.ofDays(30), new BigDecimal(23), MOCKDATE, 0, MOCKGESCHAÄFTSLOGIK);
+    private static final Date einfügeDatum = new GregorianCalendar(2021, Calendar.JULY, 19).getTime();
+    private static final Automatenobjekt AUTOMATENOBJEKT = new Automatenobjekt(MOCKHERSTELER, EnumSet.allOf(Allergen.class), 450, Duration.ofDays(30), new BigDecimal(23), MOCKDATE, 0, einfügeDatum, MOCKGESCHAÄFTSLOGIK);
 
     @Test
     public void callForInspektionsdatum() {
@@ -28,6 +31,10 @@ class AutomatenobjektTest {
     public void callForFachnummer() {
         AUTOMATENOBJEKT.callForFachnummer(AUTOMATENOBJEKT);
         verify(MOCKGESCHAÄFTSLOGIK).getFachnummerForObject(AUTOMATENOBJEKT);
+    }
+    @Test
+    public void getVerbleibendeHaltbarkeit() {
+        assertEquals(29L, AUTOMATENOBJEKT.getVerbleibendeHaltbarkeit().toDays());
     }
     @Test
     public void getHersteller() {
