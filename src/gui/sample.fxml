@@ -10,7 +10,7 @@
         </TableView>
     </left>
     <right>
-        <TableView fx:id="tableView2" prefHeight="400.0" prefWidth="340.0">
+        <TableView fx:id="tableView2" prefHeight="400.0" prefWidth="200.0">
 
         </TableView>
     </right>
@@ -21,6 +21,8 @@
            <TextField fx:id="positionField" onKeyReleased="#handleKeyReleased" prefHeight="25.0" prefWidth="50.0" GridPane.columnIndex="0" GridPane.rowIndex="12" promptText="Fachnummer" />
            <Button fx:id="löschenButton" mnemonicParsing="false" onAction="#onButtonClicked" text="Position löschen" BorderPane.alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="12" />
            <TextField fx:id="herstellerField" onKeyReleased="#handleKeyReleased"  prefHeight="25.0" prefWidth="90.0" GridPane.columnIndex="0" GridPane.rowIndex="1" promptText="Herstellername"/>
+           <Button fx:id="addHersteller" onAction="#addHersteller"  prefHeight="25.0" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="1" text="Name hinzufügen"/>
+           <Button fx:id="removeHersteller" onAction="#removeHersteller"  prefHeight="25.0" prefWidth="120.0" GridPane.columnIndex="2" GridPane.rowIndex="1" text="Name entfernen"/>
            <Label GridPane.rowIndex="2" text="Kuchenart:"/>
            <fx:define>
                <ToggleGroup fx:id="kuchenartGruppe"/>
@@ -49,4 +51,14 @@
        </GridPane>
 
    </center>
+    <bottom>
+        <GridPane alignment="center" hgap="10" vgap="10">
+            <Button fx:id="vorhandenA" onAction="#displayVorhandenA"  prefHeight="25.0" prefWidth="150.0" GridPane.columnIndex="0" GridPane.rowIndex="0" text="vorhandene Allergene">
+            </Button>
+            <Button fx:id="fehlendA" onAction="#displayFehlendA"  prefHeight="25.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="0" text="nichtvorhandene Allergene">
+            </Button>
+            <Label fx:id="allergeneLabel" prefHeight="25.0" prefWidth="250.0" GridPane.rowIndex="1">
+            </Label>
+        </GridPane>
+    </bottom>
 </BorderPane>

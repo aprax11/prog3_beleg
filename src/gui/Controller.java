@@ -21,11 +21,16 @@ public class Controller {
     private static final Hersteller[] HERSTELLERS = {new HerstellerImpl("Paul"), new HerstellerImpl("Peter"), new HerstellerImpl("Hans")};
     private GeschäftslogikImpl gl;
     private List<Automatenobjekt> lsit = new ArrayList<>();
+    private HashMap<Hersteller, Integer> herstellerList = new HashMap<>();
 
     @FXML
     private TableView tableView;
     @FXML
-    private TableView tableview2;
+    private TableView tableView2;
+    @FXML
+    private Button addHersteller;
+    @FXML
+    private Button removeHersteller;
     @FXML
     private TextField positionField;
     @FXML
@@ -60,6 +65,12 @@ public class Controller {
     private TextField kremsorte;
     @FXML
     private TextField obstsorte;
+    @FXML
+    private Button vorhandenA;
+    @FXML
+    private Button fehlendA;
+    @FXML
+    private Label allergeneLabel;
 
 
     @FXML
@@ -67,6 +78,8 @@ public class Controller {
         this.gl = new GeschäftslogikImpl(12);
         this.löschenButton.setDisable(true);
         this.einfügeButton.setDisable(true);
+        this.addHersteller.setDisable(true);
+        this.removeHersteller.setDisable(true);
         this.kuchenartGruppe.selectToggle(obstkuchen);
         for(Hersteller h : HERSTELLERS) {
             this.gl.addHersteller(h);
@@ -79,11 +92,21 @@ public class Controller {
         durationColumn.setCellValueFactory(new PropertyValueFactory<>("duration"));
         TableColumn<ShowKuchen, LocalDate> inspectionColumn = new TableColumn<>("Inspektionsdatum");
         inspectionColumn.setCellValueFactory(new PropertyValueFactory<>("inspektion"));
+
+        TableColumn<ShowHersteller, String> herstellerColumn2 = new TableColumn<>("Hersteller");
+        herstellerColumn2.setCellValueFactory(new PropertyValueFactory<>("name"));
+        TableColumn<ShowHersteller, Integer> anzahlColumn = new TableColumn<>("Anzhal");
+        anzahlColumn.setCellValueFactory(new PropertyValueFactory<>("anzahl"));
+
         this.tableView.getColumns().add(fachnummerColumn);
         this.tableView.getColumns().add(herstellerColumn);
         this.tableView.getColumns().add(durationColumn);
         this.tableView.getColumns().add(inspectionColumn);
-        this.updateList();
+
+        this.tableView2.getColumns().add(herstellerColumn2);
+        this.tableView2.getColumns().add(anzahlColumn);
+        this.updateKuchenList();
+        this.updateHerstellerList();
     }
     @FXML
     public void onButtonClicked(ActionEvent e) {
@@ -95,22 +118,63 @@ public class Controller {
             } catch (Exception ignore) {
             }
         }
-        this.updateList();
+        this.updateKuchenList();
+        this.updateHerstellerList();
         }
     @FXML
     public void handleKeyReleased() {
         String text = this.positionField.getText();
         boolean disableButtons = text.isEmpty() || text.trim().isEmpty();
+        boolean combined = true;
         this.löschenButton.setDisable(disableButtons);
         boolean hersteller = this.herstellerField.getText().isEmpty() || this.herstellerField.getText().trim().isEmpty();
+        if(!hersteller) {
+            combined = false;
+        }
+        this.addHersteller.setDisable(combined);
+        this.removeHersteller.setDisable(combined);
         boolean duration = this.durationPicker.getText().isEmpty() || this.durationPicker.getText().trim().isEmpty();
         boolean preis = this.preis.getText().isEmpty() || this.preis.getText().trim().isEmpty();
-        boolean combined = true;
+
         if(!hersteller && !duration && !preis) {
             combined = false;
         }
         this.einfügeButton.setDisable(combined);
     }
+    @FXML
+    public void addHersteller(ActionEvent e) {
+        if(e.getSource().equals(this.addHersteller)) {
+            String text = this.herstellerField.getText();
+            Hersteller hersteller = new HerstellerImpl(text);
+            this.gl.addHersteller(hersteller);
+            this.updateKuchenList();
+            this.updateHerstellerList();
+        }
+    }
+    @FXML
+    public void removeHersteller(ActionEvent e) throws InterruptedException {
+        if(e.getSource().equals(this.removeHersteller)) {
+            String text = this.herstellerField.getText();
+            this.gl.löscheHersteller(text);
+            this.updateHerstellerList();
+            this.updateKuchenList();
+        }
+    }
+    @FXML
+    public void displayVorhandenA(ActionEvent e) {
+        if(e.getSource().equals(this.vorhandenA)) {
+            Set<Allergen> set = this.gl.getAllergenList(true);
+            this.allergeneLabel.setText(set.toString());
+        }
+    }
+    @FXML
+    public void displayFehlendA(ActionEvent e) {
+        if(e.getSource().equals(this.fehlendA)) {
+            Set<Allergen> set = this.gl.getAllergenList(false);
+            this.allergeneLabel.setText(set.toString());
+        }
+    }
+
     @FXML
     public void list() {
 //        ListView<Automatenobjekt> list = new ListView<>();
@@ -147,10 +211,11 @@ public class Controller {
             this.gl.addKuchen(name, this.kremsorte.getText(), hersteller,allergens, nährwert, duration, this.obstsorte.getText(), preis);
         } catch (Exception e) {
         }
-        this.updateList();
+        this.updateKuchenList();
+        this.updateHerstellerList();
     }
 
-    public void updateList() {
+    public void updateKuchenList() {
         this.tableView.getItems().clear();
         this.lsit = Arrays.asList(this.gl.listKuchen(null).clone());
         ShowKuchen[] showlist = new ShowKuchen[this.lsit.size()];
@@ -161,5 +226,17 @@ public class Controller {
             count++;
         }
         this.tableView.getItems().setAll(showlist);
+
+    }
+    public void updateHerstellerList() {
+        this.tableView2.getItems().clear();
+        this.herstellerList = this.gl.getHerstellerList();
+        ShowHersteller[] showHerstellers = new ShowHersteller[this.herstellerList.size()];
+        int cnt = 0;
+        for(Map.Entry<Hersteller, Integer> e : this.herstellerList.entrySet()) {
+            showHerstellers[cnt] = new ShowHersteller(e.getKey().getName(), e.getValue());
+            cnt++;
+        }
+        this.tableView2.getItems().setAll(showHerstellers);
     }
 }

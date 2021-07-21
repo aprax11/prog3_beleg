@@ -160,12 +160,16 @@ public class GeschäftslogikImpl implements Subjekt {
         copy.putAll(this.herstellerverwaltung);
         return copy;
     }
+    private void löschenDurchHersteller(int i) {
+        this.list[i] = null;
+    }
 
     public synchronized void löscheHersteller(String hersteller) throws InterruptedException {
-        for (int i = 0; i < this.fachnummer; i++) {
+        int steps = this.fachnummer;
+        for (int i = 0; i < steps; i++) {
             Automatenobjekt ao = this.list[i];
             if (ao.getHersteller().getName().equalsIgnoreCase(hersteller)) {
-                this.löscheKuchen(ao.getFachnummer());
+                this.löschenDurchHersteller(i);
             }
         }
         Hersteller hersteller1 = this.checkHersteller(new HerstellerImpl(hersteller));
