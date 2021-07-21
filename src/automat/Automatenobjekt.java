@@ -1,11 +1,12 @@
 package automat;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.Date;
 
-public class Automatenobjekt implements Verkaufsobjekt, Kuchen {
+public class Automatenobjekt implements Verkaufsobjekt, Kuchen, Serializable{
     private final GeschäftslogikImpl gl;
     private final Hersteller hersteller;
     private final Collection<Allergen> allergens;
@@ -36,8 +37,8 @@ public class Automatenobjekt implements Verkaufsobjekt, Kuchen {
 
 
 
-    public Duration getVerbleibendeHaltbarkeit(Date aktuellesDatum) {
-        long diff = aktuellesDatum.getTime() - einfügeDatum.getTime();
+    public Duration getVerbleibendeHaltbarkeit(Date date) {
+        long diff = date.getTime() - einfügeDatum.getTime();
         diff = (diff / (1000 * 60 * 60 * 24));
         return this.haltbarkeit.minusDays(diff);
     }

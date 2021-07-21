@@ -221,7 +221,7 @@ public class Controller {
         ShowKuchen[] showlist = new ShowKuchen[this.lsit.size()];
         int count = 0;
         for(Automatenobjekt a : this.lsit) {
-            ShowKuchen obj = new ShowKuchen(a.getHersteller().getName(), a.getHaltbarkeit().toDays(), a.getFachnummer(), a.getInspektionsdatum());
+            ShowKuchen obj = new ShowKuchen(a.getHersteller().getName(), a.getVerbleibendeHaltbarkeit(new Date()).toDays(), a.getFachnummer(), a.getInspektionsdatum());
             showlist[count] = obj;
             count++;
         }

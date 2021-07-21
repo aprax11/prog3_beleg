@@ -11,10 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AddHerstellerEventListnerImpl implements AddHerstellerEventListener {
-    private GeschäftslogikImpl gl;
+    private GlWrapper gl;
     ReceiveHerstellerListEventHandler handler;
 
-    public AddHerstellerEventListnerImpl(GeschäftslogikImpl gl) {
+    public AddHerstellerEventListnerImpl(GlWrapper gl) {
         this.gl = gl;
     }
     @Override
@@ -25,16 +25,12 @@ public class AddHerstellerEventListnerImpl implements AddHerstellerEventListener
 
         if (!event.getShow()) {
             if (event.getBool()) {
-                this.gl.addHersteller(hersteller);
+                this.gl.getGl().addHersteller(hersteller);
             } else if (!(event.getBool())) {
-                try {
-                    this.gl.löscheHersteller(event.getHerstellerName().getName());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                this.gl.getGl().löscheHersteller(event.getHerstellerName().getName());
             }
         } else if(event.getShow()) {
-            HashMap<Hersteller, Integer> herstellerList = this.gl.getHerstellerList();
+            HashMap<Hersteller, Integer> herstellerList = this.gl.getGl().getHerstellerList();
             ReceiveHerstellerListEvent event1 = new ReceiveHerstellerListEvent(this, herstellerList);
             this.handler.handle(event1);
 

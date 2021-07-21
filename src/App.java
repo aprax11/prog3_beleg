@@ -1,5 +1,5 @@
 import automat.GeschäftslogikImpl;
-import automat.GetKuchenEventListenerImpl;
+import controller.GetKuchenEventListenerImpl;
 import beobachterMusterInterfaces.Beobachter;
 import controller.*;
 import eventApi.*;
@@ -10,9 +10,13 @@ public class App {
 
 
     public static void main(String[] args) {
-        GeschäftslogikImpl gl = new GeschäftslogikImpl(3);
+        GeschäftslogikImpl geschäftsLogic = new GeschäftslogikImpl(3);
+        GlWrapper gl = new GlWrapper(geschäftsLogic);
         ViewClass view = new ViewClass();
-        Beobachter allergenBeobachter = new AllergenBeobachter(gl);
+        Beobachter allergenBeobachter = new AllergenBeobachter(geschäftsLogic);
+        //TODO alle Beobachter einhängen
+        JosEventHandler josEventHandler = new JosEventHandler();
+        JosListenerImpl josListener = new JosListenerImpl(gl);
 
         AddHerstellerEventHandler addHerstellerEventHandler = new AddHerstellerEventHandler();
         AddHerstellerEventListnerImpl addHerstellerEventListener = new AddHerstellerEventListnerImpl(gl);
@@ -27,7 +31,7 @@ public class App {
         ReceiveKuchenListEventListener receiveKuchenListEventListener = new ReceiveKuchenListEventListnenerImpl(view);
 
         GetKuchenListEventHandler getKuchenListEventHandler = new GetKuchenListEventHandler();
-        GetKuchenListEventListener getKuchenListEventListener = new GetKuchenEventListenerImpl(gl);
+        GetKuchenEventListenerImpl getKuchenListEventListener = new GetKuchenEventListenerImpl(gl);
 
         DeleteKuchenEventHandler deleteKuchenEventHandler = new DeleteKuchenEventHandler();
         DeleteKuchenEventListener deleteKuchenEventListener = new DeleteKuchenEventListenerImpl(gl);
@@ -58,6 +62,9 @@ public class App {
         cli.setAllergenHandler(getAllergenHandler);
         getAllergenHandler.add(getAllergenListener);
 
+        cli.setJosEventHandler(josEventHandler);
+        josEventHandler.add(josListener);
+
         receiveAllergeneHandler.add(receiveAllergeneListener);
 
         getAllergenListener.setHandler(receiveAllergeneHandler);
@@ -66,7 +73,7 @@ public class App {
 
         receiveHerstellerListEventHandler.add(receiveHerstellerListEventListener);
 
-        gl.setReceiveKuchenListEventHandler(receiveKuchenListEventHandler);
+        getKuchenListEventListener.setReceiveKuchenListEventHandler(receiveKuchenListEventHandler);
         receiveKuchenListEventHandler.add(receiveKuchenListEventListener);
 
         cli.start();

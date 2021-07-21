@@ -5,18 +5,16 @@ import eventApi.AddKuchenEvent;
 import eventApi.AddKuchenEventListener;
 
 public class AddKuchenEventListenerImpl implements AddKuchenEventListener {
-    private GeschäftslogikImpl gl;
+    private GlWrapper gl;
 
-    public AddKuchenEventListenerImpl(GeschäftslogikImpl gl) {
+    public AddKuchenEventListenerImpl(GlWrapper gl) {
         this.gl = gl;
     }
 
     @Override
     public void onAddKuchenEvent(AddKuchenEvent event) {
-        try {
-            this.gl.addKuchen(event.getName(), event.getKremsorte(), event.getHersteller(), event.getAllergens(), event.getNährwert(), event.getHaltbarkeit(), event.getObstsorte(), event.getPreis());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
+        this.gl.getGl().addKuchen(event.getName(), event.getKremsorte(), event.getHersteller(), event.getAllergens(), event.getNährwert(), event.getHaltbarkeit(), event.getObstsorte(), event.getPreis());
+
     }
 }

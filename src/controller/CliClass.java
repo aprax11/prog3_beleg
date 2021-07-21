@@ -17,6 +17,7 @@ public class CliClass {
     private DeleteKuchenEventHandler deleteKuchenEventHandler;
     private GetKuchenListEventHandler getKuchenListEventHandler;
     private GetAllergenHandler getAllergenHandler;
+    private JosEventHandler josHandler;
 
     public void setAllergenHandler(GetAllergenHandler handler) {
         this.getAllergenHandler = handler;
@@ -33,6 +34,9 @@ public class CliClass {
     }
     public void setGetKuchenListEventHandler(GetKuchenListEventHandler getKuchenListEventHandler) {
         this.getKuchenListEventHandler = getKuchenListEventHandler;
+    }
+    public void setJosEventHandler(JosEventHandler handler) {
+        this.josHandler = handler;
     }
     private boolean checkString(String name) {
         int[] character = name.chars().toArray();
@@ -193,6 +197,19 @@ public class CliClass {
                     DeleteKuchenEvent event = new DeleteKuchenEvent(this, Integer.parseInt(parse[0]), true);
                     this.deleteKuchenEventHandler.handle(event);
                 }
+            }else if(this.lastCommand.equals(":p")) {
+                if(this.checkString(parse[0])) {
+                    switch (parse[0]) {
+                        case "saveJOS":
+                            JosEvent event = new JosEvent(this, true);
+                            this.josHandler.handle(event);
+                            break;
+                        case "loadJOS":
+                            JosEvent event2 = new JosEvent(this, false);
+                            this.josHandler.handle(event2);
+                            break;
+                    }
+                }
             }
         }
     }
@@ -213,6 +230,9 @@ public class CliClass {
                        continue;
                    case ":u":
                        this.lastCommand = ":u";
+                       continue;
+                   case ":p":
+                       this.lastCommand = ":p";
                        continue;
                }
                if(this.lastCommand != null) {

@@ -11,11 +11,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 class ReceiveHerstellerListEventTest {
-    @Test
-    public void getListTest() {
-        HashMap<Hersteller, Integer> list = new HashMap<>();
-        ReceiveHerstellerListEvent event = new ReceiveHerstellerListEvent(this, list);
-
-        assertEquals(list, event.getHerstellerList());
-    }
+//    @Test
+//    public void getListTest() {
+//        HashMap<Hersteller, Integer> list = mock(HashMap.class);
+//        ReceiveHerstellerListEvent event = new ReceiveHerstellerListEvent(this, list);
+//
+//        assertEquals(list, event.getHerstellerList());
+//    }
 }

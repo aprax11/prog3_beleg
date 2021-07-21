@@ -28,8 +28,6 @@ public class GeschäftslogikImplTest {
         this.allergens = new ArrayList<>();
         this.allergens.add(Allergen.Erdnuss);
 
-        ReceiveKuchenListEventHandler receiveKuchenListEventHandler = new ReceiveKuchenListEventHandler();
-        this.gl.setReceiveKuchenListEventHandler(receiveKuchenListEventHandler);
     }
     @Test
     public void mockitoAddHerstellerTest() {

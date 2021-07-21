@@ -22,6 +22,7 @@ class AutomatenobjektTest {
     private static final Date einfügeDatum = new GregorianCalendar(2021, Calendar.JULY, 19).getTime();
     private static final Date aktuellesDatum = new GregorianCalendar(2021, Calendar.JULY, 20).getTime();
 
+
     private static final Automatenobjekt AUTOMATENOBJEKT = new Automatenobjekt(MOCKHERSTELER, EnumSet.allOf(Allergen.class), 450, Duration.ofDays(30), new BigDecimal(23), MOCKDATE, 0, einfügeDatum, MOCKGESCHAÄFTSLOGIK);
 
     @Test
@@ -29,11 +30,7 @@ class AutomatenobjektTest {
         AUTOMATENOBJEKT.callForInspektionsdatum();
         verify(MOCKGESCHAÄFTSLOGIK).returnDate();
     }
-    @Test
-    public void callForFachnummer() {
-        AUTOMATENOBJEKT.callForFachnummer(AUTOMATENOBJEKT);
-        verify(MOCKGESCHAÄFTSLOGIK).getFachnummerForObject(AUTOMATENOBJEKT);
-    }
+
     @Test
     public void getVerbleibendeHaltbarkeit() {
         assertEquals(29L, AUTOMATENOBJEKT.getVerbleibendeHaltbarkeit(aktuellesDatum).toDays());

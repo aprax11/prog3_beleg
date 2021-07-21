@@ -25,8 +25,6 @@ public class AddHerstellerEventListenerTest {
     public void set() {
         this.gl = new GeschäftslogikImpl(2);
 
-        ReceiveKuchenListEventHandler receiveKuchenListEventHandler = new ReceiveKuchenListEventHandler();
-        this.gl.setReceiveKuchenListEventHandler(receiveKuchenListEventHandler);
     }
 
 
@@ -34,8 +32,12 @@ public class AddHerstellerEventListenerTest {
     @Test
     public void addHerstellerListenerTest() {
         GeschäftslogikImpl mockGl = mock(GeschäftslogikImpl.class);
+        GlWrapper mockWrapper = mock(GlWrapper.class);
         AddHerstellerEventHandler handler = new AddHerstellerEventHandler();
-        AddHerstellerEventListener listener = new AddHerstellerEventListnerImpl(mockGl);
+        AddHerstellerEventListener listener = new AddHerstellerEventListnerImpl(mockWrapper);
+
+        when(mockWrapper.getGl()).thenReturn(mockGl);
+
         Hersteller hersteller = new HerstellerImpl("Paul");
         AddHerstellerEvent event = new AddHerstellerEvent(this, hersteller, true, false);
 
@@ -47,8 +49,12 @@ public class AddHerstellerEventListenerTest {
     @Test
     public void deleteHerstellerListenerTest() throws InterruptedException {
         GeschäftslogikImpl mockGl = mock(GeschäftslogikImpl.class);
+        GlWrapper mockWrapper = mock(GlWrapper.class);
         AddHerstellerEventHandler handler = new AddHerstellerEventHandler();
-        AddHerstellerEventListener listener = new AddHerstellerEventListnerImpl(mockGl);
+        AddHerstellerEventListener listener = new AddHerstellerEventListnerImpl(mockWrapper);
+
+        when(mockWrapper.getGl()).thenReturn(mockGl);
+
         Hersteller hersteller = new HerstellerImpl("Paul");
         AddHerstellerEvent event = new AddHerstellerEvent(this, hersteller, false, false);
 
@@ -56,13 +62,17 @@ public class AddHerstellerEventListenerTest {
         handler.handle(event);
         verify(mockGl).löscheHersteller(hersteller.getName());
     }
-
+    //TODO glaube der handler ist unnötig
     @Test
     public void showHerstellerListenerTest() throws InterruptedException {
         GeschäftslogikImpl mockGl = mock(GeschäftslogikImpl.class);
+        GlWrapper mockWrapper = mock(GlWrapper.class);
+
+        when(mockWrapper.getGl()).thenReturn(mockGl);
+
         ReceiveHerstellerListEventHandler mockReceiveHandler = mock(ReceiveHerstellerListEventHandler.class);
         AddHerstellerEventHandler handler = new AddHerstellerEventHandler();
-        AddHerstellerEventListnerImpl listener = new AddHerstellerEventListnerImpl(mockGl);
+        AddHerstellerEventListnerImpl listener = new AddHerstellerEventListnerImpl(mockWrapper);
         listener.setHandler(mockReceiveHandler);
         AddHerstellerEvent event = new AddHerstellerEvent(this, null, false, true);
 
@@ -74,9 +84,13 @@ public class AddHerstellerEventListenerTest {
     @Test
     public void showReceiveHerstellerListenerTest() throws InterruptedException {
         GeschäftslogikImpl mockGl = mock(GeschäftslogikImpl.class);
+        GlWrapper mockWrapper = mock(GlWrapper.class);
+
+        when(mockWrapper.getGl()).thenReturn(mockGl);
+
         ReceiveHerstellerListEventHandler mockReceiveHandler = mock(ReceiveHerstellerListEventHandler.class);
         AddHerstellerEventHandler handler = new AddHerstellerEventHandler();
-        AddHerstellerEventListnerImpl listener = new AddHerstellerEventListnerImpl(mockGl);
+        AddHerstellerEventListnerImpl listener = new AddHerstellerEventListnerImpl(mockWrapper);
         listener.setHandler(mockReceiveHandler);
         AddHerstellerEvent event = new AddHerstellerEvent(this, null, false, true);
 

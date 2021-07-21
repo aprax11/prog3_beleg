@@ -36,7 +36,7 @@ public class SimLogic {
         int pos = (int)(Math.random()*coll.size());
 
         this.gl.addKuchen(name, krem, h, Collections.singleton(coll.get(pos)), nährwert, duration, obst, preis);
-        System.out.println("Kuchen wurde eingefügt"); //+ thread name
+        System.out.println("Kuchen wurde eingefügt"); //TODO: + thread name
     }
     public void removeRandomKuchen() throws InterruptedException {
         this.list = this.gl.listKuchen(null);

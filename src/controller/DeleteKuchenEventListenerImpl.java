@@ -6,22 +6,18 @@ import eventApi.DeleteKuchenEventListener;
 
 public class DeleteKuchenEventListenerImpl implements DeleteKuchenEventListener {
 
-    private GeschäftslogikImpl gl;
+    private GlWrapper gl;
 
-    public DeleteKuchenEventListenerImpl(GeschäftslogikImpl gl) {
+    public DeleteKuchenEventListenerImpl(GlWrapper gl) {
         this.gl = gl;
     }
 
     @Override
     public void onDeleteKuchenEvent(DeleteKuchenEvent event) {
         if (!event.getUpdate()) {
-            try {
-                this.gl.löscheKuchen(event.getPosition());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            this.gl.getGl().löscheKuchen(event.getPosition());
         }else if(event.getUpdate()) {
-            this.gl.setInspektionsdatum(event.getPosition());
+            this.gl.getGl().setInspektionsdatum(event.getPosition());
         }
     }
 }

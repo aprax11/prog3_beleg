@@ -4,18 +4,17 @@ import beobachterMusterInterfaces.Beobachter;
 import beobachterMusterInterfaces.Subjekt;
 import eventApi.ReceiveKuchenListEventHandler;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.*;
 
-public class GeschäftslogikImpl implements Subjekt {
+public class GeschäftslogikImpl implements Subjekt, Serializable {
     private transient List<Beobachter> beobachterList = new LinkedList<>();
     private Automatenobjekt[] list ;
     private int fachnummer = 0;
-    private Map<Automatenobjekt, Integer> fachnummerverwaltung = new HashMap();
     private Map<Hersteller, Integer> herstellerverwaltung = new HashMap();
     private Set<Allergen> allergenList = new HashSet<>();
-    private ReceiveKuchenListEventHandler receiveKuchenListEventHandler;
     private int listGröße;
 
 
@@ -24,10 +23,6 @@ public class GeschäftslogikImpl implements Subjekt {
             this.listGröße = i;
             this.list = new Automatenobjekt[i];
         }
-    }
-
-    public void setReceiveKuchenListEventHandler(ReceiveKuchenListEventHandler receiveKuchenListEventHandler) {
-        this.receiveKuchenListEventHandler = receiveKuchenListEventHandler;
     }
 
     private synchronized Hersteller checkHersteller(Hersteller hersteller) {
@@ -50,35 +45,36 @@ public class GeschäftslogikImpl implements Subjekt {
         }
     }
 
-    public synchronized boolean addKuchen(String name, String kremsorte, Hersteller hersteller, Collection<Allergen> allergens, int nährwert, Duration haltbarkeit, String obstsorte, BigDecimal preis) throws InterruptedException {
+    public synchronized boolean addKuchen(String name, String kremsorte, Hersteller hersteller, Collection<Allergen> allergens, int nährwert, Duration haltbarkeit, String obstsorte, BigDecimal preis) {
         Hersteller h = this.checkHersteller(hersteller);
         if (h != null && this.fachnummer < this.listGröße) {
             Date einfügeDate = new Date();
+            int pos = 0;
             for (int i = 0; i < this.listGröße; i++) {
                 if (this.list[i] == null) {
+                    pos = i;
+                    break;
+                }
+            }
                     switch (name) {
                         case "Kremkuchen":
                             Automatenobjekt kremkuchen = new KremkuchenImpl(kremsorte, hersteller, allergens, nährwert, haltbarkeit, preis, einfügeDate, this.fachnummer, einfügeDate, this);
-                            list[i] = kremkuchen;
-                            this.fachnummerverwaltung.put(kremkuchen, i);
+                            list[pos] = kremkuchen;
                             break;
 
                         case "Obstkuchen":
                             Automatenobjekt obstkuchen = new ObstkuchenImpl(hersteller, allergens, nährwert, haltbarkeit, obstsorte, preis, einfügeDate, this.fachnummer, einfügeDate, this);
-                            list[i] = obstkuchen;
-                            this.fachnummerverwaltung.put(obstkuchen, i);
+                            list[pos] = obstkuchen;
                             break;
 
                         case "Obsttorte":
                             Automatenobjekt kuchen = new ObsttorteImpl(kremsorte, hersteller, allergens, nährwert, haltbarkeit, obstsorte, preis, einfügeDate, this.fachnummer, einfügeDate, this);
-                            list[this.fachnummer] = kuchen;
-                            this.fachnummerverwaltung.put(kuchen, i);
+                            list[pos] = kuchen;
                             break;
                         default:
                             return false;
                     }
-                }
-            }
+
 
             int anzahl = this.herstellerverwaltung.get(h);
             anzahl++;
@@ -109,6 +105,7 @@ public class GeschäftslogikImpl implements Subjekt {
                     cnt++;
                 }
             }
+            this.sortFachnummer(copyArray);
             return copyArray;
         }
         int count = 0;
@@ -129,6 +126,7 @@ public class GeschäftslogikImpl implements Subjekt {
                 }
             }
         }
+        this.sortFachnummer(copyArray);
         return copyArray;
     }
 
@@ -146,16 +144,15 @@ public class GeschäftslogikImpl implements Subjekt {
 
 
 
-    public synchronized void löscheKuchen(int position) throws InterruptedException {
-        if (position < this.fachnummer && this.list[0] != null) {
+    public synchronized void löscheKuchen(int position)  {
+        if (position <= this.listGröße && this.list[position] != null) {
             this.fachnummer--;
             Automatenobjekt remKuchen = this.list[position];
-            Hersteller h = this.checkHersteller(remKuchen.getHersteller());
-            int anzahl = this.herstellerverwaltung.get(h);
+            this.checkHersteller(remKuchen.getHersteller());
+            int anzahl = this.herstellerverwaltung.get(this.checkHersteller(remKuchen.getHersteller()));
             anzahl--;
-            this.herstellerverwaltung.put(remKuchen.getHersteller(), anzahl);
-            this.list[0] = null;
-
+            this.herstellerverwaltung.put(this.checkHersteller(remKuchen.getHersteller()), anzahl);
+            this.list[position] = null;
         }
         this.benachrichtige();
     }
@@ -167,8 +164,8 @@ public class GeschäftslogikImpl implements Subjekt {
         return copy;
     }
 
-    public synchronized void löscheHersteller(String hersteller) throws InterruptedException {
-        int steps = this.fachnummer;
+    public synchronized void löscheHersteller(String hersteller)  {
+        int steps = this.listGröße;
         for (int i = 0; i < steps; i++) {
             Automatenobjekt ao = this.list[i];
             if(this.list[i] != null) {
@@ -212,8 +209,10 @@ public class GeschäftslogikImpl implements Subjekt {
 
     @Override
     public void benachrichtige() {
-        for(Beobachter b : this.beobachterList) {
-            b.aktualisiere();
+        if(!(this.beobachterList == null)) {
+            for (Beobachter b : this.beobachterList) {
+                b.aktualisiere();
+            }
         }
     }
     public synchronized int getFachnummer() {
