@@ -9,6 +9,11 @@
 
         </TableView>
     </left>
+    <right>
+        <TableView fx:id="tableView2" prefHeight="400.0" prefWidth="340.0">
+
+        </TableView>
+    </right>
    <center>
        <GridPane alignment="center" hgap="10" vgap="10">
 

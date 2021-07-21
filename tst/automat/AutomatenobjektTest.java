@@ -20,6 +20,8 @@ class AutomatenobjektTest {
     private static final GeschäftslogikImpl MOCKGESCHAÄFTSLOGIK = mock(GeschäftslogikImpl.class);
     private static final Date MOCKDATE = mock(Date.class);
     private static final Date einfügeDatum = new GregorianCalendar(2021, Calendar.JULY, 19).getTime();
+    private static final Date aktuellesDatum = new GregorianCalendar(2021, Calendar.JULY, 20).getTime();
+
     private static final Automatenobjekt AUTOMATENOBJEKT = new Automatenobjekt(MOCKHERSTELER, EnumSet.allOf(Allergen.class), 450, Duration.ofDays(30), new BigDecimal(23), MOCKDATE, 0, einfügeDatum, MOCKGESCHAÄFTSLOGIK);
 
     @Test
@@ -34,7 +36,7 @@ class AutomatenobjektTest {
     }
     @Test
     public void getVerbleibendeHaltbarkeit() {
-        assertEquals(29L, AUTOMATENOBJEKT.getVerbleibendeHaltbarkeit().toDays());
+        assertEquals(29L, AUTOMATENOBJEKT.getVerbleibendeHaltbarkeit(aktuellesDatum).toDays());
     }
     @Test
     public void getHersteller() {

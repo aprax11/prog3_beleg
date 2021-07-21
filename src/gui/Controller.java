@@ -25,6 +25,8 @@ public class Controller {
     @FXML
     private TableView tableView;
     @FXML
+    private TableView tableview2;
+    @FXML
     private TextField positionField;
     @FXML
     private ToggleGroup kuchenartGruppe;

@@ -65,24 +65,18 @@ public class SimLogic {
         this.addRandomKuchen();
         notifyAll();
     }
-    public synchronized void deleteSim3() throws InterruptedException {
+    public synchronized void deleteSim3(Random rand) throws InterruptedException {
         while (!this.isFull()) wait();
         if (!this.isFull()) throw new IllegalStateException();
         List<Automatenobjekt> list = this.getOldestList(this.gl.listKuchen(null));
-        int randomNum = 0;
-        if(list.size() == 1) {
-            randomNum = (int) (Math.random()*2);
-        }else if(list.size() > 1) {
-            randomNum = (int) (Math.random()*list.size());
-        }
-        for (int i = 0; i < randomNum; i++) {
+        int anzahl = rand.nextInt(this.gl.getFachnummer());
+
+        for (int i = 0; i < anzahl; i++) {
             this.gl.löscheKuchen(i);
             System.out.println("kuchen gelöscht");
         }
-
         notifyAll();
     }
-
     public synchronized Automatenobjekt getOldest(Automatenobjekt[] list) {
         Automatenobjekt oldest = list[0];
         for(Automatenobjekt a : list) {

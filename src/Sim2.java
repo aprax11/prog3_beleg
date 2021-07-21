@@ -17,7 +17,7 @@ public class Sim2 {
         Sim2EinfügeRunner einfügen = new Sim2EinfügeRunner(sim);
         Sim2DeleteRunner delete = new Sim2DeleteRunner(sim);
         Sim2UpdateRunner update = new Sim2UpdateRunner(sim);
-        //TODO einhängen
+
         new Thread(einfügen).start();
         new Thread(delete).start();
         new Thread(update).start();

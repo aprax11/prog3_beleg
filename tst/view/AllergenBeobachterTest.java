@@ -19,7 +19,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import static org.mockito.Mockito.*;
-public class BeobachterTest {
+public class AllergenBeobachterTest {
 
     @Test
     public void allergenAddBeobachterTest() throws IOException, InterruptedException {

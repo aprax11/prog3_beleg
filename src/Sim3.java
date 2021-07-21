@@ -1,5 +1,6 @@
 import automat.GeschäftslogikImpl;
 import beobachterMusterInterfaces.Beobachter;
+import sim.Sim2UpdateRunner;
 import sim.Sim3DeleteRunner;
 import sim.Sim3EinfügeRunner;
 import sim.SimLogic;
@@ -19,10 +20,12 @@ public class Sim3 {
         Sim3DeleteRunner delete1 = new Sim3DeleteRunner(sim);
         Sim3DeleteRunner delete2 = new Sim3DeleteRunner(sim);
 
+        Sim2UpdateRunner update = new Sim2UpdateRunner(sim);
 
         new Thread(einfüger1).start();
         new Thread(einfüger2).start();
         new Thread(delete1).start();
         new Thread(delete2).start();
+        new Thread(update).start();
     }
 }

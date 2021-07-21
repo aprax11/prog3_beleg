@@ -4,7 +4,7 @@ import automat.Hersteller;
 
 import java.util.EventObject;
 import java.util.HashMap;
-//TODO event testen
+
 public class ReceiveHerstellerListEvent extends EventObject {
     private HashMap <Hersteller, Integer> herstellerList;
 

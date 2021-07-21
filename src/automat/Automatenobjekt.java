@@ -38,8 +38,8 @@ public class Automatenobjekt implements Verkaufsobjekt, Kuchen {
         this.fachnummer = this.gl.getFachnummerForObject(kuchen);
     }
 
-    public Duration getVerbleibendeHaltbarkeit() {
-        long diff = new Date().getTime() - einfügeDatum.getTime();
+    public Duration getVerbleibendeHaltbarkeit(Date aktuellesDatum) {
+        long diff = aktuellesDatum.getTime() - einfügeDatum.getTime();
         diff = (diff / (1000 * 60 * 60 * 24));
         return this.haltbarkeit.minusDays(diff);
     }

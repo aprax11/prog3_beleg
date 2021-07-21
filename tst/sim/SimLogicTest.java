@@ -38,17 +38,8 @@ public class SimLogicTest {
         when(this.mockGL.listKuchen(null)).thenReturn(list);
         this.sIM.removeRandomKuchen();
 
-        verify(this.mockGL).löscheKuchen(captor.capture());
-        int val = captor.getValue();
-        switch(val) {
-            case 0:
-            case 1:
-            case 2:
-                assertTrue(true);
-                break;
-            default:
-                fail();
-        }
+        verify(this.mockGL).löscheKuchen(anyInt());
+
     }
     @Test
     public void updateRandomKuchenTest() {
@@ -57,17 +48,13 @@ public class SimLogicTest {
         when(this.mockGL.listKuchen(null)).thenReturn(list);
         this.sIM.updateRandomKuchen();
 
-        verify(this.mockGL).setInspektionsdatum(captor.capture());
-        int val = captor.getValue();
-        switch(val) {
-            case 0:
-            case 1:
-            case 2:
-                assertTrue(true);
-                break;
-            default:
-                fail();
-        }
+        verify(this.mockGL).setInspektionsdatum(anyInt());
+    }
+
+    @Test
+    public void addRandomSim2KuchenTest() throws InterruptedException {
+        this.sIM.einfügenSim2();
+        verify(this.mockGL).addKuchen(anyString(), anyString(), any(HerstellerImpl.class), anyCollection(), anyInt(), any(Duration.class), anyString(), any(BigDecimal.class));
     }
     @Test
     public void löscheÄltestenTest() throws InterruptedException {
@@ -88,9 +75,9 @@ public class SimLogicTest {
 
         verify(this.mockGL).löscheKuchen(2);
     }
+
     @Test
     public void deleteSim3Test() throws InterruptedException {
-
         Automatenobjekt[] list = {KREMKUCHEN, OBSTKUCHEN, OBSTTORTE};
         when(this.mockGL.listKuchen(null)).thenReturn(list);
         Date d = new Date(2, 1, 1, 1, 1);
@@ -103,8 +90,9 @@ public class SimLogicTest {
         when(KREMKUCHEN.getFachnummer()).thenReturn(0);
         when(OBSTKUCHEN.getFachnummer()).thenReturn(1);
         when(OBSTTORTE.getFachnummer()).thenReturn(2);
-        this.sIM.deleteSim3();
 
-        verify(mockGL, atMost(2)).löscheKuchen(anyInt());
+        this.sIM.deleteSim3(new Random(3));
+
+        verify(mockGL, times(2)).löscheKuchen(anyInt());
     }
 }
