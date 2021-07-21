@@ -54,27 +54,32 @@ public class GeschäftslogikImpl implements Subjekt {
         Hersteller h = this.checkHersteller(hersteller);
         if (h != null && this.fachnummer < this.listGröße) {
             Date einfügeDate = new Date();
-            switch (name) {
-                case "Kremkuchen":
-                    Automatenobjekt kremkuchen = new KremkuchenImpl(kremsorte, hersteller, allergens, nährwert, haltbarkeit, preis, einfügeDate, this.fachnummer,einfügeDate, this);
-                    list[this.fachnummer] = kremkuchen;
-                    this.fachnummerverwaltung.put(kremkuchen, this.fachnummer);
-                    break;
+            for (int i = 0; i < this.listGröße; i++) {
+                if (this.list[i] == null) {
+                    switch (name) {
+                        case "Kremkuchen":
+                            Automatenobjekt kremkuchen = new KremkuchenImpl(kremsorte, hersteller, allergens, nährwert, haltbarkeit, preis, einfügeDate, this.fachnummer, einfügeDate, this);
+                            list[i] = kremkuchen;
+                            this.fachnummerverwaltung.put(kremkuchen, i);
+                            break;
 
-                case "Obstkuchen":
-                    Automatenobjekt obstkuchen = new ObstkuchenImpl(hersteller, allergens, nährwert, haltbarkeit, obstsorte, preis, einfügeDate, this.fachnummer,einfügeDate, this);
-                    list[this.fachnummer] = obstkuchen;
-                    this.fachnummerverwaltung.put(obstkuchen, this.fachnummer);
-                    break;
+                        case "Obstkuchen":
+                            Automatenobjekt obstkuchen = new ObstkuchenImpl(hersteller, allergens, nährwert, haltbarkeit, obstsorte, preis, einfügeDate, this.fachnummer, einfügeDate, this);
+                            list[i] = obstkuchen;
+                            this.fachnummerverwaltung.put(obstkuchen, i);
+                            break;
 
-                case "Obsttorte":
-                    Automatenobjekt kuchen = new ObsttorteImpl(kremsorte, hersteller, allergens, nährwert, haltbarkeit, obstsorte, preis, einfügeDate, this.fachnummer,einfügeDate, this);
-                    list[this.fachnummer] = kuchen;
-                    this.fachnummerverwaltung.put(kuchen, this.fachnummer);
-                    break;
-                default:
-                    return false;
+                        case "Obsttorte":
+                            Automatenobjekt kuchen = new ObsttorteImpl(kremsorte, hersteller, allergens, nährwert, haltbarkeit, obstsorte, preis, einfügeDate, this.fachnummer, einfügeDate, this);
+                            list[this.fachnummer] = kuchen;
+                            this.fachnummerverwaltung.put(kuchen, i);
+                            break;
+                        default:
+                            return false;
+                    }
+                }
             }
+
             int anzahl = this.herstellerverwaltung.get(h);
             anzahl++;
             this.herstellerverwaltung.put(h, anzahl);
@@ -87,27 +92,41 @@ public class GeschäftslogikImpl implements Subjekt {
         }
 
     }
+    private void sortFachnummer(Automatenobjekt[] list) {
+        Automatenobjekt[] resList = new Automatenobjekt[list.length];
+        for (int i = 0; i < list.length; i++) {
+            list[i].setFachnummer(i);
+        }
+    }
 
     public synchronized Automatenobjekt[] listKuchen(Class<? extends Automatenobjekt> cl) {
         if(cl == null) {
             Automatenobjekt[] copyArray = new Automatenobjekt[this.fachnummer];
-            for (int i = 0; i < this.fachnummer; i++) {
-                copyArray[i] = this.list[i];
+            int cnt = 0;
+            for (int i = 0; i < this.listGröße; i++) {
+                if(this.list[i] != null) {
+                    copyArray[cnt] = this.list[i];
+                    cnt++;
+                }
             }
             return copyArray;
         }
         int count = 0;
-        for (int i = 0; i < this.fachnummer; i++) {
-            if (this.list[i].getClass() == cl) {
-                count++;
+        for (int i = 0; i < this.listGröße; i++) {
+            if(this.list[i] != null) {
+                if (this.list[i].getClass() == cl) {
+                    count++;
+                }
             }
         }
         Automatenobjekt[] copyArray = new Automatenobjekt[count];
         int kuchenCount = 0;
-        for (int i = 0; i < this.fachnummer; i++) {
-            if(this.list[i].getClass() == cl) {
-                copyArray[kuchenCount] = this.list[i];
-                kuchenCount++;
+        for (int i = 0; i < this.listGröße; i++) {
+            if(this.list[i] != null) {
+                if (this.list[i].getClass() == cl) {
+                    copyArray[kuchenCount] = this.list[i];
+                    kuchenCount++;
+                }
             }
         }
         return copyArray;
@@ -130,46 +149,32 @@ public class GeschäftslogikImpl implements Subjekt {
     public synchronized void löscheKuchen(int position) throws InterruptedException {
         if (position < this.fachnummer && this.list[0] != null) {
             this.fachnummer--;
-            Automatenobjekt kuchen = this.list[fachnummer];
             Automatenobjekt remKuchen = this.list[position];
             Hersteller h = this.checkHersteller(remKuchen.getHersteller());
             int anzahl = this.herstellerverwaltung.get(h);
             anzahl--;
             this.herstellerverwaltung.put(remKuchen.getHersteller(), anzahl);
-            if (position == this.fachnummer) {
-                this.list[position] = null;
-                this.fachnummerverwaltung.remove(remKuchen);
+            this.list[0] = null;
 
-            } else {
-                this.list[position] = this.list[this.fachnummer];
-                this.fachnummerverwaltung.put(kuchen, position);
-                this.fachnummerverwaltung.remove(remKuchen);
-                this.list[this.fachnummer] = null;
-                kuchen.callForFachnummer(kuchen);
-            }
         }
         this.benachrichtige();
     }
 
-    public int getFachnummerForObject(Object kuchen) {
-        int ret = this.fachnummerverwaltung.get(kuchen);
-        return ret;
-    }
+
     public HashMap<Hersteller, Integer> getHerstellerList() {
         HashMap<Hersteller, Integer> copy = new HashMap();
         copy.putAll(this.herstellerverwaltung);
         return copy;
-    }
-    private void löschenDurchHersteller(int i) {
-        this.list[i] = null;
     }
 
     public synchronized void löscheHersteller(String hersteller) throws InterruptedException {
         int steps = this.fachnummer;
         for (int i = 0; i < steps; i++) {
             Automatenobjekt ao = this.list[i];
-            if (ao.getHersteller().getName().equalsIgnoreCase(hersteller)) {
-                this.löschenDurchHersteller(i);
+            if(this.list[i] != null) {
+                if (ao.getHersteller().getName().equalsIgnoreCase(hersteller)) {
+                    this.löscheKuchen(i);
+                }
             }
         }
         Hersteller hersteller1 = this.checkHersteller(new HerstellerImpl(hersteller));

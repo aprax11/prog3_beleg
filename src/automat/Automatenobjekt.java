@@ -34,9 +34,7 @@ public class Automatenobjekt implements Verkaufsobjekt, Kuchen {
         this.inspektionsDatum = this.gl.returnDate();
     }
 
-    public void callForFachnummer(Object kuchen) {
-        this.fachnummer = this.gl.getFachnummerForObject(kuchen);
-    }
+
 
     public Duration getVerbleibendeHaltbarkeit(Date aktuellesDatum) {
         long diff = aktuellesDatum.getTime() - einfügeDatum.getTime();
@@ -77,6 +75,10 @@ public class Automatenobjekt implements Verkaufsobjekt, Kuchen {
     @Override
     public int getFachnummer() {
         return this.fachnummer;
+    }
+
+    void setFachnummer(int fachnummer) {
+        this.fachnummer = fachnummer;
     }
 
 }
