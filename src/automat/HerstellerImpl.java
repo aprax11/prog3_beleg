@@ -1,6 +1,8 @@
 package automat;
 
-public class HerstellerImpl implements Hersteller{
+import java.io.Serializable;
+
+public class HerstellerImpl implements Hersteller, Serializable {
     private int kuchenAnzahl;
     private final String hersteller;
 

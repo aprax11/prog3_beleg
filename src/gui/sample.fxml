@@ -19,8 +19,9 @@
 
 
            <TextField fx:id="positionField" onKeyReleased="#handleKeyReleased" prefHeight="25.0" prefWidth="50.0" GridPane.columnIndex="0" GridPane.rowIndex="12" promptText="Fachnummer" />
-           <Button fx:id="löschenButton" mnemonicParsing="false" onAction="#onButtonClicked" text="Position löschen" BorderPane.alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="12" />
-           <Button fx:id="inspectButton" mnemonicParsing="false" onAction="#inspect" text="Position inzpizieren" prefWidth="150.0" BorderPane.alignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="12" />
+           <Button fx:id="löschenButton" mnemonicParsing="false" onAction="#onButtonClicked" text="Fachnummer löschen" BorderPane.alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+           <Button fx:id="inspectButton" mnemonicParsing="false" onAction="#inspect" text="Fachnummer inzpizieren" prefWidth="150.0" BorderPane.alignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="12" />
+
 
            <TextField fx:id="herstellerField" onKeyReleased="#handleKeyReleased"  prefHeight="25.0" prefWidth="90.0" GridPane.columnIndex="0" GridPane.rowIndex="1" promptText="Herstellername"/>
            <Button fx:id="addHersteller" onAction="#addHersteller"  prefHeight="25.0" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="1" text="Name hinzufügen"/>
@@ -35,6 +36,10 @@
                <RadioButton fx:id="kremkuchen" GridPane.columnIndex="2" GridPane.rowIndex="2" text="Kremkuchen" toggleGroup="$kuchenartGruppe"/>
            </HBox>
            <Button fx:id="kuchenType" mnemonicParsing="false" onAction="#showType" text="nur Kuchentyp zeigen" BorderPane.alignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+           <Button fx:id="kuchenNormal" mnemonicParsing="false" onAction="#showAllKuchen" text="alle Kuchen zeigen" BorderPane.alignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+           <Button fx:id="loadJOS" mnemonicParsing="false" onAction="#loadJOS" text="loadJOS" prefWidth="150.0" BorderPane.alignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+           <Button fx:id="saveJOS" mnemonicParsing="false" onAction="#safeJOS" text="saveJOS" prefWidth="150.0" BorderPane.alignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+
 
            <Label GridPane.rowIndex="4" text="Allergene:"/>
 

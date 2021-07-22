@@ -47,57 +47,64 @@ public class GeschäftslogikImpl implements Subjekt, Serializable {
 
     public synchronized boolean addKuchen(String name, String kremsorte, Hersteller hersteller, Collection<Allergen> allergens, int nährwert, Duration haltbarkeit, String obstsorte, BigDecimal preis) {
         Hersteller h = this.checkHersteller(hersteller);
-        if (h != null && this.fachnummer < this.listGröße) {
+        if (h != null) {
             Date einfügeDate = new Date();
             int pos = 0;
+            boolean b = true;
             for (int i = 0; i < this.listGröße; i++) {
                 if (this.list[i] == null) {
                     pos = i;
+                    b = true;
                     break;
+                }else {
+                    b = false;
                 }
             }
-                    switch (name) {
-                        case "Kremkuchen":
-                            Automatenobjekt kremkuchen = new KremkuchenImpl(kremsorte, hersteller, allergens, nährwert, haltbarkeit, preis, einfügeDate, this.fachnummer, einfügeDate, this);
-                            list[pos] = kremkuchen;
-                            break;
+            if(b) {
+                switch (name) {
+                    case "Kremkuchen":
+                        Automatenobjekt kremkuchen = new KremkuchenImpl(kremsorte, hersteller, allergens, nährwert, haltbarkeit, preis, einfügeDate, this.fachnummer, einfügeDate, this);
+                        list[pos] = kremkuchen;
+                        break;
 
-                        case "Obstkuchen":
-                            Automatenobjekt obstkuchen = new ObstkuchenImpl(hersteller, allergens, nährwert, haltbarkeit, obstsorte, preis, einfügeDate, this.fachnummer, einfügeDate, this);
-                            list[pos] = obstkuchen;
-                            break;
+                    case "Obstkuchen":
+                        Automatenobjekt obstkuchen = new ObstkuchenImpl(hersteller, allergens, nährwert, haltbarkeit, obstsorte, preis, einfügeDate, this.fachnummer, einfügeDate, this);
+                        list[pos] = obstkuchen;
+                        break;
 
-                        case "Obsttorte":
-                            Automatenobjekt kuchen = new ObsttorteImpl(kremsorte, hersteller, allergens, nährwert, haltbarkeit, obstsorte, preis, einfügeDate, this.fachnummer, einfügeDate, this);
-                            list[pos] = kuchen;
-                            break;
-                        default:
-                            return false;
-                    }
+                    case "Obsttorte":
+                        Automatenobjekt kuchen = new ObsttorteImpl(kremsorte, hersteller, allergens, nährwert, haltbarkeit, obstsorte, preis, einfügeDate, this.fachnummer, einfügeDate, this);
+                        list[pos] = kuchen;
+                        break;
+                    default:
+                        return false;
+                }
 
 
-            int anzahl = this.herstellerverwaltung.get(h);
-            anzahl++;
-            this.herstellerverwaltung.put(h, anzahl);
-            this.allergenList.addAll(allergens);
-            this.fachnummer++;
-            this.benachrichtige();
-            return true;
-        } else {
-            return false;
+                int anzahl = this.herstellerverwaltung.get(h);
+                anzahl++;
+                this.herstellerverwaltung.put(h, anzahl);
+                this.allergenList.addAll(allergens);
+                this.fachnummer++;
+                this.benachrichtige();
+                return true;
+            }
         }
-
+        return false;
     }
-    private void sortFachnummer(Automatenobjekt[] list) {
-        Automatenobjekt[] resList = new Automatenobjekt[list.length];
+    private int getLength() {
+        int anzahl = 0;
         for (int i = 0; i < list.length; i++) {
-            list[i].setFachnummer(i);
+            if(this.list[i] != null) {
+                anzahl++;
+            }
         }
+        return  anzahl;
     }
 
     public synchronized Automatenobjekt[] listKuchen(Class<? extends Automatenobjekt> cl) {
         if(cl == null) {
-            Automatenobjekt[] copyArray = new Automatenobjekt[this.fachnummer];
+            Automatenobjekt[] copyArray = new Automatenobjekt[this.getLength()];
             int cnt = 0;
             for (int i = 0; i < this.listGröße; i++) {
                 if(this.list[i] != null) {
@@ -105,7 +112,6 @@ public class GeschäftslogikImpl implements Subjekt, Serializable {
                     cnt++;
                 }
             }
-            this.sortFachnummer(copyArray);
             return copyArray;
         }
         int count = 0;
@@ -126,16 +132,15 @@ public class GeschäftslogikImpl implements Subjekt, Serializable {
                 }
             }
         }
-        this.sortFachnummer(copyArray);
         return copyArray;
     }
 
-    public synchronized void setInspektionsdatum(int position) {
-        if(this.list[position] != null && position <= this.listGröße) {
-            Automatenobjekt kuchen = this.list[position];
-            kuchen.callForInspektionsdatum();
-            this.benachrichtige();
+    public synchronized void setInspektionsdatum(int fachnummer) {
+        for (int i = 0; i < this.listGröße; i++) {
+            if(this.list[i] != null && this.list[i].getFachnummer() == fachnummer)
+            this.list[i].callForInspektionsdatum();
         }
+            this.benachrichtige();
     }
     public synchronized Date returnDate() {
         Date inspektionsDate = new Date();
@@ -145,15 +150,17 @@ public class GeschäftslogikImpl implements Subjekt, Serializable {
 
 
     public synchronized void löscheKuchen(int position)  {
-        if (position <= this.listGröße && this.list[position] != null) {
-            this.fachnummer--;
-            Automatenobjekt remKuchen = this.list[position];
-            this.checkHersteller(remKuchen.getHersteller());
-            int anzahl = this.herstellerverwaltung.get(this.checkHersteller(remKuchen.getHersteller()));
-            anzahl--;
-            this.herstellerverwaltung.put(this.checkHersteller(remKuchen.getHersteller()), anzahl);
-            this.list[position] = null;
+        for (int i = 0; i < this.listGröße; i++) {
+            if (this.list[i] != null && this.list[i].getFachnummer() == position) {
+                Automatenobjekt remKuchen = this.list[i];
+                this.checkHersteller(remKuchen.getHersteller());
+                int anzahl = this.herstellerverwaltung.get(this.checkHersteller(remKuchen.getHersteller()));
+                anzahl--;
+                this.herstellerverwaltung.put(this.checkHersteller(remKuchen.getHersteller()), anzahl);
+                this.list[i] = null;
+            }
         }
+
         this.benachrichtige();
     }
 
@@ -165,12 +172,12 @@ public class GeschäftslogikImpl implements Subjekt, Serializable {
     }
 
     public synchronized void löscheHersteller(String hersteller)  {
-        int steps = this.listGröße;
-        for (int i = 0; i < steps; i++) {
+
+        for (int i = 0; i < this.listGröße; i++) {
             Automatenobjekt ao = this.list[i];
             if(this.list[i] != null) {
                 if (ao.getHersteller().getName().equalsIgnoreCase(hersteller)) {
-                    this.löscheKuchen(i);
+                    this.löscheKuchen(ao.getFachnummer());
                 }
             }
         }
@@ -182,7 +189,7 @@ public class GeschäftslogikImpl implements Subjekt, Serializable {
     public Set<Allergen> getAllergenList(boolean b) {
         HashSet<Allergen> copy;
         this.allergenList.clear();
-        for (int i = 0; i < this.fachnummer; i++) {
+        for (int i = 0; i < this.getLength(); i++) {
             Automatenobjekt ao = this.list[i];
             this.allergenList.addAll(ao.getAllergene());
         }

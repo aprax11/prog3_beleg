@@ -341,8 +341,7 @@ public class GeschäftslogikImplTest {
         }
         this.gl.löscheKuchen(1);
         Automatenobjekt[] res = this.gl.listKuchen(null);
-        Automatenobjekt kuchen = res[1];
-        assertEquals(1, kuchen.getFachnummer());
+
         assertEquals(KremkuchenImpl.class, res[0].getClass());
         assertEquals(ObsttorteImpl.class, res[1].getClass());
     }
@@ -371,7 +370,7 @@ public class GeschäftslogikImplTest {
             this.gl.addKuchen("Kremkuchen",KREMSORTE, HERSTELLER, allergens, NÄHRWERT, DURATION,"", PREIS);
             this.gl.addKuchen("Kremkuchen",KREMSORTE, HERSTELLER, allergens, NÄHRWERT, DURATION,"", PREIS);
         }
-        this.gl.löscheKuchen(2);
+        this.gl.löscheKuchen(3);
         Automatenobjekt[]res = this.gl.listKuchen(null);
         assertEquals(2, res.length);
     }
@@ -405,21 +404,11 @@ public class GeschäftslogikImplTest {
     }
 
     @Test
-    public void getFachnummerLoweringTest() throws InterruptedException {
-        if(this.gl.addHersteller(HERSTELLER)) {
-            this.gl.addKuchen("Kremkuchen",KREMSORTE, HERSTELLER, allergens, NÄHRWERT, DURATION,"", PREIS);
-            this.gl.addKuchen("Kremkuchen",KREMSORTE, HERSTELLER, allergens, NÄHRWERT, DURATION,"", PREIS);
-            this.gl.löscheKuchen(1);
-        }
-        assertEquals(1, this.gl.getFachnummer());
-    }
-
-    @Test
     public void getFachnummerLoweringEmptyTest() throws InterruptedException {
         if(this.gl.addHersteller(HERSTELLER)) {
             this.gl.addKuchen("Kremkuchen",KREMSORTE, HERSTELLER, allergens, NÄHRWERT, DURATION,"", PREIS);
             this.gl.addKuchen("Kremkuchen",KREMSORTE, HERSTELLER, allergens, NÄHRWERT, DURATION,"", PREIS);
-            this.gl.löscheKuchen(2);
+            this.gl.löscheKuchen(3);
         }
         assertEquals(2, this.gl.getFachnummer());
     }

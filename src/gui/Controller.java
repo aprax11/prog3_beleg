@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import persistence.Jos;
 
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -18,10 +19,10 @@ import java.time.temporal.Temporal;
 import java.util.*;
 
 public class Controller {
-    private static final Hersteller[] HERSTELLERS = {new HerstellerImpl("Paul"), new HerstellerImpl("Peter"), new HerstellerImpl("Hans")};
     private GeschäftslogikImpl gl;
     private List<Automatenobjekt> lsit = new ArrayList<>();
     private HashMap<Hersteller, Integer> herstellerList = new HashMap<>();
+    private String state = "null";
 
     @FXML
     private TableView tableView;
@@ -75,6 +76,12 @@ public class Controller {
     private Button inspectButton;
     @FXML
     private Button kuchenType;
+    @FXML
+    private Button kuchenNormal;
+    @FXML
+    private Button saveJOS;
+    @FXML
+    private Button loadJOS;
 
 
     @FXML
@@ -85,9 +92,7 @@ public class Controller {
         this.addHersteller.setDisable(true);
         this.removeHersteller.setDisable(true);
         this.kuchenartGruppe.selectToggle(obstkuchen);
-        for(Hersteller h : HERSTELLERS) {
-            this.gl.addHersteller(h);
-        }
+
         TableColumn<ShowKuchen, Integer> fachnummerColumn = new TableColumn<>("Fachnummer");
         fachnummerColumn.setCellValueFactory(new PropertyValueFactory<>("fachnummer"));
         TableColumn<ShowKuchen, String> herstellerColumn = new TableColumn<>("Hersteller");
@@ -109,7 +114,7 @@ public class Controller {
 
         this.tableView2.getColumns().add(herstellerColumn2);
         this.tableView2.getColumns().add(anzahlColumn);
-        this.updateKuchenList("null");
+        this.updateKuchenList(this.state);
         this.updateHerstellerList();
     }
     @FXML
@@ -122,7 +127,7 @@ public class Controller {
             } catch (Exception ignore) {
             }
         }
-        this.updateKuchenList("null");
+        this.updateKuchenList(this.state);
         this.updateHerstellerList();
         }
     @FXML
@@ -151,7 +156,7 @@ public class Controller {
             String text = this.herstellerField.getText();
             Hersteller hersteller = new HerstellerImpl(text);
             this.gl.addHersteller(hersteller);
-            this.updateKuchenList("null");
+            this.updateKuchenList(this.state);
             this.updateHerstellerList();
         }
     }
@@ -161,7 +166,7 @@ public class Controller {
             String text = this.herstellerField.getText();
             this.gl.löscheHersteller(text);
             this.updateHerstellerList();
-            this.updateKuchenList("null");
+            this.updateKuchenList(this.state);
         }
     }
     @FXML
@@ -176,6 +181,14 @@ public class Controller {
         if(e.getSource().equals(this.fehlendA)) {
             Set<Allergen> set = this.gl.getAllergenList(false);
             this.allergeneLabel.setText(set.toString());
+        }
+    }
+    @FXML
+    public void showAllKuchen(ActionEvent e) {
+        if(e.getSource().equals(this.kuchenNormal)) {
+            this.state = "null";
+            this.updateHerstellerList();
+            this.updateKuchenList(this.state);
         }
     }
 
@@ -194,9 +207,9 @@ public class Controller {
     public void showType(ActionEvent e) {
         if(e.getSource().equals(this.kuchenType)) {
             RadioButton selected = (RadioButton) this.kuchenartGruppe.getSelectedToggle();
-            String name = selected.getText();
+            this.state = selected.getText();
             this.updateHerstellerList();
-            this.updateKuchenList(name);
+            this.updateKuchenList(this.state);
         }
     }
     @FXML
@@ -221,12 +234,27 @@ public class Controller {
             int nährwert = Integer.parseInt(pars[0]);
             String tage = this.durationPicker.getText();
             Duration duration = Duration.ofDays(Long.parseLong(tage));
-            BigDecimal preis = new BigDecimal(this.preis.getText());
+            String preisStr = this.preis.getText().replace(",",".");
+            BigDecimal preis = new BigDecimal(preisStr);
             this.gl.addKuchen(name, this.kremsorte.getText(), hersteller,allergens, nährwert, duration, this.obstsorte.getText(), preis);
         } catch (Exception e) {
         }
-        this.updateKuchenList("null");
+        this.updateKuchenList(this.state);
         this.updateHerstellerList();
+    }
+    @FXML
+    public void safeJOS(ActionEvent e) {
+        if(e.getSource().equals(this.saveJOS)) {
+            Jos.serialize("GUISafe", this.gl);
+        }
+    }
+    @FXML
+    public void loadJOS(ActionEvent e) {
+        if(e.getSource().equals(this.loadJOS)) {
+            this.gl = Jos.deserialize("GUISafe");
+            this.updateHerstellerList();
+            this.updateKuchenList(this.state);
+        }
     }
 
     public void updateKuchenList(String type) {
