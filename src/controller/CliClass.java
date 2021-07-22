@@ -72,8 +72,7 @@ public class CliClass {
 
             if (this.lastCommand.equals(":c")) {
                 if (parse.length == 1) {
-                    Hersteller hersteller = new HerstellerImpl(parse[0]);
-                    AddHerstellerEvent addHerstellerEvent = new AddHerstellerEvent(this, hersteller, true, false);
+                    AddHerstellerEvent addHerstellerEvent = new AddHerstellerEvent(this, parse[0], true, false);
                     this.herstellerEventHandler.handle(addHerstellerEvent);
 
                 } else if (parse.length > 6) {
@@ -146,8 +145,7 @@ public class CliClass {
                     DeleteKuchenEvent deleteKuchenEvent = new DeleteKuchenEvent(this, pos, false);
                     this.deleteKuchenEventHandler.handle(deleteKuchenEvent);
                 } else if (this.checkString(s1)) {
-                    Hersteller hersteller = new HerstellerImpl(s1);
-                    AddHerstellerEvent addHerstellerEvent = new AddHerstellerEvent(this, hersteller, false, false);
+                    AddHerstellerEvent addHerstellerEvent = new AddHerstellerEvent(this, s1, false, false);
                     this.herstellerEventHandler.handle(addHerstellerEvent);
                 }
             } else if (this.lastCommand.equals(":r")) {

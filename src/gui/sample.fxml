@@ -20,6 +20,8 @@
 
            <TextField fx:id="positionField" onKeyReleased="#handleKeyReleased" prefHeight="25.0" prefWidth="50.0" GridPane.columnIndex="0" GridPane.rowIndex="12" promptText="Fachnummer" />
            <Button fx:id="löschenButton" mnemonicParsing="false" onAction="#onButtonClicked" text="Position löschen" BorderPane.alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+           <Button fx:id="inspectButton" mnemonicParsing="false" onAction="#inspect" text="Position inzpizieren" prefWidth="150.0" BorderPane.alignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="12" />
+
            <TextField fx:id="herstellerField" onKeyReleased="#handleKeyReleased"  prefHeight="25.0" prefWidth="90.0" GridPane.columnIndex="0" GridPane.rowIndex="1" promptText="Herstellername"/>
            <Button fx:id="addHersteller" onAction="#addHersteller"  prefHeight="25.0" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="1" text="Name hinzufügen"/>
            <Button fx:id="removeHersteller" onAction="#removeHersteller"  prefHeight="25.0" prefWidth="120.0" GridPane.columnIndex="2" GridPane.rowIndex="1" text="Name entfernen"/>
@@ -32,6 +34,8 @@
                <RadioButton fx:id="obsttorte" GridPane.columnIndex="1" GridPane.rowIndex="2" text="Obsttorte" toggleGroup="$kuchenartGruppe"/>
                <RadioButton fx:id="kremkuchen" GridPane.columnIndex="2" GridPane.rowIndex="2" text="Kremkuchen" toggleGroup="$kuchenartGruppe"/>
            </HBox>
+           <Button fx:id="kuchenType" mnemonicParsing="false" onAction="#showType" text="nur Kuchentyp zeigen" BorderPane.alignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+
            <Label GridPane.rowIndex="4" text="Allergene:"/>
 
            <HBox GridPane.rowIndex="5" GridPane.columnIndex="0" spacing="10" GridPane.columnSpan="3">

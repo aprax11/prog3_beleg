@@ -71,6 +71,10 @@ public class Controller {
     private Button fehlendA;
     @FXML
     private Label allergeneLabel;
+    @FXML
+    private Button inspectButton;
+    @FXML
+    private Button kuchenType;
 
 
     @FXML
@@ -105,7 +109,7 @@ public class Controller {
 
         this.tableView2.getColumns().add(herstellerColumn2);
         this.tableView2.getColumns().add(anzahlColumn);
-        this.updateKuchenList();
+        this.updateKuchenList("null");
         this.updateHerstellerList();
     }
     @FXML
@@ -118,7 +122,7 @@ public class Controller {
             } catch (Exception ignore) {
             }
         }
-        this.updateKuchenList();
+        this.updateKuchenList("null");
         this.updateHerstellerList();
         }
     @FXML
@@ -147,7 +151,7 @@ public class Controller {
             String text = this.herstellerField.getText();
             Hersteller hersteller = new HerstellerImpl(text);
             this.gl.addHersteller(hersteller);
-            this.updateKuchenList();
+            this.updateKuchenList("null");
             this.updateHerstellerList();
         }
     }
@@ -157,7 +161,7 @@ public class Controller {
             String text = this.herstellerField.getText();
             this.gl.löscheHersteller(text);
             this.updateHerstellerList();
-            this.updateKuchenList();
+            this.updateKuchenList("null");
         }
     }
     @FXML
@@ -176,14 +180,24 @@ public class Controller {
     }
 
     @FXML
-    public void list() {
-//        ListView<Automatenobjekt> list = new ListView<>();
-//        Automatenobjekt[] objekte = this.gl.listKuchen(null);
-//        ObservableList<Automatenobjekt> obl = FXCollections.observableArrayList();
-//        obl.addAll(Arrays.asList(objekte));
-//        list.setItems(obl);
-//        TableColumn<Automatenobjekt, Integer> fachnummerColumn = new TableColumn<>("Fachnummer");
-//        fachnummerColumn.setCellValueFactory(new PropertyValueFactory<>("fachnummer"));
+    public void inspect(ActionEvent e) {
+        if(e.getSource().equals(this.inspectButton)) {
+            try{
+                String pos = this.positionField.getText();
+                int posi = Integer.parseInt(pos);
+                this.gl.setInspektionsdatum(posi);
+            }catch(Exception ignored){
+            }
+        }
+    }
+    @FXML
+    public void showType(ActionEvent e) {
+        if(e.getSource().equals(this.kuchenType)) {
+            RadioButton selected = (RadioButton) this.kuchenartGruppe.getSelectedToggle();
+            String name = selected.getText();
+            this.updateHerstellerList();
+            this.updateKuchenList(name);
+        }
     }
     @FXML
     public void addeKuchen() {
@@ -211,13 +225,27 @@ public class Controller {
             this.gl.addKuchen(name, this.kremsorte.getText(), hersteller,allergens, nährwert, duration, this.obstsorte.getText(), preis);
         } catch (Exception e) {
         }
-        this.updateKuchenList();
+        this.updateKuchenList("null");
         this.updateHerstellerList();
     }
 
-    public void updateKuchenList() {
+    public void updateKuchenList(String type) {
         this.tableView.getItems().clear();
-        this.lsit = Arrays.asList(this.gl.listKuchen(null).clone());
+        switch(type) {
+            case "null":
+                this.lsit = Arrays.asList(this.gl.listKuchen(null).clone());
+                break;
+            case "Obstkuchen":
+                this.lsit = Arrays.asList(this.gl.listKuchen(ObstkuchenImpl.class).clone());
+                break;
+            case "Kremkuchen":
+                this.lsit = Arrays.asList(this.gl.listKuchen(KremkuchenImpl.class).clone());
+                break;
+            case "Obsttorte":
+                this.lsit = Arrays.asList(this.gl.listKuchen(ObsttorteImpl.class).clone());
+                break;
+        }
+
         ShowKuchen[] showlist = new ShowKuchen[this.lsit.size()];
         int count = 0;
         for(Automatenobjekt a : this.lsit) {

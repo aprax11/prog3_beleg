@@ -2,6 +2,7 @@ package controller;
 
 import automat.GeschäftslogikImpl;
 import automat.Hersteller;
+import automat.HerstellerImpl;
 import eventApi.AddHerstellerEvent;
 import eventApi.AddHerstellerEventListener;
 import eventApi.ReceiveHerstellerListEvent;
@@ -19,15 +20,16 @@ public class AddHerstellerEventListnerImpl implements AddHerstellerEventListener
     }
     @Override
     public void onAddHerstellerEvent(AddHerstellerEvent event) {
-        Hersteller hersteller = event.getHerstellerName();
+        String hersteller = event.getHerstellerName();
 
 
 
         if (!event.getShow()) {
             if (event.getBool()) {
-                this.gl.getGl().addHersteller(hersteller);
+                Hersteller h = new HerstellerImpl(hersteller);
+                this.gl.getGl().addHersteller(h);
             } else if (!(event.getBool())) {
-                this.gl.getGl().löscheHersteller(event.getHerstellerName().getName());
+                this.gl.getGl().löscheHersteller(hersteller);
             }
         } else if(event.getShow()) {
             HashMap<Hersteller, Integer> herstellerList = this.gl.getGl().getHerstellerList();

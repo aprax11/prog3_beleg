@@ -8,6 +8,7 @@ import eventApi.DeleteKuchenEventHandler;
 import eventApi.ReceiveKuchenListEventHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -35,15 +36,16 @@ public class AddHerstellerEventListenerTest {
         GlWrapper mockWrapper = mock(GlWrapper.class);
         AddHerstellerEventHandler handler = new AddHerstellerEventHandler();
         AddHerstellerEventListener listener = new AddHerstellerEventListnerImpl(mockWrapper);
+        final ArgumentCaptor<HerstellerImpl> herstellerArgumentCaptor = ArgumentCaptor.forClass(HerstellerImpl.class);
 
         when(mockWrapper.getGl()).thenReturn(mockGl);
 
-        Hersteller hersteller = new HerstellerImpl("Paul");
-        AddHerstellerEvent event = new AddHerstellerEvent(this, hersteller, true, false);
+        AddHerstellerEvent event = new AddHerstellerEvent(this, "Paul", true, false);
 
         handler.add(listener);
         handler.handle(event);
-        verify(mockGl).addHersteller(hersteller);
+        verify(mockGl).addHersteller(herstellerArgumentCaptor.capture());
+        assertEquals("Paul", herstellerArgumentCaptor.getValue().getName());
     }
 
     @Test
@@ -55,12 +57,11 @@ public class AddHerstellerEventListenerTest {
 
         when(mockWrapper.getGl()).thenReturn(mockGl);
 
-        Hersteller hersteller = new HerstellerImpl("Paul");
-        AddHerstellerEvent event = new AddHerstellerEvent(this, hersteller, false, false);
+        AddHerstellerEvent event = new AddHerstellerEvent(this, "Paul", false, false);
 
         handler.add(listener);
         handler.handle(event);
-        verify(mockGl).löscheHersteller(hersteller.getName());
+        verify(mockGl).löscheHersteller("Paul");
     }
     //TODO glaube der handler ist unnötig
     @Test
