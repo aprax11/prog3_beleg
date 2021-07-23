@@ -1,18 +1,19 @@
 package eventApi;
 
-import automat.Automatenobjekt;
+
+import automat.KuchenTypen;
 
 import java.util.EventObject;
 
 public class GetKuchenListEvent extends EventObject {
-    private Class<? extends Automatenobjekt> cl;
+    KuchenTypen cl;
 
-    public GetKuchenListEvent(Object source, Class<? extends Automatenobjekt> cl) {
+    public GetKuchenListEvent(Object source, KuchenTypen cl) {
         super(source);
         this.cl = cl;
     }
 
-    public Class<? extends Automatenobjekt> getCl() {
+    public KuchenTypen getCl() {
         return cl;
     }
 }

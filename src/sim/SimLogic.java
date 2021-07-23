@@ -1,15 +1,15 @@
 package sim;
 
 import automat.*;
+import automat.Container;
 
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class SimLogic {
     private GeschäftslogikImpl gl;
-    private Automatenobjekt[] list;
+    private GanzerKuchen[] list;
     private final Hersteller[] herstellers = {new HerstellerImpl("paul"), new HerstellerImpl("peter"), new HerstellerImpl("willi")};
     private final String[] kuchennamen = {"Obsttorte", "Kremkuchen", "Obstkuchen"};
     private final String[]kresorten = {"butter", "sahne", "schoko"};
@@ -34,8 +34,24 @@ public class SimLogic {
         String obst = this.obstsorten[(int) (Math.random()*this.obstsorten.length)];
         BigDecimal preis = new BigDecimal((int)(Math.random()*13)+10);
         int pos = (int)(Math.random()*coll.size());
+        int kuchenTyp = new Random().nextInt(3);
 
-        this.gl.addKuchen(name, krem, h, Collections.singleton(coll.get(pos)), nährwert, duration, obst, preis);
+        switch(kuchenTyp) {
+            case 0:
+                Container boden = new Container(h, allergens, nährwert, duration, preis, "Obstkuchen", KuchenTypen.Obstkuchen);
+                this.gl.addKuchen(new ArrayList<>(), boden);
+                break;
+            case 1:
+                Container boden2 = new Container(h, allergens, nährwert, duration, preis, "Obsttorte", KuchenTypen.Obsttorte);
+                this.gl.addKuchen(new ArrayList<>(), boden2);
+                break;
+            case 2:
+                Container boden3 = new Container(h, allergens, nährwert, duration, preis, "Kremkuchen", KuchenTypen.Kremkuchen);
+                this.gl.addKuchen(new ArrayList<>(), boden3);
+                break;
+        }
+
+
         System.out.println("Kuchen wurde eingefügt"); //TODO: + thread name
     }
     public void removeRandomKuchen() throws InterruptedException {
@@ -54,7 +70,7 @@ public class SimLogic {
     public synchronized void löscheÄltesten() throws InterruptedException {
         while(!this.isFull()) wait();
         if (!this.isFull()) throw new IllegalStateException();
-        Automatenobjekt obj = this.getOldest(this.gl.listKuchen(null));
+        GanzerKuchen obj = this.getOldest(this.gl.listKuchen(null));
         this.gl.löscheKuchen(obj.getFachnummer());
         System.out.println("Kuchen gelöscht");
         notifyAll();
@@ -68,7 +84,7 @@ public class SimLogic {
     public synchronized void deleteSim3(Random rand) throws InterruptedException {
         while (!this.isFull()) wait();
         if (!this.isFull()) throw new IllegalStateException();
-        List<Automatenobjekt> list = this.getOldestList(this.gl.listKuchen(null));
+        List<GanzerKuchen> list = this.getOldestList(this.gl.listKuchen(null));
         int anzahl = rand.nextInt(this.gl.getFachnummer());
 
         for (int i = 0; i < anzahl; i++) {
@@ -77,24 +93,24 @@ public class SimLogic {
         }
         notifyAll();
     }
-    public synchronized Automatenobjekt getOldest(Automatenobjekt[] list) {
-        Automatenobjekt oldest = list[0];
-        for(Automatenobjekt a : list) {
+    public synchronized GanzerKuchen getOldest(GanzerKuchen[] list) {
+        GanzerKuchen oldest = list[0];
+        for(GanzerKuchen a : list) {
             if(a.getInspektionsdatum().before(oldest.getInspektionsdatum())) {
                 oldest = a;
             }
         }
         return oldest;
     }
-    private synchronized List<Automatenobjekt> getOldestList(Automatenobjekt[] got) {
+    private synchronized List<GanzerKuchen> getOldestList(GanzerKuchen[] got) {
         Date date = got[0].getInspektionsdatum();
-        List<Automatenobjekt> list = new ArrayList<>();
-        for(Automatenobjekt a : got) {
+        List<GanzerKuchen> list = new ArrayList<>();
+        for(GanzerKuchen a : got) {
             if(a.getInspektionsdatum().compareTo(date) < 0) {
                 date = a.getInspektionsdatum();
             }
         }
-        for(Automatenobjekt a : got) {
+        for(GanzerKuchen a : got) {
             if(a.getInspektionsdatum().compareTo(date) == 0) {
                 list.add(a);
             }

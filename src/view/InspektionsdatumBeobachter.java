@@ -1,6 +1,7 @@
 package view;
 
-import automat.Automatenobjekt;
+
+import automat.GanzerKuchen;
 import automat.GeschäftslogikImpl;
 import beobachterMusterInterfaces.Beobachter;
 
@@ -16,16 +17,16 @@ public class InspektionsdatumBeobachter implements Beobachter {
         this.gl.meldeAn(this);
     }
     private void updateHash() {
-        Automatenobjekt[] list = this.gl.listKuchen(null);
-        for (Automatenobjekt a : list) {
+        GanzerKuchen[] list = this.gl.listKuchen(null);
+        for (GanzerKuchen a : list) {
             this.oldState.add(a.getInspektionsdatum());
         }
     }
 
     @Override
     public void aktualisiere() {
-        Automatenobjekt[] newState = this.gl.listKuchen(null);
-        for(Automatenobjekt a : newState) {
+        GanzerKuchen[] newState = this.gl.listKuchen(null);
+        for(GanzerKuchen a : newState) {
             if (!(this.oldState.contains(a.getInspektionsdatum()))) {
                 System.out.println("Inspektionsdatum geändert");
                 this.updateHash();

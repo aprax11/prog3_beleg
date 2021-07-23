@@ -1,7 +1,7 @@
 package persistenz;
 
 import automat.Allergen;
-import automat.Automatenobjekt;
+
 import automat.GeschäftslogikImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

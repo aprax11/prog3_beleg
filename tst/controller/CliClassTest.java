@@ -30,8 +30,7 @@ class CliClassTest {
         verify(mockHandler).handle(eventArgumentCaptor.capture());
         AddHerstellerEvent event = eventArgumentCaptor.getValue();
 
-        assertEquals("Paul", event.getHerstellerName());
-        assertTrue(event.getBool());
+        assertTrue("Paul".equals(event.getHerstellerName()) && event.getBool());
     }
 
     @Test
@@ -74,6 +73,7 @@ class CliClassTest {
             fail();
         }
         cli.handeln("hersteller");
+
         verify(mockHandler).handle(eventArgumentCaptor.capture());
         AddHerstellerEvent event = eventArgumentCaptor.getValue();
 

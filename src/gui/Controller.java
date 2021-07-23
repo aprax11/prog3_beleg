@@ -1,8 +1,7 @@
 package gui;
 
 import automat.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import automat.Container;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -12,15 +11,11 @@ import persistence.Jos;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.chrono.ChronoLocalDate;
-import java.time.chrono.Chronology;
-import java.time.temporal.Temporal;
 import java.util.*;
 
 public class Controller {
     private GeschäftslogikImpl gl;
-    private List<Automatenobjekt> lsit = new ArrayList<>();
+    private List<GanzerKuchen> lsit = new ArrayList<>();
     private HashMap<Hersteller, Integer> herstellerList = new HashMap<>();
     private String state = "null";
 
@@ -216,6 +211,18 @@ public class Controller {
     public void addeKuchen() {
         RadioButton selected = (RadioButton) this.kuchenartGruppe.getSelectedToggle();
         String name = selected.getText();
+        KuchenTypen typ = null;
+        switch(name) {
+            case "Obstkuchen":
+                typ = KuchenTypen.Obstkuchen;
+                break;
+            case "Obsttorte":
+                typ = KuchenTypen.Obsttorte;
+                break;
+            case "Kremkuchen":
+                typ = KuchenTypen.Kremkuchen;
+                break;
+        }
 
         HashSet<Allergen> allergens = new HashSet<>();
         if (this.gluten.isSelected()) {
@@ -236,7 +243,12 @@ public class Controller {
             Duration duration = Duration.ofDays(Long.parseLong(tage));
             String preisStr = this.preis.getText().replace(",",".");
             BigDecimal preis = new BigDecimal(preisStr);
-            this.gl.addKuchen(name, this.kremsorte.getText(), hersteller,allergens, nährwert, duration, this.obstsorte.getText(), preis);
+            ArrayList<Container> liste = new ArrayList<>();
+            Container boden = new Container(hersteller, null, 0, null, null, null, typ);
+            Container belag = new Container(null, allergens, nährwert, duration, preis, "", null);
+            liste.add(belag);
+
+            this.gl.addKuchen(liste, boden);
         } catch (Exception e) {
         }
         this.updateKuchenList(this.state);
@@ -264,20 +276,20 @@ public class Controller {
                 this.lsit = Arrays.asList(this.gl.listKuchen(null).clone());
                 break;
             case "Obstkuchen":
-                this.lsit = Arrays.asList(this.gl.listKuchen(ObstkuchenImpl.class).clone());
+                this.lsit = Arrays.asList(this.gl.listKuchen(KuchenTypen.Obstkuchen).clone());
                 break;
             case "Kremkuchen":
-                this.lsit = Arrays.asList(this.gl.listKuchen(KremkuchenImpl.class).clone());
+                this.lsit = Arrays.asList(this.gl.listKuchen(KuchenTypen.Kremkuchen).clone());
                 break;
             case "Obsttorte":
-                this.lsit = Arrays.asList(this.gl.listKuchen(ObsttorteImpl.class).clone());
+                this.lsit = Arrays.asList(this.gl.listKuchen(KuchenTypen.Obsttorte).clone());
                 break;
         }
 
         ShowKuchen[] showlist = new ShowKuchen[this.lsit.size()];
         int count = 0;
-        for(Automatenobjekt a : this.lsit) {
-            ShowKuchen obj = new ShowKuchen(a.getHersteller().getName(), a.getVerbleibendeHaltbarkeit(new Date()).toDays(), a.getFachnummer(), a.getInspektionsdatum());
+        for(GanzerKuchen a : this.lsit) {
+            ShowKuchen obj = new ShowKuchen(a.getHersteller().getName(), a.verbleibendeHaltbarkeit(new Date()).toDays(), a.getFachnummer(), a.getInspektionsdatum());
             showlist[count] = obj;
             count++;
         }

@@ -1,9 +1,7 @@
 package view;
 
-import automat.Allergen;
-import automat.GeschäftslogikImpl;
-import automat.Hersteller;
-import automat.HerstellerImpl;
+import automat.*;
+import automat.Container;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -11,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -31,15 +30,16 @@ class KapazitätBeobachterTest {
         gl.addHersteller(hersteller);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(byteArrayOutputStream));
-        gl.addKuchen("Kremkuchen", "krem", hersteller, allergens, 123, duration, "obst", preis);
-        gl.addKuchen("Kremkuchen", "krem", hersteller, allergens, 123, duration, "obst", preis);
-        gl.addKuchen("Kremkuchen", "krem", hersteller, allergens, 123, duration, "obst", preis);
-        gl.addKuchen("Kremkuchen", "krem", hersteller, allergens, 123, duration, "obst", preis);
-        gl.addKuchen("Kremkuchen", "krem", hersteller, allergens, 123, duration, "obst", preis);
-        gl.addKuchen("Kremkuchen", "krem", hersteller, allergens, 123, duration, "obst", preis);
-        gl.addKuchen("Kremkuchen", "krem", hersteller, allergens, 123, duration, "obst", preis);
-        gl.addKuchen("Kremkuchen", "krem", hersteller, allergens, 123, duration, "obst", preis);
-        gl.addKuchen("Kremkuchen", "krem", hersteller, allergens, 123, duration, "obst", preis);
+        gl.addKuchen(new ArrayList<>(), new Container(hersteller, allergens, 123, duration, preis, "krem", KuchenTypen.Kremkuchen));
+        gl.addKuchen(new ArrayList<>(), new Container(hersteller, allergens, 123, duration, preis, "krem", KuchenTypen.Kremkuchen));
+        gl.addKuchen(new ArrayList<>(), new Container(hersteller, allergens, 123, duration, preis, "krem", KuchenTypen.Kremkuchen));
+        gl.addKuchen(new ArrayList<>(), new Container(hersteller, allergens, 123, duration, preis, "krem", KuchenTypen.Kremkuchen));
+        gl.addKuchen(new ArrayList<>(), new Container(hersteller, allergens, 123, duration, preis, "krem", KuchenTypen.Kremkuchen));
+        gl.addKuchen(new ArrayList<>(), new Container(hersteller, allergens, 123, duration, preis, "krem", KuchenTypen.Kremkuchen));
+        gl.addKuchen(new ArrayList<>(), new Container(hersteller, allergens, 123, duration, preis, "krem", KuchenTypen.Kremkuchen));
+        gl.addKuchen(new ArrayList<>(), new Container(hersteller, allergens, 123, duration, preis, "krem", KuchenTypen.Kremkuchen));
+        gl.addKuchen(new ArrayList<>(), new Container(hersteller, allergens, 123, duration, preis, "krem", KuchenTypen.Kremkuchen));
+
 
         assertEquals("Füllstand von 90% wurde erreicht"+System.lineSeparator(), byteArrayOutputStream.toString());
         byteArrayOutputStream.close();
@@ -60,7 +60,7 @@ class KapazitätBeobachterTest {
         gl.addHersteller(hersteller);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(byteArrayOutputStream));
-        gl.addKuchen("Kremkuchen", "krem", hersteller, allergens, 123, duration, "obst", preis);
+        gl.addKuchen(new ArrayList<>(), new Container(hersteller, allergens, 123, duration, preis, "krem", KuchenTypen.Kremkuchen));;
 
         assertEquals("" ,byteArrayOutputStream.toString());
         byteArrayOutputStream.close();

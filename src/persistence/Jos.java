@@ -17,26 +17,22 @@ public class Jos {
     public static void write(ObjectOutputStream oos, GeschäftslogikImpl gl) {
         try {
             oos.writeObject(gl);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
     }
     public static GeschäftslogikImpl deserialize(String filename) {
         try{
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename));
             return read(ois);
-        }catch(Exception e) {
-            e.printStackTrace();
+        }catch(Exception ignored) {
         }
         return null;
     }
     public static GeschäftslogikImpl read(ObjectInput objectInput) {
         try {
             return (GeschäftslogikImpl) objectInput.readObject();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (ClassNotFoundException ignored) {
+        } catch (IOException ignored) {
         }
         return null;
     }

@@ -1,6 +1,7 @@
 package controller;
 
-import automat.Automatenobjekt;
+
+import automat.GanzerKuchen;
 import automat.GeschäftslogikImpl;
 import controller.GlWrapper;
 import eventApi.GetKuchenListEvent;
@@ -17,7 +18,7 @@ public class GetKuchenEventListenerImpl implements GetKuchenListEventListener {
     }
     @Override
     public void onGetKuchenEvent(GetKuchenListEvent event) {
-        Automatenobjekt[] list = this.gl.getGl().listKuchen(event.getCl());
+        GanzerKuchen[] list = this.gl.getGl().listKuchen(event.getCl());
         ReceiveKuchenListEvent event2 = new ReceiveKuchenListEvent(this, list);
         this.receiveKuchenListEventHandler.handle(event2);
     }

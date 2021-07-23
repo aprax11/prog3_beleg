@@ -1,6 +1,6 @@
 package sim;
 
-import automat.Automatenobjekt;
+
 import automat.GeschäftslogikImpl;
 import automat.Verkaufsobjekt;
 

@@ -5,10 +5,7 @@ import eventApi.*;
 
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Scanner;
+import java.util.*;
 
 public class CliClass {
     private String lastCommand = ":c";
@@ -57,7 +54,6 @@ public class CliClass {
         return true;
     }
     public void handeln(String s1) {
-
         String[] parse = s1.split(" ");
         if (!(parse.length == 0)) {
             boolean korrektheit = true;
@@ -69,73 +65,85 @@ public class CliClass {
             int nährwert = 0;
             Duration haltbarkeit = null;
             Collection<Allergen> allergens = null;
+            KuchenTypen typ = null;
+            Container boden = null;
+            ArrayList<Container> liste = new ArrayList<>();
 
             if (this.lastCommand.equals(":c")) {
                 if (parse.length == 1) {
                     AddHerstellerEvent addHerstellerEvent = new AddHerstellerEvent(this, parse[0], true, false);
                     this.herstellerEventHandler.handle(addHerstellerEvent);
 
-                } else if (parse.length > 6) {
-                    if (this.checkString(parse[0])) {
-                        switch (parse[0]) {
-                            case "Obstkuchen":
-                                name = "Obstkuchen";
-                                obstsorte = parse[6];
-                                break;
-                            case "Kremkuchen":
-                                name = "Kremkuchen";
-                                kremsorte = parse[6];
-                                break;
-                            case "Obsttorte":
-                                name = "Obsttorte";
-                                obstsorte = parse[6];
-                                if (parse.length > 7) {
-                                    kremsorte = parse[7];
-                                    break;
-                                } else {
-                                    korrektheit = false;
-                                    break;
-                                }
-                            default:
-                                korrektheit = false;
-                        }
-                    } else {
-                        korrektheit = false;
+                } else if (parse.length >= 2) {
+                    switch (parse[0]) {
+                        case "Kremkuchen":
+                            typ = KuchenTypen.Kremkuchen;
+                            break;
+                        case "Obstkuchen":
+                            typ = KuchenTypen.Obstkuchen;
+                            break;
+                        case "Obsttorte":
+                            typ = KuchenTypen.Obsttorte;
+                            break;
+                        default:
+                            korrektheit = false;
                     }
                     if (this.checkString(parse[1])) {
                         herstellerNameKuchen = new HerstellerImpl(parse[1]);
                     } else {
                         korrektheit = false;
                     }
-                    String[] konv = parse[2].split(",");
-                    if (konv.length == 2) {
-                        String add = konv[0] + "." + konv[1];
-                        preis = new BigDecimal(add);
+                    if (korrektheit) {
+                        boden = new Container(herstellerNameKuchen, null, 0, null, null, null, typ);
                     }
-                    if (this.checkInt(parse[3])) {
-                        nährwert = Integer.parseInt(parse[3]);
-                    } else {
-                        korrektheit = false;
-                    }
-                    if (this.checkInt(parse[4])) {
-                        haltbarkeit = Duration.ofDays(Integer.parseInt(parse[4]));
-                    } else {
-                        korrektheit = false;
-                    }
-                    String[] parseAllergene = parse[5].split(",");
-                    allergens = new HashSet<>();
-                    if (parseAllergene.length > 0) {
-                        EnumSet<Allergen> allAllergens = EnumSet.allOf(Allergen.class);
-                        for (int i = 0; i < parseAllergene.length; i++) {
-                            for (Allergen a : allAllergens) {
-                                if (a.name().equalsIgnoreCase(parseAllergene[i])) {
-                                    allergens.add(a);
+                    if ((parse.length - 2) % 5 == 0) {
+                        int pos = 2;
+                        for (int i = 0; i < ((parse.length - 2) / 5); i++) {
+                            String[] konv = parse[pos].split(",");
+                            if (konv.length == 2) {
+                                String add = konv[0] + "." + konv[1];
+                                preis = new BigDecimal(add);
+                            } else {
+                                korrektheit = false;
+                            }
+                            pos++;
+                            if (this.checkInt(parse[pos])) {
+                                nährwert = Integer.parseInt(parse[pos]);
+                            } else {
+                                korrektheit = false;
+                            }
+                            pos++;
+                            if (this.checkInt(parse[pos])) {
+                                haltbarkeit = Duration.ofDays(Integer.parseInt(parse[pos]));
+                            } else {
+                                korrektheit = false;
+                            }
+                            pos++;
+                            String[] parseAllergene = parse[pos].split(",");
+                            allergens = new HashSet<>();
+                            if (parseAllergene.length > 0) {
+                                EnumSet<Allergen> allAllergens = EnumSet.allOf(Allergen.class);
+                                for (int j = 0; j < parseAllergene.length; j++) {
+                                    for (Allergen a : allAllergens) {
+                                        if (a.name().equalsIgnoreCase(parseAllergene[j])) {
+                                            allergens.add(a);
+                                        }
+                                    }
                                 }
                             }
+                            pos++;
+                            if (this.checkString(parse[pos])) {
+                                name = parse[pos];
+                            }
+                            pos++;
+                            Container belag = new Container(null, allergens, nährwert, haltbarkeit, preis, name, typ);
+                            liste.add(belag);
                         }
+                    } else {
+                        korrektheit = false;
                     }
                     if (korrektheit) {
-                        AddKuchenEvent addKuchenEvent = new AddKuchenEvent(this, name, kremsorte, herstellerNameKuchen, allergens, nährwert, haltbarkeit, obstsorte, preis);
+                        AddKuchenEvent addKuchenEvent = new AddKuchenEvent(this, liste, boden);
                         this.kuchenEventHandler.handle(addKuchenEvent);
                     }
                 }
@@ -149,9 +157,8 @@ public class CliClass {
                     this.herstellerEventHandler.handle(addHerstellerEvent);
                 }
             } else if (this.lastCommand.equals(":r")) {
-
                 String[] split = s1.split(" ");
-                Class<? extends Automatenobjekt> cl = null;
+                KuchenTypen typ1 = null;
                 switch (split[0]) {
                     case "kuchen":
                         if (split.length == 1) {
@@ -160,16 +167,16 @@ public class CliClass {
                         } else if (split.length == 2) {
                             switch (split[1]) {
                                 case "Kremkuchen":
-                                    cl = KremkuchenImpl.class;
+                                    typ1 = KuchenTypen.Kremkuchen;
                                     break;
                                 case "Obstkuchen":
-                                    cl = ObstkuchenImpl.class;
+                                    typ1 = KuchenTypen.Obstkuchen;
                                     break;
                                 case "Obsttorte":
-                                    cl = ObsttorteImpl.class;
+                                    typ1 = KuchenTypen.Obsttorte;
                                     break;
                             }
-                            GetKuchenListEvent getKuchenListEvent = new GetKuchenListEvent(this, cl);
+                            GetKuchenListEvent getKuchenListEvent = new GetKuchenListEvent(this, typ1);
                             this.getKuchenListEventHandler.handle(getKuchenListEvent);
                         }
                         break;
@@ -188,15 +195,14 @@ public class CliClass {
                                 this.getAllergenHandler.handle(event2);
                                 break;
                         }
-
                 }
             } else if (this.lastCommand.equals(":u")) {
                 if (this.checkInt(parse[0])) {
                     DeleteKuchenEvent event = new DeleteKuchenEvent(this, Integer.parseInt(parse[0]), true);
                     this.deleteKuchenEventHandler.handle(event);
                 }
-            }else if(this.lastCommand.equals(":p")) {
-                if(this.checkString(parse[0])) {
+            } else if (this.lastCommand.equals(":p")) {
+                if (this.checkString(parse[0])) {
                     switch (parse[0]) {
                         case "saveJOS":
                             JosEvent event = new JosEvent(this, true);
@@ -211,6 +217,7 @@ public class CliClass {
             }
         }
     }
+
 
     public void start() {
         try(Scanner s = new Scanner(System.in)) {

@@ -1,13 +1,10 @@
 package view;
 
-import automat.Allergen;
+import automat.*;
 import beobachterMusterInterfaces.Beobachter;
-import automat.Hersteller;
-import automat.HerstellerImpl;
-import automat.GeschäftslogikImpl;
-import org.junit.jupiter.api.Assertions;
+import automat.Container;
 import org.junit.jupiter.api.Test;
-import org.mockito.InOrder;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.ByteArrayOutputStream;
@@ -15,10 +12,10 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
-import static org.mockito.Mockito.*;
 public class AllergenBeobachterTest {
 
     @Test
@@ -34,7 +31,7 @@ public class AllergenBeobachterTest {
         gl.addHersteller(hersteller);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(byteArrayOutputStream));
-        gl.addKuchen("Kremkuchen", "krem", hersteller, allergens, 123, duration, "obst", preis);
+        gl.addKuchen(new ArrayList<>(), new Container(hersteller, allergens, 123, duration, preis, "krem", KuchenTypen.Kremkuchen));
         assertEquals("allergen(e) hinzugefügt [Gluten]"+System.lineSeparator(), byteArrayOutputStream.toString());
         byteArrayOutputStream.close();
         System.setOut(System.out);
@@ -75,7 +72,7 @@ public class AllergenBeobachterTest {
         allergens.add(Allergen.Gluten);
 
         gl.addHersteller(hersteller);
-        gl.addKuchen("Kremkuchen", "krem", hersteller, allergens, 123, duration, "obst", preis);
+        gl.addKuchen(new ArrayList<>(), new Container(hersteller, allergens, 123, duration, preis, "krem", KuchenTypen.Kremkuchen));
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(byteArrayOutputStream));
         gl.löscheKuchen(0);
