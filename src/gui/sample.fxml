@@ -53,8 +53,7 @@
            <TextField fx:id="preis" onKeyReleased="#handleKeyReleased"  prefHeight="25.0" prefWidth="70.0" GridPane.columnIndex="1" GridPane.rowIndex="7" promptText="Preis"/>
            <Label GridPane.rowIndex="8" text="Kalorien:"/>
            <Spinner fx:id="kalorien" GridPane.rowIndex="9" min="0" max="999999" editable="true"/>
-           <TextField fx:id="kremsorte" GridPane.rowIndex="9" GridPane.columnIndex="1" promptText="Kremsorte(can be empty)"/>
-           <TextField fx:id="obstsorte" GridPane.rowIndex="10" GridPane.columnIndex="0" promptText="obstsorte(can be empty)"/>
+           <TextField fx:id="kuchenName" GridPane.rowIndex="9" GridPane.columnIndex="1" promptText="Kuchen Name"/>
            <Button fx:id="einfügeButton" mnemonicParsing="false" onAction="#addeKuchen" text="Kuchen adden" BorderPane.alignment="CENTER" GridPane.rowIndex="11" />
 
        </GridPane>

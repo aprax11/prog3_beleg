@@ -58,9 +58,7 @@ public class Controller {
     @FXML
     private Spinner kalorien;
     @FXML
-    private TextField kremsorte;
-    @FXML
-    private TextField obstsorte;
+    private TextField kuchenName;
     @FXML
     private Button vorhandenA;
     @FXML
@@ -236,6 +234,7 @@ public class Controller {
         }
         try {
             Hersteller hersteller = new HerstellerImpl(this.herstellerField.getText());
+            String nameKuchen = this.kuchenName.getText();
             String split = this.kalorien.getValue().toString();
             String[] pars = split.split("\\.");
             int nährwert = Integer.parseInt(pars[0]);
@@ -245,7 +244,7 @@ public class Controller {
             BigDecimal preis = new BigDecimal(preisStr);
             ArrayList<Container> liste = new ArrayList<>();
             Container boden = new Container(hersteller, null, 0, null, null, null, typ);
-            Container belag = new Container(null, allergens, nährwert, duration, preis, "", null);
+            Container belag = new Container(null, allergens, nährwert, duration, preis, nameKuchen, null);
             liste.add(belag);
 
             this.gl.addKuchen(liste, boden);
