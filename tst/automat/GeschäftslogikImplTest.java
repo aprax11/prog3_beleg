@@ -409,9 +409,6 @@ public class GeschäftslogikImplTest { //TODO before each
         assertEquals(2, this.gl.getFachnummer());
     }
 
-
-
-
     @Test
     public void getListGrößteTest() {
         assertEquals(3, this.gl.getListGröße());

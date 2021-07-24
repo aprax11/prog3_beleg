@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class KapazitätBeobachterTest {
     @Test
-    public void füllgradTest() throws InterruptedException, IOException {
+    public void füllgradTest() {
         GeschäftslogikImpl gl = new GeschäftslogikImpl(10);
         KapazitätBeobachter beobachter = new KapazitätBeobachter(gl);
 
@@ -42,12 +42,16 @@ class KapazitätBeobachterTest {
 
 
         assertEquals("Füllstand von 90% wurde erreicht"+System.lineSeparator(), byteArrayOutputStream.toString());
-        byteArrayOutputStream.close();
+        try {
+            byteArrayOutputStream.close();
+        } catch (IOException e) {
+
+        }
         System.setOut(System.out);
     }
 
     @Test
-    public void füllgradNoSoutTest() throws InterruptedException, IOException {
+    public void füllgradNoSoutTest() {
         GeschäftslogikImpl gl = new GeschäftslogikImpl(10);
         KapazitätBeobachter beobachter = new KapazitätBeobachter(gl);
 
@@ -63,7 +67,11 @@ class KapazitätBeobachterTest {
         gl.addKuchen(new ArrayList<>(), new Container(hersteller, allergens, 123, duration, preis, "krem", KuchenTypen.Kremkuchen));;
 
         assertEquals("" ,byteArrayOutputStream.toString());
-        byteArrayOutputStream.close();
+        try {
+            byteArrayOutputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         System.setOut(System.out);
     }
 }

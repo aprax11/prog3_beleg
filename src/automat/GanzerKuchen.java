@@ -5,14 +5,8 @@ import java.time.Duration;
 import java.util.Collection;
 import java.util.Date;
 
-public interface GanzerKuchen {
-    Hersteller getHersteller();
-    Collection<Allergen> getAllergene();
-    int getNaehrwert();
-    Duration getHaltbarkeit();
-    BigDecimal getPreis();
-    Date getInspektionsdatum();
-    int getFachnummer();
+public interface GanzerKuchen extends Verkaufsobjekt, Kuchen {
+
     Date getEinfügeDate();
     String getName();
     KuchenTypen getKuchenTyp();

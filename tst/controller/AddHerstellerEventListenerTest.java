@@ -65,7 +65,7 @@ public class AddHerstellerEventListenerTest {
     }
     //TODO glaube der handler ist unnötig
     @Test
-    public void showHerstellerListenerTest() throws InterruptedException {
+    public void showHerstellerListenerTest() {
         GeschäftslogikImpl mockGl = mock(GeschäftslogikImpl.class);
         GlWrapper mockWrapper = mock(GlWrapper.class);
 
@@ -83,7 +83,7 @@ public class AddHerstellerEventListenerTest {
         verify(mockGl).getHerstellerList();
     }
     @Test
-    public void showReceiveHerstellerListenerTest() throws InterruptedException {
+    public void showReceiveHerstellerListenerTest() {
         GeschäftslogikImpl mockGl = mock(GeschäftslogikImpl.class);
         GlWrapper mockWrapper = mock(GlWrapper.class);
 

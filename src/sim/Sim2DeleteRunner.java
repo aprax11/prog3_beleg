@@ -10,11 +10,7 @@ public class Sim2DeleteRunner implements  Runnable{
     @Override
     public void run() {
         while(true) {
-            try {
-                this.sim.löscheÄltesten();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            this.sim.löscheÄltesten();
         }
     }
 }

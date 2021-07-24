@@ -15,11 +15,9 @@ public class EinfügeRunner implements Runnable{
     @Override
     public void run() {
         while(true) {
-            try {
-                this.sim.addRandomKuchen();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
+            this.sim.addRandomKuchen();
+
         }
     }
 }

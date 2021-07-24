@@ -10,11 +10,9 @@ public class Sim3EinfügeRunner implements Runnable{
     @Override
     public void run() {
         while(true) {
-            try {
-                this.sim.einfügenSim2();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
+            this.sim.einfügenSim2();
+
         }
     }
 }

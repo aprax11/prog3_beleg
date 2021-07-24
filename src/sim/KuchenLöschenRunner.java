@@ -16,11 +16,7 @@ public class KuchenLöschenRunner implements Runnable {
     @Override
     public void run() {
         while (true) {
-            try {
-                this.sim.removeRandomKuchen();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            this.sim.removeRandomKuchen();
 
         }
     }

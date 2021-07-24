@@ -12,11 +12,7 @@ public class Sim3DeleteRunner implements Runnable{
     @Override
     public void run() {
         while(true) {
-            try {
-                this.sim.deleteSim3(new Random(System.currentTimeMillis()));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            this.sim.deleteSim3(new Random(System.currentTimeMillis()));
         }
     }
 }

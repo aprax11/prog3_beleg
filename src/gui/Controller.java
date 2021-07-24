@@ -2,6 +2,8 @@ package gui;
 
 import automat.*;
 import automat.Container;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -18,6 +20,8 @@ public class Controller {
     private List<GanzerKuchen> lsit = new ArrayList<>();
     private HashMap<Hersteller, Integer> herstellerList = new HashMap<>();
     private String state = "null";
+
+    private StringProperty allergeneString = new SimpleStringProperty();
 
     @FXML
     private TableView tableView;
@@ -109,6 +113,8 @@ public class Controller {
         this.tableView2.getColumns().add(anzahlColumn);
         this.updateKuchenList(this.state);
         this.updateHerstellerList();
+
+        allergeneLabel.textProperty().bindBidirectional(this.allergeneString);
     }
     @FXML
     public void onButtonClicked(ActionEvent e) {
@@ -166,14 +172,14 @@ public class Controller {
     public void displayVorhandenA(ActionEvent e) {
         if(e.getSource().equals(this.vorhandenA)) {
             Set<Allergen> set = this.gl.getAllergenList(true);
-            this.allergeneLabel.setText(set.toString());
+            this.allergeneString.set(set.toString());
         }
     }
     @FXML
     public void displayFehlendA(ActionEvent e) {
         if(e.getSource().equals(this.fehlendA)) {
             Set<Allergen> set = this.gl.getAllergenList(false);
-            this.allergeneLabel.setText(set.toString());
+            this.allergeneString.set(set.toString());
         }
     }
     @FXML

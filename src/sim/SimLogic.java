@@ -23,7 +23,7 @@ public class SimLogic {
         }
     }
 
-    public void addRandomKuchen() throws InterruptedException {
+    public synchronized void addRandomKuchen() {
         List<Allergen> coll = new ArrayList<>();
         coll.addAll(this.allergens);
         String name = this.kuchennamen[(int) (Math.random()*this.kuchennamen.length)];
@@ -51,83 +51,103 @@ public class SimLogic {
                 break;
         }
 
-
         System.out.println("Kuchen wurde eingefügt"); //TODO: + thread name
     }
-    public void removeRandomKuchen() throws InterruptedException {
+    public synchronized void removeRandomKuchen(){
         this.list = this.gl.listKuchen(null);
-        int pos = (int) (Math.random() * this.list.length);
-        this.gl.löscheKuchen(pos);
-        System.out.println("Kuchen wurde gelöscht");
+        if(this.list.length != 0) {
+            int pos = (int) ((Math.random() * this.list.length));
+            this.gl.löscheKuchen(this.list[pos].getFachnummer());
+            System.out.println("Kuchen wurde gelöscht");
+        }
     }
 
     public synchronized void updateRandomKuchen() {
         this.list = this.gl.listKuchen(null);
-        this.gl.setInspektionsdatum((int)(Math.random()*this.list.length));
-        System.out.println("Inspektionsdatum wurde geändert");
-    }
-
-    public synchronized void löscheÄltesten() throws InterruptedException {
-        while(!this.isFull()) wait();
-        if (!this.isFull()) throw new IllegalStateException();
-        GanzerKuchen obj = this.getOldest(this.gl.listKuchen(null));
-        this.gl.löscheKuchen(obj.getFachnummer());
-        System.out.println("Kuchen gelöscht");
-        notifyAll();
-    }
-    public synchronized void einfügenSim2() throws InterruptedException {
-        while(this.isFull()) wait();
-        if (this.isFull()) throw new IllegalStateException();
-        this.addRandomKuchen();
-        notifyAll();
-    }
-    public synchronized void deleteSim3(Random rand) throws InterruptedException {
-        while (!this.isFull()) wait();
-        if (!this.isFull()) throw new IllegalStateException();
-        List<GanzerKuchen> list = this.getOldestList(this.gl.listKuchen(null));
-        int anzahl = rand.nextInt(this.gl.getFachnummer());
-
-        for (int i = 0; i < anzahl; i++) {
-            this.gl.löscheKuchen(i);
-            System.out.println("kuchen gelöscht");
+        if(this.list.length != 0) {
+            this.gl.setInspektionsdatum(this.list[(int) (Math.random() * this.list.length)].getFachnummer());
+            System.out.println("Inspektionsdatum wurde geändert");
         }
-        notifyAll();
+    }
+
+    public synchronized void löscheÄltesten() {
+        try {
+            while (!this.isFull()) {
+                wait();
+            }
+            if (!this.isFull()) throw new IllegalStateException();
+            if(this.getOldest(this.gl.listKuchen(null)) != null) {
+                GanzerKuchen obj = this.getOldest(this.gl.listKuchen(null));
+                this.gl.löscheKuchen(obj.getFachnummer());
+                System.out.println("Kuchen gelöscht");
+            }
+            notifyAll();
+        }catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    public synchronized void einfügenSim2() {
+        try {
+            while(this.isFull()) { wait(); }
+            if (this.isFull()) throw new IllegalStateException();
+            this.addRandomKuchen();
+            notifyAll();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    public synchronized void deleteSim3(Random rand){
+        try {
+            while (!this.isFull()) {
+                wait();
+            }
+            if (!this.isFull()) throw new IllegalStateException();
+            if(this.getOldestList(this.gl.listKuchen(null)) != null) {
+                List<GanzerKuchen> list = this.getOldestList(this.gl.listKuchen(null));
+                int anzahl = rand.nextInt(list.size() + 1);
+
+                for (int i = 0; i < anzahl; i++) {
+                    this.gl.löscheKuchen(list.get(i).getFachnummer());
+                    System.out.println("kuchen gelöscht");
+                }
+            }
+            notifyAll();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
     public synchronized GanzerKuchen getOldest(GanzerKuchen[] list) {
-        GanzerKuchen oldest = list[0];
-        for(GanzerKuchen a : list) {
-            if(a.getInspektionsdatum().before(oldest.getInspektionsdatum())) {
-                oldest = a;
+        if(list.length != 0) {
+            GanzerKuchen oldest = list[0];
+            for (GanzerKuchen a : list) {
+                if (a.getInspektionsdatum().before(oldest.getInspektionsdatum())) {
+                    oldest = a;
+                }
             }
+            return oldest;
         }
-        return oldest;
+        return null;
     }
     private synchronized List<GanzerKuchen> getOldestList(GanzerKuchen[] got) {
-        Date date = got[0].getInspektionsdatum();
-        List<GanzerKuchen> list = new ArrayList<>();
-        for(GanzerKuchen a : got) {
-            if(a.getInspektionsdatum().compareTo(date) < 0) {
-                date = a.getInspektionsdatum();
+        if(got.length != 0) {
+            Date date = got[0].getInspektionsdatum();
+            List<GanzerKuchen> list = new ArrayList<>();
+            for (GanzerKuchen a : got) {
+                if (a.getInspektionsdatum().compareTo(date) < 0) {
+                    date = a.getInspektionsdatum();
+                }
             }
-        }
-        for(GanzerKuchen a : got) {
-            if(a.getInspektionsdatum().compareTo(date) == 0) {
-                list.add(a);
+            for (GanzerKuchen a : got) {
+                if (a.getInspektionsdatum().compareTo(date) == 0) {
+                    list.add(a);
+                }
             }
+            return list;
         }
-       return list;
+        return null;
     }
     private boolean isFull() {
-        if(this.gl.getFachnummer() == this.gl.getListGröße()) {
-            switch(this.gl.getListGröße()) {
-                case 0:
-                    return false;
-                default:
-                    return true;
-            }
-        }else {
-            return false;
-        }
+        return this.gl.isFull();
     }
 }
 

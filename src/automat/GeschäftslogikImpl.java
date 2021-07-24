@@ -30,6 +30,14 @@ public class GeschäftslogikImpl implements Subjekt, Serializable {
         }
         return null;
     }
+    public boolean isFull() {
+        for (int i = 0; i < this.listGröße; i++) {
+            if(this.list[i] == null) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public boolean addHersteller(Hersteller hersteller) {
         Hersteller h = this.checkHersteller(hersteller);

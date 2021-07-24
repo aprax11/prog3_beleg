@@ -72,7 +72,9 @@ public class CliClass {
             if (this.lastCommand.equals(":c")) {
                 if (parse.length == 1) {
                     AddHerstellerEvent addHerstellerEvent = new AddHerstellerEvent(this, parse[0], true, false);
-                    this.herstellerEventHandler.handle(addHerstellerEvent);
+                    if(this.herstellerEventHandler != null) {
+                        this.herstellerEventHandler.handle(addHerstellerEvent);
+                    }
 
                 } else if (parse.length >= 2) {
                     switch (parse[0]) {
@@ -144,17 +146,23 @@ public class CliClass {
                     }
                     if (korrektheit) {
                         AddKuchenEvent addKuchenEvent = new AddKuchenEvent(this, liste, boden);
-                        this.kuchenEventHandler.handle(addKuchenEvent);
+                        if(this.kuchenEventHandler != null) {
+                            this.kuchenEventHandler.handle(addKuchenEvent);
+                        }
                     }
                 }
             } else if (this.lastCommand.equals(":d")) {
                 if (this.checkInt(s1)) {
                     int pos = Integer.parseInt(s1);
                     DeleteKuchenEvent deleteKuchenEvent = new DeleteKuchenEvent(this, pos, false);
-                    this.deleteKuchenEventHandler.handle(deleteKuchenEvent);
+                    if(this.deleteKuchenEventHandler != null) {
+                        this.deleteKuchenEventHandler.handle(deleteKuchenEvent);
+                    }
                 } else if (this.checkString(s1)) {
                     AddHerstellerEvent addHerstellerEvent = new AddHerstellerEvent(this, s1, false, false);
-                    this.herstellerEventHandler.handle(addHerstellerEvent);
+                    if(this.herstellerEventHandler != null) {
+                        this.herstellerEventHandler.handle(addHerstellerEvent);
+                    }
                 }
             } else if (this.lastCommand.equals(":r")) {
                 String[] split = s1.split(" ");
@@ -162,56 +170,66 @@ public class CliClass {
                 switch (split[0]) {
                     case "kuchen":
                         if (split.length == 1) {
-                            GetKuchenListEvent getKuchenListEvent = new GetKuchenListEvent(this, null);
-                            this.getKuchenListEventHandler.handle(getKuchenListEvent);
-                        } else if (split.length == 2) {
-                            switch (split[1]) {
-                                case "Kremkuchen":
-                                    typ1 = KuchenTypen.Kremkuchen;
-                                    break;
-                                case "Obstkuchen":
-                                    typ1 = KuchenTypen.Obstkuchen;
-                                    break;
-                                case "Obsttorte":
-                                    typ1 = KuchenTypen.Obsttorte;
-                                    break;
+                            if (this.getKuchenListEventHandler != null) {
+                                GetKuchenListEvent getKuchenListEvent = new GetKuchenListEvent(this, null);
+                                this.getKuchenListEventHandler.handle(getKuchenListEvent);
+                            } else if (split.length == 2) {
+                                switch (split[1]) {
+                                    case "Kremkuchen":
+                                        typ1 = KuchenTypen.Kremkuchen;
+                                        break;
+                                    case "Obstkuchen":
+                                        typ1 = KuchenTypen.Obstkuchen;
+                                        break;
+                                    case "Obsttorte":
+                                        typ1 = KuchenTypen.Obsttorte;
+                                        break;
+                                }
+                                GetKuchenListEvent getKuchenListEvent = new GetKuchenListEvent(this, typ1);
+                                this.getKuchenListEventHandler.handle(getKuchenListEvent);
                             }
-                            GetKuchenListEvent getKuchenListEvent = new GetKuchenListEvent(this, typ1);
-                            this.getKuchenListEventHandler.handle(getKuchenListEvent);
                         }
                         break;
                     case "hersteller":
                         AddHerstellerEvent addHerstellerEvent = new AddHerstellerEvent(this, null, false, true);
-                        this.herstellerEventHandler.handle(addHerstellerEvent);
+                        if(this.herstellerEventHandler != null) {
+                            this.herstellerEventHandler.handle(addHerstellerEvent);
+                        }
                         break;
                     case "allergene":
-                        switch (split[1]) {
-                            case "i":
-                                GetAllergeneEvent event = new GetAllergeneEvent(this, true);
-                                this.getAllergenHandler.handle(event);
-                                break;
-                            case "e":
-                                GetAllergeneEvent event2 = new GetAllergeneEvent(this, false);
-                                this.getAllergenHandler.handle(event2);
-                                break;
+                        if(this.getAllergenHandler != null) {
+                            switch (split[1]) {
+                                case "i":
+                                    GetAllergeneEvent event = new GetAllergeneEvent(this, true);
+                                    this.getAllergenHandler.handle(event);
+                                    break;
+                                case "e":
+                                    GetAllergeneEvent event2 = new GetAllergeneEvent(this, false);
+                                    this.getAllergenHandler.handle(event2);
+                                    break;
+                            }
                         }
                 }
             } else if (this.lastCommand.equals(":u")) {
                 if (this.checkInt(parse[0])) {
                     DeleteKuchenEvent event = new DeleteKuchenEvent(this, Integer.parseInt(parse[0]), true);
-                    this.deleteKuchenEventHandler.handle(event);
+                    if(this.deleteKuchenEventHandler != null) {
+                        this.deleteKuchenEventHandler.handle(event);
+                    }
                 }
             } else if (this.lastCommand.equals(":p")) {
                 if (this.checkString(parse[0])) {
-                    switch (parse[0]) {
-                        case "saveJOS":
-                            JosEvent event = new JosEvent(this, true);
-                            this.josHandler.handle(event);
-                            break;
-                        case "loadJOS":
-                            JosEvent event2 = new JosEvent(this, false);
-                            this.josHandler.handle(event2);
-                            break;
+                    if(this.josHandler != null) {
+                        switch (parse[0]) {
+                            case "saveJOS":
+                                JosEvent event = new JosEvent(this, true);
+                                this.josHandler.handle(event);
+                                break;
+                            case "loadJOS":
+                                JosEvent event2 = new JosEvent(this, false);
+                                this.josHandler.handle(event2);
+                                break;
+                        }
                     }
                 }
             }

@@ -23,13 +23,13 @@ public class SimLogicTest {
     }
 
     @Test
-    public void addRandomKuchenTest() throws InterruptedException {
+    public void addRandomKuchenTest() {
         this.sIM.addRandomKuchen();
         verify(this.mockGL).addKuchen(anyList(), any(Container.class));
     }
 
     @Test
-    public void removeRandomKuchenTest() throws InterruptedException {
+    public void removeRandomKuchenTest() {
         GanzerKuchen[] list = {KREMKUCHEN, OBSTKUCHEN, OBSTTORTE};
 
         when(this.mockGL.listKuchen(null)).thenReturn(list);
@@ -49,12 +49,12 @@ public class SimLogicTest {
     }
 
     @Test
-    public void addRandomSim2KuchenTest() throws InterruptedException {
+    public void addRandomSim2KuchenTest() {
         this.sIM.einfügenSim2();
         verify(this.mockGL).addKuchen(anyList(), any(Container.class));
     }
     @Test
-    public void löscheÄltestenTest() throws InterruptedException {
+    public void löscheÄltestenTest() {
 
         GanzerKuchen[] list = {KREMKUCHEN, OBSTKUCHEN, OBSTTORTE};
         when(this.mockGL.listKuchen(null)).thenReturn(list);
@@ -63,6 +63,7 @@ public class SimLogicTest {
         when(KREMKUCHEN.getInspektionsdatum()).thenReturn(new Date());
         when(OBSTKUCHEN.getInspektionsdatum()).thenReturn(new Date());
         when(OBSTTORTE.getInspektionsdatum()).thenReturn(d);
+        when(mockGL.isFull()).thenReturn(true);
         when(mockGL.getListGröße()).thenReturn(3);
         when(mockGL.getFachnummer()).thenReturn(3);
         when(KREMKUCHEN.getFachnummer()).thenReturn(0);
@@ -74,7 +75,7 @@ public class SimLogicTest {
     }
 
     @Test
-    public void deleteSim3Test() throws InterruptedException {
+    public void deleteSim3Test(){
         GanzerKuchen[] list = {KREMKUCHEN, OBSTKUCHEN, OBSTTORTE};
         when(this.mockGL.listKuchen(null)).thenReturn(list);
         Date d = new Date(2, 1, 1, 1, 1);
@@ -82,6 +83,7 @@ public class SimLogicTest {
         when(KREMKUCHEN.getInspektionsdatum()).thenReturn(new Date());
         when(OBSTKUCHEN.getInspektionsdatum()).thenReturn(d);
         when(OBSTTORTE.getInspektionsdatum()).thenReturn(d);
+        when(mockGL.isFull()).thenReturn(true);
         when(mockGL.getListGröße()).thenReturn(3);
         when(mockGL.getFachnummer()).thenReturn(3);
         when(KREMKUCHEN.getFachnummer()).thenReturn(0);

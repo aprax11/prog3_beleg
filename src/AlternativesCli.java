@@ -1,21 +1,18 @@
 import automat.GeschäftslogikImpl;
-import controller.GetKuchenEventListenerImpl;
 import beobachterMusterInterfaces.Beobachter;
 import controller.*;
 import eventApi.*;
 import view.*;
-import eventApi.ReceiveKuchenListEventListener;
 
-public class App {
+public class AlternativesCli {
 
-
-    public static void main(String[] args) {//TODO die args auslesen
+    public static void main(String[] args) {
         GeschäftslogikImpl geschäftsLogic = new GeschäftslogikImpl(3);
         GlWrapper gl = new GlWrapper(geschäftsLogic);
         ViewClass view = new ViewClass();
         Beobachter allergenBeobachter = new AllergenBeobachter(geschäftsLogic);
-        Beobachter kapazitätBeobachter = new KapazitätBeobachter(geschäftsLogic);
-        //TODO alle Beobachter einhängen
+
+
         JosEventHandler josEventHandler = new JosEventHandler();
         JosListenerImpl josListener = new JosListenerImpl(gl);
 
@@ -34,14 +31,6 @@ public class App {
         GetKuchenListEventHandler getKuchenListEventHandler = new GetKuchenListEventHandler();
         GetKuchenEventListenerImpl getKuchenListEventListener = new GetKuchenEventListenerImpl(gl);
 
-        DeleteKuchenEventHandler deleteKuchenEventHandler = new DeleteKuchenEventHandler();
-        DeleteKuchenEventListener deleteKuchenEventListener = new DeleteKuchenEventListenerImpl(gl);
-
-        GetAllergenHandler getAllergenHandler = new GetAllergenHandler();
-        GetAllergenListenerInpl getAllergenListener = new GetAllergenListenerInpl(gl);
-
-        ReceiveAllergeneHandler receiveAllergeneHandler = new ReceiveAllergeneHandler();
-        getAllergenListener.setHandler(receiveAllergeneHandler);
 
         ReceiveAllergeneListener receiveAllergeneListener = new ReceiveAllergenListenerImpl(view);
 
@@ -57,18 +46,8 @@ public class App {
         cli.setGetKuchenListEventHandler(getKuchenListEventHandler);
         getKuchenListEventHandler.add(getKuchenListEventListener);
 
-        cli.setDeleteKuchenEventHandler(deleteKuchenEventHandler);
-        deleteKuchenEventHandler.add(deleteKuchenEventListener);
-
-        cli.setAllergenHandler(getAllergenHandler);
-        getAllergenHandler.add(getAllergenListener);
-
         cli.setJosEventHandler(josEventHandler);
         josEventHandler.add(josListener);
-
-        receiveAllergeneHandler.add(receiveAllergeneListener);
-
-        getAllergenListener.setHandler(receiveAllergeneHandler);
 
         addHerstellerEventListener.setHandler(receiveHerstellerListEventHandler);
 
@@ -80,3 +59,4 @@ public class App {
         cli.start();
     }
 }
+
